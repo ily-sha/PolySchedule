@@ -9,7 +9,6 @@ import java.net.URL
 
 object GroupsImpl: GroupsRepository {
 
-
     override fun getGroups(groups: MutableList<Speciality>) {
         try {
             val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/${MainViewModel.INSTITUTE_CHOOSEN!!.getId()}/groups").readText()))!!.value
