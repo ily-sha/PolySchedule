@@ -8,14 +8,16 @@ import org.json.JSONObject
 import java.net.URL
 
 object GroupsImpl: GroupsRepository {
+    val COURSE_CHOOSEN = 0
+    val INSTITUTE_CHOOSEN = 0
 
     override fun getGroups(groups: MutableList<Speciality>) {
         try {
-            val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/${MainViewModel.INSTITUTE_CHOOSEN!!.getId()}/groups").readText()))!!.value
-            val json = JSONObject(result.substring(result.indexOf("{"))).getJSONObject("groups").getJSONObject("data").getJSONArray("${MainViewModel.INSTITUTE_CHOOSEN!!.getId()}")
+            val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/${INSTITUTE_CHOOSEN}/groups").readText()))!!.value
+            val json = JSONObject(result.substring(result.indexOf("{"))).getJSONObject("groups").getJSONObject("data").getJSONArray("${INSTITUTE_CHOOSEN}")
             for (i in 0 until json.length()){
                 val speciality = Speciality(json[i] as JSONObject)
-                if (speciality.level == MainViewModel.COURSE_CHOOSEN) groups.add(speciality)
+                if (speciality.level == COURSE_CHOOSEN) groups.add(speciality)
 
             }
 

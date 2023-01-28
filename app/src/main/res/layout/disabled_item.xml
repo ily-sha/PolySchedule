@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
+    android:id="@+id/card_view"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/green"
+    android:backgroundTint="@color/main_green"
     android:layout_marginEnd="8dp"
     android:clickable="true"
     android:focusable="true"
     android:layout_marginBottom="8dp"
     app:cardElevation="0dp"
+    app:cardCornerRadius="14dp"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv"
+        android:layout_gravity="center"
         android:clickable="true"
         android:focusable="true"
         android:padding="12dp"
@@ -23,4 +27,4 @@
         android:text="Курс 1">
     </TextView>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

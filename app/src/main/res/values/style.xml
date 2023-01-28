@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ButtonStyle">
-        <item name="android:textColor">@color/green</item>
+        <item name="android:textColor">@color/main_green</item>
         <item name="background">@drawable/border_for_item</item>
     </style>
 </resources>

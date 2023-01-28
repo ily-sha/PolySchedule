@@ -15,26 +15,24 @@ import com.example.polyschedule.R
 import com.example.polyschedule.domain.Speciality
 import com.example.polyschedule.presentation.adapter.InstituteAdapter
 import com.google.android.material.appbar.AppBarLayout
-import kotlin.concurrent.thread
-import com.example.polyschedule.presentation.MainViewModel.Companion.COURSE_CHOOSEN
-import com.example.polyschedule.presentation.MainViewModel.Companion.INSTITUTE_CHOOSEN
+import com.example.polyschedule.presentation.MainViewModel.Companion.coursesList
 import java.lang.Math.abs
 
 
 class MainActivity : AppCompatActivity() {
 
 
-    private lateinit var seleckedCourse: View
+
     var allGroups = mutableListOf<Speciality>()
     lateinit var recyclerViewGroup: RecyclerView
     lateinit var groupAdapter: GroupAdapter
     lateinit var speciality: TextView
+    private val viewsOfCourse = mutableListOf<Pair<TextView, View>>()
     lateinit var recyclerViewInstitute: RecyclerView
     private lateinit var mainViewModel: MainViewModel
 
-    var courses = mutableListOf(Pair("Курс 1", false), Pair("Курс 2", false), Pair("Курс 3", false),
-        Pair("Курс 4", false), Pair("Курс 5", false), Pair("Курс 1", false), Pair("Курс 2", false), Pair("Курс 3", false),
-        Pair("Курс 4", false), Pair("Курс 5", false))
+
+
 
 
     private lateinit var linearLayoutCourse: LinearLayout
@@ -42,6 +40,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textViewCourse: TextView
     private lateinit var appbar: AppBarLayout
     private lateinit var toolbar: Toolbar
+
+    private var tvCourseHeight = 0
 
 
 
@@ -53,19 +53,28 @@ class MainActivity : AppCompatActivity() {
         initViews()
 
         appbar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-
             updateViews(abs(verticalOffset))
-
             }
 
+        mainViewModel.course.observe(this) {
+
         }
+        mainViewModel.institute.observe(this) {
+
+        }
+        textViewCourse.post {
+            tvCourseHeight = textViewCourse.height
+        }
+
+    }
+
 
 
 
 
 
     private fun updateViews(verticalOffset: Int) {
-        val const = 180f
+        val const = 2 * resources.getDimension(R.dimen.vertical_margin) + tvCourseHeight
         println("verticalOffset: $verticalOffset")
         textViewInstitute.apply {
             if (verticalOffset < const){
@@ -84,13 +93,16 @@ class MainActivity : AppCompatActivity() {
             this.translationX = verticalOffset * -4f
             this.translationY = verticalOffset.toFloat()
         }
+        val courseItem = mainViewModel.course.value
+        if (courseItem != null) {
+            val view = viewsOfCourse[courseItem.position].second
+            view.apply {
+                this.translationX = verticalOffset * 5f
+                this.translationY = verticalOffset.toFloat()
+            }
+        }
 
     }
-
-
-
-
-
 
     private fun initViews(){
         textViewCourse = findViewById(R.id.textViewCourse)
@@ -114,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewInstitute = findViewById(R.id.rvInstitute)
         recyclerViewInstitute.adapter = InstituteAdapter()
-        recyclerViewInstitute.layoutManager = GridLayoutManager(this, 5, RecyclerView.HORIZONTAL, false)
+        recyclerViewInstitute.layoutManager = GridLayoutManager(this, 5, RecyclerView.VERTICAL, false)
 
 
 
@@ -123,34 +135,42 @@ class MainActivity : AppCompatActivity() {
 //        groupAdapter = GroupAdapter(allGroups)
 //        recyclerViewGroup.adapter = groupAdapter
 //        speciality = findViewById(R.id.specialityTV)
-//
-//
-
-
-
     }
-    private val coursesView = mutableListOf<View>()
+
     private fun setupCourseViews(){
-        coursesView.clear()
-        for (i in 1..5) {
-            val layout = if (courses[i - 1].second) R.layout.enabled_item else R.layout.disabled_item
+        viewsOfCourse.clear()
+        linearLayoutCourse.removeAllViews()
+        for (i in 0..4) {
+            val layout = if (coursesList[i].selected) R.layout.enabled_item else R.layout.disabled_item
             val view = LayoutInflater.from(this).inflate(layout, linearLayoutCourse, false)
 
             val textView = view.findViewById<TextView>(R.id.tv)
-            coursesView.add(textView)
-            textView.text = courses[i - 1].first
+            viewsOfCourse.add(Pair(textView, view))
+            textView.text = coursesList[i].name
             linearLayoutCourse.addView(view)
 
-            textView.touch { view ->
-                val position = coursesView.indexOf(view)
-                courses[position] = Pair(courses[position].first, !courses[position].second)
+            textView.setOnClickListener { textView ->
+                val position = viewsOfCourse.indexOf(viewsOfCourse.find { it.first == textView})
+                if (mainViewModel.course.value == null) {
+                    selectCourse(position)
+                } else {
+                    selectCourse(mainViewModel.course.value!!.position)
+                    selectCourse(position)
+                }
                 setupCourseViews()
-
-
+                mainViewModel.course.value = coursesList[position]
             }
 
 
         }
+    }
+
+    private fun selectCourse(position: Int){
+        coursesList.add(position,
+            coursesList[position].copy(selected = !coursesList[position].selected))
+        coursesList.removeAt(position + 1)
+
+
     }
 
 
