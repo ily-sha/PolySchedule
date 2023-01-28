@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PolySchedule</string>
+    <string name="course">Курс</string>
+    <string name="institute">Институт</string>
 </resources>
