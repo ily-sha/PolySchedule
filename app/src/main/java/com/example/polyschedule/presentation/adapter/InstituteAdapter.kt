@@ -7,41 +7,74 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
+import com.example.polyschedule.domain.Institute
+import com.example.polyschedule.presentation.MainViewModel
 
-class InstituteAdapter(): RecyclerView.Adapter<InstituteAdapter.InstituteViewHolder>() {
-    private val institutes = listOf("ФизМех", "УПКР", "ИПММ", "ИЭ", "ИППТ", "ИФНиТ", "ИПМЭиТ", "ИЭиТ", "ИДО", "ГИ", "ИЯЭ", "ИКиЗИ", "ИФКСиТ", "ИКНТ", "ИБСиБ", "ИММиТ", "ИСИ")
+class InstituteAdapter(private var instituteList: MutableList<Institute>): RecyclerView.Adapter<InstituteAdapter.InstituteViewHolder>() {
 
-    var onItemClicked: ((View) -> Unit)? = null
+    var onInstituteItemClicked: ((Institute) -> Unit)? = null
+
+    private var lastSelected: Int = CourseAdapter.FIRST_CLICKED
+
     class InstituteViewHolder(val itemView: View): RecyclerView.ViewHolder(itemView){
         val tv = itemView.findViewById<TextView>(R.id.tv)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InstituteViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.enabled_item, parent, false)
-        return InstituteViewHolder(itemView)
+        val layout = when(viewType){
+            DISABLED_INSTITUTE_ITEM -> R.layout.disabled_institute_item
+            DISABLED_INSTITUTE_FIRST_ITEM -> R.layout.disabled_institute_first_item
+            ENABLED_INSTITUTE_FIRST_ITEM -> R.layout.enabled_institute_first_item
+            ENABLED_INSTITUTE_ITEM -> R.layout.enabled_institute_item
+            else -> throw java.lang.RuntimeException("Unknown view type $viewType")
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        return InstituteViewHolder(view)
     }
 
 
 
     override fun onBindViewHolder(holder: InstituteViewHolder, position: Int) {
-        if (position == 10){
-            onItemClicked?.invoke(holder.itemView)
+
+        holder.tv.text = instituteList[position].getAbbr()
+        holder.tv.setOnClickListener {
+            if (lastSelected != CourseAdapter.FIRST_CLICKED) {
+                changeSelectedItemParams(lastSelected)
+                notifyItemChanged(lastSelected)
+            }
+            changeSelectedItemParams(position)
+            notifyItemChanged(position)
+            lastSelected = position
+            onInstituteItemClicked?.invoke(instituteList[position])
         }
-        holder.tv.text = institutes[position]
 
     }
 
-    override fun getItemCount() = institutes.size
+    override fun getItemCount() = instituteList.size
+
+    override fun getItemViewType(position: Int): Int {
+        return if (!instituteList[position].selected){
+            if (position < 4) DISABLED_INSTITUTE_FIRST_ITEM
+            else DISABLED_INSTITUTE_ITEM
+        } else
+            if (position < 4) ENABLED_INSTITUTE_FIRST_ITEM
+            else ENABLED_INSTITUTE_ITEM
+    }
+
+    private fun changeSelectedItemParams(position: Int){
+        instituteList.add(position, instituteList[position].copy(selected = !instituteList[position].selected))
+        instituteList.remove(instituteList[position + 1])
+    }
 
 
-//    fun clicked(nowButton:View, institute: Institute){
-//        if (this::selecked.isInitialized) { selecked.setBackgroundResource(R.color.black)}
-//        selecked = nowButton
-//        INSTITUTE_CHOOSEN = institute
-////        if (MainActivity.COURSE_CHOOSEN != null && MainActivity.INSTITUTE_CHOOSEN != null) {
-////            MainActivity.updateGroup()
-////        }
-//
-//    }
+    companion object {
+        const val ENABLED_INSTITUTE_ITEM = 100
+        const val ENABLED_INSTITUTE_FIRST_ITEM = 1000
+        const val DISABLED_INSTITUTE_ITEM = 101
+        const val DISABLED_INSTITUTE_FIRST_ITEM = 1001
+
+        const val FIRST_CLICKED = -1
+    }
+
 }
+

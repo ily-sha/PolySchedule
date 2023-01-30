@@ -1,112 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/main_green"
-    android:layout_height="match_parent">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
-            android:background="@color/main_green"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+        android:layout_height="match_parent"
+        android:background="@color/main_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardview_continue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            app:elevation="0dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <Toolbar
-                android:visibility="invisible"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:id="@+id/toolbar"
-                app:layout_collapseMode="pin"
+            android:layout_height="wrap_content">
 
-                android:background="#669F26"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:orientation="vertical">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                android:background="@color/main_green">
 
-
-                <TextView
-                    android:id="@+id/textViewCourse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/course"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                </TextView>
-
-                <LinearLayout
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewCourse"
-                    android:id="@+id/courseHolderLL"
-                    android:layout_marginTop="@dimen/vertical_margin"
-                    android:nestedScrollingEnabled="false"
+                <Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="120dp"
+                    android:background="@color/main_green"
+                    android:visibility="invisible"
+                    app:layout_collapseMode="pin" />
 
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textViewInstitute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/vertical_margin"
-                    android:text="@string/institute"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/courseHolderLL">
-                </TextView>
-
-                <androidx.recyclerview.widget.RecyclerView
-
-                    android:layout_marginTop="@dimen/vertical_margin"
-                    android:id="@+id/rvInstitute"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewInstitute">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:id="@+id/top"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/vertical_margin"
+                        app:layout_constraintBottom_toTopOf="@id/courseContainer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </View>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/courseContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/top">
+
+                        <TextView
+                            android:id="@+id/textViewCourse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/course"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_view_course"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:backgroundTint="@color/additional_green"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_course_in_cardview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:paddingHorizontal="18dp"
+                                android:paddingVertical="12dp"
+                                android:textColor="@color/white">
+
+                            </TextView>
+                        </androidx.cardview.widget.CardView>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCourse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/vertical_margin"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/courseContainer" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/institute_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rvCourse">
+
+                        <TextView
+                            android:id="@+id/textViewInstitute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/institute"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        </TextView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/card_view_institute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:backgroundTint="@color/additional_green"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textview_institute_in_cardview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:paddingHorizontal="18dp"
+                                android:paddingVertical="12dp"
+                                android:textColor="@color/white">
+
+                            </TextView>
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+
+                        android:id="@+id/rvInstitute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/vertical_margin"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/institute_container">
+
+                    </androidx.recyclerview.widget.RecyclerView>
 
 
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="8790789789787787887879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878v87907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878v8790789789787787890789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878v87907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878879078978978778788790789789787787887907897897877878v87907897897877878"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/textViewGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/group"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rvInstitute">
+                </TextView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vertical_margin">
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+
+
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.cardview.widget.CardView
+
+        android:visibility="gone"
+        app:cardElevation="0dp"
+        android:layout_marginBottom="12dp"
+        android:id="@+id/cardview_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:cardCornerRadius="14dp"
+        android:backgroundTint="@color/additional_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:paddingVertical="10dp"
+            android:text="@string/continue_str"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         </TextView>
 
+    </androidx.cardview.widget.CardView>
 
-    </androidx.core.widget.NestedScrollView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

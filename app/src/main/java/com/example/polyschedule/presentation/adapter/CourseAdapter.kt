@@ -1,6 +1,5 @@
 package com.example.polyschedule.presentation.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.polyschedule.R
+import com.example.polyschedule.domain.Course
+import com.example.polyschedule.presentation.MainViewModel.Companion.coursesList
 
 class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
@@ -15,19 +16,17 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         val tv = view.findViewById<TextView>(R.id.tv)
 
     }
+    var onCourseItemClicked: ((Course) -> Unit)? = null
 
-    var courses = mutableListOf(Pair("Курс 1", false), Pair("Курс 2", false), Pair("Курс 3", false),
-        Pair("Курс 4", false), Pair("Курс 5", false), Pair("Курс 1", false), Pair("Курс 2", false), Pair("Курс 3", false),
-        Pair("Курс 4", false), Pair("Курс 5", false))
-
-    var onItemClicked: ((View) -> Unit)? = null
-
+    private var lastSelected: Int = FIRST_CLICKED
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
         val layout = when(viewType){
-            ENABLED_ITEM -> R.layout.enabled_item
-            DISABLED_ITEM -> R.layout.enabled_item
+            DISABLED_COURSE_ITEM -> R.layout.disabled_course_item
+            DISABLED_COURSE_FIRST_ITEM -> R.layout.disabled_course_first_item
+            ENABLED_COURSE_FIRST_ITEM -> R.layout.enabled_course_first_item
+            ENABLED_COURSE_ITEM -> R.layout.enabled_course_item
             else -> throw java.lang.RuntimeException("Unknown view type $viewType")
         }
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
@@ -35,30 +34,46 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return courses.size
+        return coursesList.size
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-        holder.tv.text = courses[position].first
+        holder.tv.text = coursesList[position].name
         holder.tv.setOnClickListener {
-            println(13123123)
-            courses[position] = Pair(courses[position].first, true)
+            if (lastSelected != FIRST_CLICKED) {
+                changeSelectedItemParams(lastSelected)
+                notifyItemChanged(lastSelected)
+            }
+            changeSelectedItemParams(position)
             notifyItemChanged(position)
-            onItemClicked?.invoke(holder.view)
-            Log.d("CourseAdapter", courses[position].first)
+            lastSelected = position
+            onCourseItemClicked?.invoke(coursesList[position])
+
 
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (courses[position].second){
-            DISABLED_ITEM
-        } else ENABLED_ITEM
+        return if (!coursesList[position].selected){
+            if (position == 0) DISABLED_COURSE_FIRST_ITEM
+            else DISABLED_COURSE_ITEM
+        } else
+            if (position == 0) ENABLED_COURSE_FIRST_ITEM
+            else ENABLED_COURSE_ITEM
+    }
+
+    private fun changeSelectedItemParams(position: Int){
+        coursesList.add(position, coursesList[position].copy(selected = !coursesList[position].selected))
+        coursesList.remove(coursesList[position + 1])
     }
 
     companion object {
-        const val ENABLED_ITEM = 100
-        const val DISABLED_ITEM = 101
+        const val ENABLED_COURSE_ITEM = 100
+        const val ENABLED_COURSE_FIRST_ITEM = 1000
+        const val DISABLED_COURSE_ITEM = 101
+        const val DISABLED_COURSE_FIRST_ITEM = 1001
+
+        const val FIRST_CLICKED = -1
     }
 
 }
