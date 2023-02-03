@@ -1,14 +1,18 @@
 package com.example.polyschedule.data
 
-import android.icu.lang.UScript.COMMON
+import androidx.lifecycle.MutableLiveData
 import com.example.polyschedule.domain.UniversityRepository
 import com.example.polyschedule.domain.Institute
 import com.example.polyschedule.domain.Group
 import com.example.polyschedule.domain.Group.Companion.COMMON_TYPE
+import com.example.polyschedule.domain.Schedule
 import org.json.JSONObject
 import java.net.URL
+import kotlin.concurrent.thread
 
 object UniversityImpl: UniversityRepository {
+
+    var currentSchedule = MutableLiveData<MutableList<Schedule>>()
 
 
     override fun getGroups(numberOfCourse: Int, instituteId: Int): MutableList<Group> {
@@ -24,7 +28,6 @@ object UniversityImpl: UniversityRepository {
         } catch (e :Exception){
             println(e)
         }
-        println(groups)
         return groups.sortedBy { it.id }.toMutableList()
     }
 
@@ -40,6 +43,33 @@ object UniversityImpl: UniversityRepository {
             println(e)
         }
         return allInstitute
+    }
+
+    override fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>> {
+        val scheduleList = mutableListOf<Schedule>()
+        thread {
+            try {
+                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId").readText()))!!.value
+                val json = JSONObject(result.substring(result.indexOf("{"))).getJSONObject("lessons").getJSONObject("data").getJSONArray("$groupId")
+                for (i in 0 until json.length()) {
+                    scheduleList.add(Schedule(json[i] as JSONObject))
+
+                }
+                currentSchedule.postValue(scheduleList)
+            } catch (e: java.lang.Exception){
+                println(e)
+            }
+        }
+
+        return currentSchedule
+    }
+
+    override fun getSchedule(
+        groupId: Int,
+        instituteId: Int,
+        startDate: String
+    ): MutableList<Schedule> {
+        TODO("Not yet implemented")
     }
 
 }

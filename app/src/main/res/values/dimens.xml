@@ -3,5 +3,8 @@
     <dimen name="vertical_margin">12dp</dimen>
     <dimen name="from_top_margin">24dp</dimen>
     <dimen name="institute_item_width">100dp</dimen>
+    <dimen name="weekday_margin">10dp</dimen>
+
+
 
 </resources>

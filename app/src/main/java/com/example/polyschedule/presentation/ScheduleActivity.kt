@@ -4,11 +4,17 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.example.polyschedule.R
 import com.example.polyschedule.domain.Course
 import com.example.polyschedule.domain.Group
 import com.example.polyschedule.domain.Institute
+import com.example.polyschedule.presentation.adapter.ScheduleViewPagerAdapter
 import com.google.gson.Gson
+import kotlin.concurrent.thread
 
 class ScheduleActivity : AppCompatActivity() {
 
@@ -16,10 +22,42 @@ class ScheduleActivity : AppCompatActivity() {
     private lateinit var course: Course
     private lateinit var institute: Institute
     private lateinit var group: Group
+
+    private lateinit var scheduleViewModel : ScheduleViewModel
+
+    private lateinit var scheduleViewPager2: ViewPager2
+    private lateinit var scheduleViewPagerAdapter: ScheduleViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_schedule)
         parseIntent()
+        scheduleViewModel = ViewModelProvider(this)[ScheduleViewModel::class.java]
+        initViews()
+        scheduleViewModel.getCurrentSchedule(group.id, institute.getId())
+
+        scheduleViewModel.currentScheduleLD?.observe(this) {
+            if (scheduleViewPagerAdapter.lessonList.isEmpty()){
+                scheduleViewPager2.adapter = scheduleViewPagerAdapter
+            }
+            scheduleViewPagerAdapter.lessonList = it
+
+
+        }
+
+    }
+
+    private fun initViews(){
+        scheduleViewPager2 = findViewById(R.id.schedule_vp)
+        scheduleViewPagerAdapter = ScheduleViewPagerAdapter()
+
+//        scheduleViewPagerAdapter.onItemSwipe = {
+//            println(it)
+//        }
+        scheduleViewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                Log.d("onPageScrollState", state.toString())
+            }
+        })
     }
 
 
@@ -33,9 +71,7 @@ class ScheduleActivity : AppCompatActivity() {
         group = gson.fromJson(intent.getStringExtra(GROUP_KEY), Group::class.java)
         course = gson.fromJson(intent.getStringExtra(COURSE_KEY), Course::class.java)
         institute = gson.fromJson(intent.getStringExtra(INSTITUTE_KEY), Institute::class.java)
-        println(group.groupId)
-        println(institute.getAbbr())
-        println(course.name)
+
     }
 
     companion object {

@@ -17,6 +17,6 @@
     </style>
     <style name="MyButton" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/main_green</item>
-        <item name="background">@drawable/border_for_item</item>
+        <item name="background">@drawable/border_for_item_green</item>
     </style>
 </resources>

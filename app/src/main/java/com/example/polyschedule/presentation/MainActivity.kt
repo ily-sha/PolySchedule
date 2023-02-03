@@ -134,7 +134,6 @@ class MainActivity : AppCompatActivity() {
         textViewGroup = findViewById(R.id.textViewGroup)
         continueButton = findViewById(R.id.cardview_continue)
         continueButton.setOnClickListener {
-
             startActivity(
                 ScheduleActivity.newIntent(this, mainViewModel.courseLD.value!!,
                 mainViewModel.instituteLD.value!!, mainViewModel.groupLD.value!!))

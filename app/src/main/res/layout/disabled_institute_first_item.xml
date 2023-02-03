@@ -11,7 +11,7 @@
     app:cardCornerRadius="14dp"
     android:layout_height="wrap_content">
     <TextView
-        android:background="@drawable/border_for_item"
+        android:background="@drawable/border_for_item_green"
         android:id="@+id/tv"
         android:gravity="center"
         android:clickable="true"
