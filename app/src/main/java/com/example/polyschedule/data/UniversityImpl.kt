@@ -53,7 +53,6 @@ object UniversityImpl: UniversityRepository {
                 val json = JSONObject(result.substring(result.indexOf("{"))).getJSONObject("lessons").getJSONObject("data").getJSONArray("$groupId")
                 for (i in 0 until json.length()) {
                     scheduleList.add(Schedule(json[i] as JSONObject))
-
                 }
                 currentSchedule.postValue(scheduleList)
             } catch (e: java.lang.Exception){

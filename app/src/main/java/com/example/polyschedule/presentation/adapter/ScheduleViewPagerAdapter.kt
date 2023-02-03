@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
-import com.example.polyschedule.domain.ComponentLesson
 import com.example.polyschedule.domain.Schedule
 
 class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapter<ScheduleViewPagerAdapter.ScheduleViewHolder>() {
 
-    var scheduleList = listOf<Schedule>()
+    var scheduleList = mutableListOf<Schedule>()
     set(value) {
         field = value
-
         notifyDataSetChanged()
     }
 
@@ -47,7 +45,7 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val currentSchedule = scheduleList.find { it.weekday - 1 == position }
         if (currentSchedule != null){
-            holder.recyclerView.adapter = LessonAdapter(currentSchedule.lessons)
+            holder.recyclerView.adapter = LessonAdapter(currentSchedule.lessons.toList())
         }
 
 
