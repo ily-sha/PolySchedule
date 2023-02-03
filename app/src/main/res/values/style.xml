@@ -4,4 +4,9 @@
         <item name="android:textColor">@color/main_green</item>
         <item name="background">@drawable/border_for_item_green</item>
     </style>
+    <style name="TabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">18sp</item>
+        <item name="textAllCaps">false</item>
+        <item name="font">@font/inter_regular</item>
+    </style>
 </resources>

@@ -9,9 +9,11 @@
     android:background="@drawable/border_for_item_green">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginEnd="4dp"
         android:layout_marginLeft="12dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="@dimen/vertical_margin"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,10 +39,9 @@
             android:id="@+id/tv_lesson_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_bold"
-            android:text="Высшаff4f4f4f4feewe00ee000w12"
+            android:text="9582085u490[[[999qwee99999999999["
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +52,7 @@
         </TextView>
 
         <LinearLayout
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/ll_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,6 +85,7 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_teacher"
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
