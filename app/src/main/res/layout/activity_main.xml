@@ -10,9 +10,8 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_green"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cardview_continue"
+        app:layout_constraintBottom_toTopOf="@id/continue_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,14 +25,12 @@
                 android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                android:background="@color/main_green">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:background="@color/main_green"
                     android:visibility="invisible"
                     app:layout_collapseMode="pin" />
 
@@ -61,6 +58,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/top">
 
+
                         <TextView
                             android:id="@+id/textViewCourse"
                             android:layout_width="wrap_content"
@@ -75,11 +73,11 @@
                             app:layout_constraintTop_toTopOf="parent"></TextView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/card_view_course"
+                            android:id="@+id/chosen_course_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
-                            android:backgroundTint="@color/additional_green"
+                            android:backgroundTint="@color/analogous"
                             app:cardCornerRadius="14dp"
                             app:cardElevation="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -87,7 +85,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/tv_course_in_cardview"
+                                android:id="@+id/chosen_tv_course"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
@@ -99,7 +97,6 @@
 
                             </TextView>
                         </androidx.cardview.widget.CardView>
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,11 +135,11 @@
                         </TextView>
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/card_view_institute"
+                            android:id="@+id/chosen_institute_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
-                            android:backgroundTint="@color/additional_green"
+                            android:backgroundTint="@color/analogous"
                             app:cardCornerRadius="14dp"
                             app:cardElevation="0dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -150,7 +147,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textview_institute_in_cardview"
+                                android:id="@+id/chosen_tv_insitute"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:clickable="true"
@@ -177,9 +174,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/institute_container">
 
                     </androidx.recyclerview.widget.RecyclerView>
-
-
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -233,12 +227,12 @@
         android:visibility="gone"
         app:cardElevation="0dp"
         android:layout_marginBottom="12dp"
-        android:id="@+id/cardview_continue"
+        android:id="@+id/continue_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         app:cardCornerRadius="14dp"
-        android:backgroundTint="@color/additional_green"
+        android:backgroundTint="@color/analogous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

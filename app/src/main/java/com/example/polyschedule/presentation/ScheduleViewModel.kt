@@ -1,13 +1,10 @@
 package com.example.polyschedule.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.polyschedule.data.UniversityImpl
-import com.example.polyschedule.domain.GetScheduleUseCase
-import com.example.polyschedule.domain.Schedule
+import com.example.polyschedule.domain.usecase.GetScheduleUseCase
+import com.example.polyschedule.domain.entity.Schedule
 
 class ScheduleViewModel: ViewModel() {
 

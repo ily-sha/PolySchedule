@@ -7,14 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
-import com.example.polyschedule.domain.Institute
-import com.example.polyschedule.presentation.MainViewModel
+import com.example.polyschedule.domain.entity.Institute
 
-class InstituteAdapter(private var instituteList: MutableList<Institute>): RecyclerView.Adapter<InstituteAdapter.InstituteViewHolder>() {
+class InstituteAdapter: RecyclerView.Adapter<InstituteAdapter.InstituteViewHolder>() {
 
     var onInstituteItemClicked: ((Institute) -> Unit)? = null
-
-    private var lastSelected: Int = CourseAdapter.FIRST_CLICKED
+    var instituteList = mutableListOf<Institute>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+    private var lastSelected: Int = CourseAdapter.FIRST_CLICK
 
     class InstituteViewHolder(val itemView: View): RecyclerView.ViewHolder(itemView){
         val tv = itemView.findViewById<TextView>(R.id.tv)
@@ -38,7 +41,7 @@ class InstituteAdapter(private var instituteList: MutableList<Institute>): Recyc
 
         holder.tv.text = instituteList[position].getAbbr()
         holder.tv.setOnClickListener {
-            if (lastSelected != CourseAdapter.FIRST_CLICKED) {
+            if (lastSelected != CourseAdapter.FIRST_CLICK) {
                 changeSelectedItemParams(lastSelected)
                 notifyItemChanged(lastSelected)
             }

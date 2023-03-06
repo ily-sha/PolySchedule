@@ -1,6 +1,8 @@
-package com.example.polyschedule.domain
+package com.example.polyschedule.domain.usecase
 
 import androidx.lifecycle.MutableLiveData
+import com.example.polyschedule.domain.UniversityRepository
+import com.example.polyschedule.domain.entity.Schedule
 
 class GetScheduleUseCase(private val universityRepository: UniversityRepository){
 

@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
-import com.example.polyschedule.domain.Course
-import com.example.polyschedule.domain.Group
-import com.example.polyschedule.presentation.MainViewModel
+import com.example.polyschedule.domain.entity.Group
 
 class GroupAdapter(): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
@@ -49,8 +47,6 @@ class GroupAdapter(): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
             notifyItemChanged(position)
             lastSelected = position
             onGroupItemClicked?.invoke(groupList[position])
-
-
         }
 
 

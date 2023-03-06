@@ -1,4 +1,4 @@
-package com.example.polyschedule.domain
+package com.example.polyschedule.domain.entity
 
 import org.json.JSONObject
 

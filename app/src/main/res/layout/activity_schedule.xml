@@ -1,57 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.ScheduleActivity"
     android:layout_width="match_parent"
-    android:background="@color/main_green"
-    android:layout_height="match_parent"
-    tools:context=".presentation.ScheduleActivity">
-
-
-    <LinearLayout
+    android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:layout_marginTop="@dimen/vertical_margin"
-            android:text="Месяц"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_bold"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <com.google.android.material.tabs.TabLayout
-            android:layout_marginTop="@dimen/vertical_margin"
-            android:layout_marginHorizontal="20dp"
-            android:background="@color/main_green"
-            app:tabBackground="@drawable/tab_background"
-            app:tabTextColor="@color/white"
-            app:tabPaddingTop="-2dp"
-            android:id="@+id/tab_layout"
+        app:elevation="0dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
-            app:tabMode="fixed"
-            app:tabTextAppearance="@style/TabText"
-            app:tabRippleColor="@color/main_green"
-            app:tabIndicatorHeight="0dp"
-            android:layout_height="wrap_content">
-        </com.google.android.material.tabs.TabLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/day_and_month"
+                android:layout_marginTop="@dimen/vertical_margin"
+                android:text="Месяц"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/inter_bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <com.google.android.material.tabs.TabLayout
+                android:layout_marginTop="@dimen/vertical_margin"
+                android:layout_marginHorizontal="20dp"
+                android:background="@color/primary"
+                app:tabBackground="@drawable/tab_background"
+                app:tabTextColor="@color/white"
+                app:tabPaddingTop="-2dp"
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/TabText"
+                app:tabRippleColor="@color/primary"
+                app:tabIndicatorHeight="0dp"
+                android:layout_height="wrap_content">
+            </com.google.android.material.tabs.TabLayout>
+        </LinearLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/schedule_vp"
-            android:layout_width="match_parent"
-            android:paddingBottom="4dp"
-            android:layout_height="match_parent">
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/schedule_vp"
+        android:layout_width="match_parent"
+        android:paddingBottom="4dp"
+        android:layout_height="match_parent"/>
 
 
-        </androidx.viewpager2.widget.ViewPager2>
-
-    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+

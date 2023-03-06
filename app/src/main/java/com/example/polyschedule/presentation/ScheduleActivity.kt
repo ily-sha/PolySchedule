@@ -2,70 +2,97 @@ package com.example.polyschedule.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.example.polyschedule.R
-import com.example.polyschedule.domain.Course
-import com.example.polyschedule.domain.Group
-import com.example.polyschedule.domain.Institute
+import com.example.polyschedule.databinding.ActivityScheduleBinding
 import com.example.polyschedule.presentation.adapter.ScheduleViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.gson.Gson
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class ScheduleActivity : AppCompatActivity() {
 
 
-    private lateinit var course: Course
-    private lateinit var institute: Institute
-    private lateinit var group: Group
+    private lateinit var course: String
+    private lateinit var institute: String
+    private lateinit var group: String
 
     private lateinit var scheduleViewModel : ScheduleViewModel
 
-    private lateinit var scheduleViewPager2: ViewPager2
-    private lateinit var tabLayout: TabLayout
 
     private lateinit var scheduleViewPagerAdapter: ScheduleViewPagerAdapter
+
+    private var _binding: ActivityScheduleBinding? = null
+    private val binding: ActivityScheduleBinding
+        get() = _binding ?: throw RuntimeException("ActivityScheduleBinding = null")
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_schedule)
+        _binding = ActivityScheduleBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         parseIntent()
         scheduleViewModel = ViewModelProvider(this)[ScheduleViewModel::class.java]
-        initViews()
-        scheduleViewModel.getCurrentSchedule(group.id, institute.getId())
-
-        scheduleViewModel.currentScheduleLD?.observe(this) {
-            scheduleViewPagerAdapter.scheduleList = it
-            setTabItemMargin()
-
-        }
+        observeSchedule()
+        setupRvAdapter()
 
     }
 
-    private fun initViews(){
-        scheduleViewPager2 = findViewById(R.id.schedule_vp)
-        scheduleViewPagerAdapter = ScheduleViewPagerAdapter(this)
-        scheduleViewPager2.adapter = scheduleViewPagerAdapter
-        tabLayout = findViewById(R.id.tab_layout)
-        bindTabLayoutWithViewPager()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun observeSchedule(){
+        scheduleViewModel.getCurrentSchedule(group.toInt(), institute.toInt())
+        scheduleViewModel.currentScheduleLD?.observe(this) {
+            scheduleViewPagerAdapter.scheduleList = it
+            setTabItemMargin()
+            var currentWeekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
+            val currentDay = Calendar.getInstance().get(Calendar.DATE)
 
+//            TODO("after 9 pm next day")
+            if (currentWeekDay == 7) currentWeekDay = 1
+            binding.scheduleVp.currentItem = currentWeekDay
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateDayAndMonth(){
+        val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val date = LocalDate.parse("" , pattern)
+        binding.dayAndMonth.text = "${date.dayOfMonth} ${date.month}"
+    }
+    private fun setupRvAdapter(){
+        scheduleViewPagerAdapter = ScheduleViewPagerAdapter(this)
+
+        binding.scheduleVp.adapter = scheduleViewPagerAdapter
+
+        binding.scheduleVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                println(position)
+                    updateDayAndMonth()
+            }
+        })
+        bindTabLayoutWithViewPager()
     }
 
     private fun bindTabLayoutWithViewPager() {
         TabLayoutMediator(
-            tabLayout, scheduleViewPager2
+            binding.tabLayout, binding.scheduleVp
         ) { tab: TabLayout.Tab, position: Int ->
             tab.text = listOf("пн", "вт", "ср", "чт", "пт", "сб")[position]
         }.attach()
 
     }
     private fun setTabItemMargin(){
-        for (i in 0 until tabLayout.tabCount) {
-            val tab = (tabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
+        for (i in 0 until binding.tabLayout.tabCount) {
+            val tab = (binding.tabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
             val p = tab.layoutParams as ViewGroup.MarginLayoutParams
             if (i != 0) {
                 p.setMargins(20, 0, 0, 0)
@@ -81,23 +108,22 @@ class ScheduleActivity : AppCompatActivity() {
             ))) {
             throw RuntimeException("Lack more extra params")
         }
-        val gson = Gson()
-        group = gson.fromJson(intent.getStringExtra(GROUP_KEY), Group::class.java)
-        course = gson.fromJson(intent.getStringExtra(COURSE_KEY), Course::class.java)
-        institute = gson.fromJson(intent.getStringExtra(INSTITUTE_KEY), Institute::class.java)
+        group = intent.getStringExtra(GROUP_KEY) ?: throw RuntimeException("GROUP_KEY params is null")
+        course = intent.getStringExtra(COURSE_KEY) ?: throw RuntimeException("COURSE_KEY params is null")
+        institute = intent.getStringExtra(INSTITUTE_KEY) ?: throw RuntimeException("INSTITUTE_KEY params is null")
 
     }
 
     companion object {
+
         private const val INSTITUTE_KEY = "INSTITUTE"
         private const val COURSE_KEY = "COURSE"
         private const val GROUP_KEY = "GROUP"
-        fun newIntent(context: Context,course: Course, institute: Institute, group: Group): Intent {
+        fun newIntent(context: Context, course: String, institute: String, group: String): Intent {
             val intent = Intent(context, ScheduleActivity::class.java)
-            val gson = Gson()
-            intent.putExtra(INSTITUTE_KEY, gson.toJson(institute))
-            intent.putExtra(COURSE_KEY, gson.toJson(course))
-            intent.putExtra(GROUP_KEY, gson.toJson(group))
+            intent.putExtra(INSTITUTE_KEY, institute)
+            intent.putExtra(COURSE_KEY, course)
+            intent.putExtra(GROUP_KEY, group)
             return intent
         }
     }

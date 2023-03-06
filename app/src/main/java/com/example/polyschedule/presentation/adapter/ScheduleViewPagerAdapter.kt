@@ -6,19 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
-import com.example.polyschedule.domain.ComponentLesson
-import com.example.polyschedule.domain.Schedule
+import com.example.polyschedule.domain.entity.Schedule
 
 class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapter<ScheduleViewPagerAdapter.ScheduleViewHolder>() {
 
     var scheduleList = listOf<Schedule>()
     set(value) {
         field = value
-
         notifyDataSetChanged()
     }
 
-    var onItemSwipe: ((Int) -> Unit)? = null
+
 
     inner class ScheduleViewHolder(val view: View): RecyclerView.ViewHolder(view){
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_schedule)
@@ -28,7 +26,7 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
         val layout = when (viewType) {
             NO_EMPTY_DAY -> R.layout.schedule_item
             EMPTY_DAY -> R.layout.empty_day
-            else -> throw RuntimeException("unknown viewType")
+            else -> throw RuntimeException("unknown viewType in ScheduleViewPagerAdapter")
         }
         return ScheduleViewHolder(LayoutInflater.from(context).inflate(layout, parent, false))
     }
@@ -46,14 +44,10 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val currentSchedule = scheduleList.find { it.weekday - 1 == position }
-        if (currentSchedule != null){
+
+        if (currentSchedule != null) {
             holder.recyclerView.adapter = LessonAdapter(currentSchedule.lessons)
         }
-
-
-
-
-//        }
     }
 
     companion object {

@@ -2,8 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.PolySchedule" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -16,7 +17,7 @@
 
     </style>
     <style name="MyButton" parent="ThemeOverlay.AppCompat">
-        <item name="colorAccent">@color/main_green</item>
+        <item name="colorAccent">@color/primary</item>
         <item name="background">@drawable/border_for_item_green</item>
     </style>
 </resources>

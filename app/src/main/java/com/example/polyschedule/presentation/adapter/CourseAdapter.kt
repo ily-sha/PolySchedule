@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.polyschedule.R
-import com.example.polyschedule.domain.Course
+import com.example.polyschedule.domain.entity.Course
 import com.example.polyschedule.presentation.MainViewModel.Companion.coursesList
 
 class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
@@ -18,7 +18,7 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     }
     var onCourseItemClicked: ((Course) -> Unit)? = null
 
-    private var lastSelected: Int = FIRST_CLICKED
+    private var lastSelected = FIRST_CLICK
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
@@ -40,7 +40,7 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
         holder.tv.text = coursesList[position].name
         holder.tv.setOnClickListener {
-            if (lastSelected != FIRST_CLICKED) {
+            if (lastSelected != FIRST_CLICK) {
                 changeSelectedItemParams(lastSelected)
                 notifyItemChanged(lastSelected)
             }
@@ -73,7 +73,7 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         const val DISABLED_COURSE_ITEM = 101
         const val DISABLED_COURSE_FIRST_ITEM = 1001
 
-        const val FIRST_CLICKED = -1
+        const val FIRST_CLICK = -1
     }
 
 }

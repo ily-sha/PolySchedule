@@ -1,15 +1,16 @@
 package com.example.polyschedule.presentation.adapter
 
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
-import com.example.polyschedule.domain.ComponentLesson
-import com.example.polyschedule.domain.Lesson
+import com.example.polyschedule.domain.entity.Lesson
+
 
 class LessonAdapter(private val lessonList: List<Lesson>): RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
 
@@ -25,21 +26,19 @@ class LessonAdapter(private val lessonList: List<Lesson>): RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: LessonViewHolder, position: Int) {
         val item = lessonList[position]
-        if (!(item is ComponentLesson)) {
-            println("${item.subject}, ${item.time_start}")
-            holder.lesson.text = item.subject
-            holder.lessonType.text = item.lesson_type
-
-            holder.teacherLL.visibility = if (item.teacher.isEmpty()) View.GONE else View.VISIBLE
-            holder.teacher.text = item.teacher
-            holder.time.text = "${item.time_start} - ${item.time_end}"
-
-            val auditorium = if (item.auditories.contains(Regex("""\d+"""))) ", ${item.auditories}" else ""
-            holder.place.text = "${item.building}$auditorium"
-        }
-
-
+        println("${item.subject}, ${item.time_start}")
+        holder.lesson.text = item.subject
+        holder.lessonType.text = item.lesson_type
+        holder.teacherLL.visibility = if (item.teacher.isEmpty()) View.GONE else View.VISIBLE
+        holder.teacher.text = item.teacher
+        val content = SpannableString("${item.time_start} - ${item.time_end}")
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        holder.time.text = content
+        val auditorium = if (item.auditories.contains(Regex("""\d+"""))) ", ${item.auditories}" else ""
+        holder.place.text = "${item.building}$auditorium"
     }
+
+
     class LessonViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         val time = view.findViewById<TextView>(R.id.tv_time)
         val place = view.findViewById<TextView>(R.id.tv_place)
@@ -51,6 +50,7 @@ class LessonAdapter(private val lessonList: List<Lesson>): RecyclerView.Adapter<
 
     }
 }
+
 
 
 
