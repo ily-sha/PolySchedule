@@ -1,5 +1,7 @@
 package com.example.polyschedule.data
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.polyschedule.domain.UniversityRepository
@@ -9,6 +11,11 @@ import com.example.polyschedule.domain.entity.Group.Companion.COMMON_TYPE
 import com.example.polyschedule.domain.entity.Schedule
 import org.json.JSONObject
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
+import java.util.*
 import kotlin.concurrent.thread
 
 object UniversityImpl: UniversityRepository {
@@ -54,19 +61,31 @@ object UniversityImpl: UniversityRepository {
         return instituteLD
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>> {
         val scheduleList = mutableListOf<Schedule>()
         thread {
             try {
-                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId").readText()))!!.value
+                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL(
+                    "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId").readText()))!!.value
                 val json = JSONObject(result.substring(result.indexOf("{"))).getJSONObject("lessons").getJSONObject("data").getJSONArray("$groupId")
+                var mondayOfCurrentWeek = LocalDate.now().with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY))
+                val intermediateScheduleList = mutableListOf<Schedule>()
                 for (i in 0 until json.length()) {
-                    scheduleList.add(Schedule(json[i] as JSONObject))
-
+                    intermediateScheduleList.add(Schedule(json[i] as JSONObject))
                 }
-                currentSchedule.postValue(scheduleList)
+                for (i in 1..6){
+                    val element = intermediateScheduleList.find { it.weekday == i }
+                    if (element == null) {
+                        scheduleList.add(Schedule(JSONObject("{'date': $mondayOfCurrentWeek, 'weekday': $i, 'lessons': []}")))
+                    }
+                    else scheduleList.add(element)
+                    mondayOfCurrentWeek = mondayOfCurrentWeek.plusDays(1)
+                }
+
+                currentSchedule.postValue(scheduleList.sortedBy { it.weekday }.toMutableList())
             } catch (e: java.lang.Exception){
-                println(e)
+                throw Exception(e)
             }
         }
 

@@ -20,7 +20,7 @@ class MainViewModel(val lifecycleEventOwner: LifecycleOwner): ViewModel() {
 
     private val repository = UniversityImpl
     private val getGroupsUseCase = GetGroupsUseCase(repository)
-    var groupLDfromOut = MutableLiveData<List<Group>>()
+    var groupLDfromOut = MutableLiveData<MutableList<Group>>()
 
     val instituteLDfromOut = GetInstitutesUseCase(repository).getInstitutes()
 
@@ -29,9 +29,6 @@ class MainViewModel(val lifecycleEventOwner: LifecycleOwner): ViewModel() {
     val instituteLD = MutableLiveData<Institute>()
 
     fun getGroups(numberOfCourse: Int, instituteId: Int){
-        val currentLD = getGroupsUseCase.getGroups(numberOfCourse, instituteId)
-        currentLD.observe(lifecycleEventOwner) {
-            groupLDfromOut.value = it
-        }
+        groupLDfromOut = getGroupsUseCase.getGroups(numberOfCourse, instituteId)
     }
 }

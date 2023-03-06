@@ -67,9 +67,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun obverseGroup(){
-        mainViewModel.groupLDfromOut.observe(this) {
-            groupAdapter.groupList = it.toMutableList()
-        }
         mainViewModel.groupLD.observe(this) {
             if (binding.continueButton.visibility == View.GONE) binding.continueButton.visibility = View.VISIBLE
         }
@@ -173,6 +170,9 @@ class MainActivity : AppCompatActivity() {
             binding.textViewGroup.visibility = View.VISIBLE
         }
         mainViewModel.getGroups(course.position + 1, institute.getId())
+        mainViewModel.groupLDfromOut.observe(this) {
+            groupAdapter.groupList = it
+        }
         
 
     }

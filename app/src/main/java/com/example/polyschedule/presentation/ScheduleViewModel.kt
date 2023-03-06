@@ -15,7 +15,6 @@ class ScheduleViewModel: ViewModel() {
     var currentScheduleLD: MutableLiveData<MutableList<Schedule>>? = null
 
     fun getCurrentSchedule(groupId: Int, instituteId: Int) {
-
         currentScheduleLD = getScheduleUseCase.getCurrentWeekSchedule(groupId, instituteId)
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.example.polyschedule.databinding.ActivityScheduleBinding
 import com.example.polyschedule.presentation.adapter.ScheduleViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -40,16 +42,17 @@ class ScheduleActivity : AppCompatActivity() {
         setContentView(binding.root)
         parseIntent()
         scheduleViewModel = ViewModelProvider(this)[ScheduleViewModel::class.java]
+        scheduleViewModel.getCurrentSchedule(group.toInt(), institute.toInt())
         observeSchedule()
         setupRvAdapter()
-
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun observeSchedule(){
-        scheduleViewModel.getCurrentSchedule(group.toInt(), institute.toInt())
         scheduleViewModel.currentScheduleLD?.observe(this) {
             scheduleViewPagerAdapter.scheduleList = it
+            for (i in it){
+                println("${i.date}, ${i.weekday}")
+            }
             setTabItemMargin()
             var currentWeekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
             val currentDay = Calendar.getInstance().get(Calendar.DATE)
@@ -60,27 +63,27 @@ class ScheduleActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateDayAndMonth(){
-        val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val date = LocalDate.parse("" , pattern)
-        binding.dayAndMonth.text = "${date.dayOfMonth} ${date.month}"
+    private fun updateDayAndMonth(position: Int){
+        val dateParser = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
+        val date = dateParser.parse(scheduleViewPagerAdapter.scheduleList[position].date)
+        val dateFormatter = SimpleDateFormat("dd MMMM", Locale("ru"))
+        var formattedDate = dateFormatter.format(date!!)
+        if (formattedDate[0] == '0') formattedDate = formattedDate.substring(1, formattedDate.length)
+        binding.dayAndMonth.text = formattedDate
     }
+
     private fun setupRvAdapter(){
         scheduleViewPagerAdapter = ScheduleViewPagerAdapter(this)
-
         binding.scheduleVp.adapter = scheduleViewPagerAdapter
-
         binding.scheduleVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                println(position)
-                    updateDayAndMonth()
+                updateDayAndMonth(position)
             }
         })
         bindTabLayoutWithViewPager()
     }
+
 
     private fun bindTabLayoutWithViewPager() {
         TabLayoutMediator(
