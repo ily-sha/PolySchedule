@@ -11,16 +11,14 @@ import com.example.polyschedule.domain.entity.Group.Companion.COMMON_TYPE
 import com.example.polyschedule.domain.entity.Schedule
 import org.json.JSONObject
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.temporal.TemporalAdjusters
 import java.util.*
 import kotlin.concurrent.thread
 
 object UniversityImpl: UniversityRepository {
 
-    var currentSchedule = MutableLiveData<MutableList<Schedule>>()
+    private var currentSchedule = MutableLiveData<MutableList<Schedule>>()
+    private var scheduleOfParticularWeek = MutableLiveData<MutableList<Schedule>>()
     private val instituteLD = MutableLiveData<MutableList<Institute>>()
     private val groupLD = MutableLiveData<MutableList<Group>>()
 
@@ -63,27 +61,11 @@ object UniversityImpl: UniversityRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>> {
-        val scheduleList = mutableListOf<Schedule>()
         thread {
             try {
                 val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL(
                     "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId").readText()))!!.value
-                val json = JSONObject(result.substring(result.indexOf("{"))).getJSONObject("lessons").getJSONObject("data").getJSONArray("$groupId")
-                var mondayOfCurrentWeek = LocalDate.now().with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY))
-                val intermediateScheduleList = mutableListOf<Schedule>()
-                for (i in 0 until json.length()) {
-                    intermediateScheduleList.add(Schedule(json[i] as JSONObject))
-                }
-                for (i in 1..6){
-                    val element = intermediateScheduleList.find { it.weekday == i }
-                    if (element == null) {
-                        scheduleList.add(Schedule(JSONObject("{'date': $mondayOfCurrentWeek, 'weekday': $i, 'lessons': []}")))
-                    }
-                    else scheduleList.add(element)
-                    mondayOfCurrentWeek = mondayOfCurrentWeek.plusDays(1)
-                }
-
-                currentSchedule.postValue(scheduleList.sortedBy { it.weekday }.toMutableList())
+                currentSchedule.postValue(parsePage(result, groupId))
             } catch (e: java.lang.Exception){
                 throw Exception(e)
             }
@@ -92,12 +74,51 @@ object UniversityImpl: UniversityRepository {
         return currentSchedule
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun parsePage(result: String, groupId: Int): MutableList<Schedule>{
+        val scheduleList = mutableListOf<Schedule>()
+
+        val json = JSONObject(result.substring(result.indexOf("{")))
+        val lessons = json.getJSONObject("lessons").getJSONObject("data").getJSONArray("$groupId")
+        val startDayOfWeek = json.getJSONObject("lessons").getJSONObject("week").getString("date_start")
+        val (year, month, day) = startDayOfWeek.split(".").map { it.toInt() }
+        val mondayOfCurrentWeek = LocalDate.of(year, month, day)
+        var iterationDay = mondayOfCurrentWeek
+        val intermediateScheduleList = mutableListOf<Schedule>()
+        for (i in 0 until lessons.length()) {
+            intermediateScheduleList.add(Schedule(lessons[i] as JSONObject, mondayOfCurrentWeek))
+        }
+        for (i in 1..6){
+            val schedule = intermediateScheduleList.find { it.weekday == i }
+            if (schedule == null) {
+                scheduleList.add(Schedule(JSONObject("{'date': $iterationDay, 'weekday': $i, 'lessons': []}"),
+                    mondayOfCurrentWeek))
+            }
+            else scheduleList.add(schedule)
+            iterationDay = iterationDay.plusDays(1)
+        }
+        return scheduleList.sortedBy { it.weekday }.toMutableList()
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getSchedule(
         groupId: Int,
         instituteId: Int,
         startDate: String
-    ): MutableList<Schedule> {
-        TODO("Not yet implemented")
+    ): MutableLiveData<MutableList<Schedule>> {
+        thread {
+            try {
+
+                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL(
+                    "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId?date=$startDate").readText()))!!.value
+                scheduleOfParticularWeek.postValue(parsePage(result, groupId))
+            } catch (e: java.lang.Exception){
+                throw Exception(e)
+            }
+        }
+
+        return scheduleOfParticularWeek
     }
 
 }

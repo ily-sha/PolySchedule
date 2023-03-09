@@ -13,8 +13,12 @@ class ScheduleViewModel: ViewModel() {
 
 
     var currentScheduleLD: MutableLiveData<MutableList<Schedule>>? = null
+    var scheduleOfParticularWeek: MutableLiveData<MutableList<Schedule>>? = null
 
     fun getCurrentSchedule(groupId: Int, instituteId: Int) {
         currentScheduleLD = getScheduleUseCase.getCurrentWeekSchedule(groupId, instituteId)
+    }
+    fun getScheduleOfParticularWeek(groupId: Int, instituteId: Int, startDate: String){
+        scheduleOfParticularWeek = getScheduleUseCase.getSchedule(groupId, instituteId, startDate)
     }
 }

@@ -32,7 +32,7 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
     }
 
     override fun getItemCount(): Int {
-        return scheduleList.size
+        return if (scheduleList.isEmpty()) 0 else 8
     }
 
     override fun getItemViewType(position: Int): Int {

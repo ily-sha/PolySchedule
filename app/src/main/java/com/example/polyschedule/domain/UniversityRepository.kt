@@ -12,5 +12,5 @@ interface UniversityRepository {
 
     fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>>
 
-    fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableList<Schedule>
+    fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableLiveData<MutableList<Schedule>>
 }

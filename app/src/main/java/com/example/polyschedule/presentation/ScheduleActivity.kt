@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.polyschedule.databinding.ActivityScheduleBinding
@@ -15,19 +17,21 @@ import com.example.polyschedule.presentation.adapter.ScheduleViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 class ScheduleActivity : AppCompatActivity() {
 
 
-    private lateinit var course: String
-    private lateinit var institute: String
-    private lateinit var group: String
+    private var course = UNDEFINED_INT
+    private var instituteId = UNDEFINED_INT
+    private var groupId = UNDEFINED_INT
 
     private lateinit var scheduleViewModel : ScheduleViewModel
+
+    private var update: ((position: Int) -> Unit)? = null
+    lateinit var a: A
+    val qa = MutableLiveData<Int>()
 
 
     private lateinit var scheduleViewPagerAdapter: ScheduleViewPagerAdapter
@@ -42,25 +46,34 @@ class ScheduleActivity : AppCompatActivity() {
         setContentView(binding.root)
         parseIntent()
         scheduleViewModel = ViewModelProvider(this)[ScheduleViewModel::class.java]
-        scheduleViewModel.getCurrentSchedule(group.toInt(), institute.toInt())
-        observeSchedule()
         setupRvAdapter()
+        scheduleViewModel.getCurrentSchedule(groupId, instituteId)
+        observeSchedule()
     }
 
     private fun observeSchedule(){
         scheduleViewModel.currentScheduleLD?.observe(this) {
-            scheduleViewPagerAdapter.scheduleList = it
-            for (i in it){
-                println("${i.date}, ${i.weekday}")
-            }
+            scheduleViewPagerAdapter.scheduleList = listOf(it.last()) + it + listOf(it.first())
             setTabItemMargin()
-            var currentWeekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
-            val currentDay = Calendar.getInstance().get(Calendar.DATE)
-
-//            TODO("after 9 pm next day")
-            if (currentWeekDay == 7) currentWeekDay = 1
-            binding.scheduleVp.currentItem = currentWeekDay
+            setCurrentTab()
         }
+    }
+    private fun observeParticularSchedule(){
+
+        scheduleViewModel.scheduleOfParticularWeek?.observe(this) {
+            scheduleViewPagerAdapter.scheduleList = listOf(it.last()) + it + listOf(it.first())
+            setTabItemMargin()
+            qa.observe(this) {
+                updateDayAndMonth(it)
+            }
+        }
+    }
+
+    private fun setCurrentTab(){
+        var currentWeekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
+//            TODO("after 9 pm next day")
+        if (currentWeekDay == 7) currentWeekDay = 1
+        binding.scheduleVp.currentItem = currentWeekDay
     }
 
     private fun updateDayAndMonth(position: Int){
@@ -72,13 +85,43 @@ class ScheduleActivity : AppCompatActivity() {
         binding.dayAndMonth.text = formattedDate
     }
 
-    private fun setupRvAdapter(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupRvAdapter() {
         scheduleViewPagerAdapter = ScheduleViewPagerAdapter(this)
         binding.scheduleVp.adapter = scheduleViewPagerAdapter
         binding.scheduleVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 updateDayAndMonth(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                println("state, $state")
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                if (position == 0 && positionOffset < 0.5) {
+                    binding.scheduleVp.setCurrentItem(7 - 1, false)
+                    val previousFirstMonday = scheduleViewPagerAdapter.scheduleList[position].previousFirstMonday.toString()
+                    this@ScheduleActivity.scheduleViewModel.getScheduleOfParticularWeek(groupId, instituteId, previousFirstMonday)
+                    observeParticularSchedule()
+                    qa.value = 6
+
+
+                }
+                if (position == 6 && positionOffset > 0.5) {
+                    binding.scheduleVp.setCurrentItem(1, false)
+                    val nextFirstMonday = scheduleViewPagerAdapter.scheduleList[position].nextFirstMonday.toString()
+                    this@ScheduleActivity.scheduleViewModel.getScheduleOfParticularWeek(groupId, instituteId, nextFirstMonday)
+                    observeParticularSchedule()
+                    this@ScheduleActivity.updateDayAndMonth(1)
+                }
             }
         })
         bindTabLayoutWithViewPager()
@@ -89,7 +132,7 @@ class ScheduleActivity : AppCompatActivity() {
         TabLayoutMediator(
             binding.tabLayout, binding.scheduleVp
         ) { tab: TabLayout.Tab, position: Int ->
-            tab.text = listOf("пн", "вт", "ср", "чт", "пт", "сб")[position]
+            tab.text = listOf("", "пн", "вт", "ср", "чт", "пт", "сб", "")[position]
         }.attach()
 
     }
@@ -97,7 +140,10 @@ class ScheduleActivity : AppCompatActivity() {
         for (i in 0 until binding.tabLayout.tabCount) {
             val tab = (binding.tabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
             val p = tab.layoutParams as ViewGroup.MarginLayoutParams
-            if (i != 0) {
+            if (i == 0 || i == 7){
+               tab.visibility = View.GONE
+            }
+            else if (i != 1) {
                 p.setMargins(20, 0, 0, 0)
                 tab.requestLayout()
             }
@@ -111,14 +157,16 @@ class ScheduleActivity : AppCompatActivity() {
             ))) {
             throw RuntimeException("Lack more extra params")
         }
-        group = intent.getStringExtra(GROUP_KEY) ?: throw RuntimeException("GROUP_KEY params is null")
-        course = intent.getStringExtra(COURSE_KEY) ?: throw RuntimeException("COURSE_KEY params is null")
-        institute = intent.getStringExtra(INSTITUTE_KEY) ?: throw RuntimeException("INSTITUTE_KEY params is null")
-
+        groupId = intent.getStringExtra(GROUP_KEY)?.toInt() ?: throw RuntimeException("GROUP_KEY params is null")
+        course = intent.getStringExtra(COURSE_KEY)?.toInt() ?: throw RuntimeException("COURSE_KEY params is null")
+        instituteId = intent.getStringExtra(INSTITUTE_KEY)?.toInt() ?: throw RuntimeException("INSTITUTE_KEY params is null")
+    }
+    interface A{
+        fun update(position: Int)
     }
 
     companion object {
-
+        private const val UNDEFINED_INT = -1
         private const val INSTITUTE_KEY = "INSTITUTE"
         private const val COURSE_KEY = "COURSE"
         private const val GROUP_KEY = "GROUP"

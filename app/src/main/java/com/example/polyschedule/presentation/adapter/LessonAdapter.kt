@@ -26,7 +26,6 @@ class LessonAdapter(private val lessonList: List<Lesson>): RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: LessonViewHolder, position: Int) {
         val item = lessonList[position]
-        println("${item.subject}, ${item.time_start}")
         holder.lesson.text = item.subject
         holder.lessonType.text = item.lesson_type
         holder.teacherLL.visibility = if (item.teacher.isEmpty()) View.GONE else View.VISIBLE

@@ -10,7 +10,7 @@ class GetScheduleUseCase(private val universityRepository: UniversityRepository)
         return universityRepository.getCurrentWeekSchedule(groupId, instituteId)
     }
 
-    fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableList<Schedule> {
+    fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableLiveData<MutableList<Schedule>> {
         return universityRepository.getSchedule(groupId, instituteId, startDate)
     }
 
