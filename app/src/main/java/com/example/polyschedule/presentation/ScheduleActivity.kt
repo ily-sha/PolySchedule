@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -26,12 +25,14 @@ class ScheduleActivity : AppCompatActivity() {
     private var course = UNDEFINED_INT
     private var instituteId = UNDEFINED_INT
     private var groupId = UNDEFINED_INT
+    private val UPDATE_LAST_POSITION = 6
+    private val UPDATE_FIRST_POSITION = 1
+
 
     private lateinit var scheduleViewModel : ScheduleViewModel
 
-    private var update: ((position: Int) -> Unit)? = null
-    lateinit var a: A
-    val qa = MutableLiveData<Int>()
+
+    val updateDateLD = MutableLiveData<Int>()
 
 
     private lateinit var scheduleViewPagerAdapter: ScheduleViewPagerAdapter
@@ -58,12 +59,13 @@ class ScheduleActivity : AppCompatActivity() {
             setCurrentTab()
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun observeParticularSchedule(){
 
         scheduleViewModel.scheduleOfParticularWeek?.observe(this) {
             scheduleViewPagerAdapter.scheduleList = listOf(it.last()) + it + listOf(it.first())
             setTabItemMargin()
-            qa.observe(this) {
+            updateDateLD.observe(this) {
                 updateDayAndMonth(it)
             }
         }
@@ -76,9 +78,11 @@ class ScheduleActivity : AppCompatActivity() {
         binding.scheduleVp.currentItem = currentWeekDay
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateDayAndMonth(position: Int){
         val dateParser = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
-        val date = dateParser.parse(scheduleViewPagerAdapter.scheduleList[position].date)
+        val parser = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
+        val date = dateParser.parse(scheduleViewPagerAdapter.scheduleList[position + 1].date)
         val dateFormatter = SimpleDateFormat("dd MMMM", Locale("ru"))
         var formattedDate = dateFormatter.format(date!!)
         if (formattedDate[0] == '0') formattedDate = formattedDate.substring(1, formattedDate.length)
@@ -95,11 +99,6 @@ class ScheduleActivity : AppCompatActivity() {
                 updateDayAndMonth(position)
             }
 
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-                println("state, $state")
-            }
-
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -108,19 +107,17 @@ class ScheduleActivity : AppCompatActivity() {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                 if (position == 0 && positionOffset < 0.5) {
                     binding.scheduleVp.setCurrentItem(7 - 1, false)
-                    val previousFirstMonday = scheduleViewPagerAdapter.scheduleList[position].previousFirstMonday.toString()
-                    this@ScheduleActivity.scheduleViewModel.getScheduleOfParticularWeek(groupId, instituteId, previousFirstMonday)
+                    val previousMonday = scheduleViewPagerAdapter.scheduleList[position].previousMonday.toString()
+                    this@ScheduleActivity.scheduleViewModel.getScheduleOfParticularWeek(groupId, instituteId, previousMonday)
                     observeParticularSchedule()
-                    qa.value = 6
-
-
+                    updateDateLD.value = UPDATE_LAST_POSITION
                 }
                 if (position == 6 && positionOffset > 0.5) {
                     binding.scheduleVp.setCurrentItem(1, false)
-                    val nextFirstMonday = scheduleViewPagerAdapter.scheduleList[position].nextFirstMonday.toString()
-                    this@ScheduleActivity.scheduleViewModel.getScheduleOfParticularWeek(groupId, instituteId, nextFirstMonday)
+                    val nextMonday = scheduleViewPagerAdapter.scheduleList[position].nextMonday.toString()
+                    this@ScheduleActivity.scheduleViewModel.getScheduleOfParticularWeek(groupId, instituteId, nextMonday)
                     observeParticularSchedule()
-                    this@ScheduleActivity.updateDayAndMonth(1)
+                    updateDateLD.value = UPDATE_FIRST_POSITION
                 }
             }
         })

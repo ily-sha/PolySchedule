@@ -3,7 +3,7 @@ package com.example.polyschedule.domain.entity
 import org.json.JSONArray
 import org.json.JSONObject
 
-open class Lesson(private val jsonObject: JSONObject = JSONObject()) {
+open class Lesson(jsonObject: JSONObject) {
     val subject = jsonObject.getString("subject")
     val time_start = jsonObject.getString("time_start")
     val time_end = jsonObject.getString("time_end")
