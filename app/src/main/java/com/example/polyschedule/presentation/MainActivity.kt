@@ -1,5 +1,6 @@
 package com.example.polyschedule.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +15,9 @@ import com.example.polyschedule.data.CacheUtils.Companion.INSTITUTE_KEY
 import com.example.polyschedule.databinding.ActivityMainBinding
 import com.example.polyschedule.domain.entity.Course
 import com.example.polyschedule.domain.entity.Institute
-import com.example.polyschedule.presentation.adapter.InstituteAdapter
 import com.example.polyschedule.presentation.adapter.CourseAdapter
 import com.example.polyschedule.presentation.adapter.GroupAdapter
+import com.example.polyschedule.presentation.adapter.InstituteAdapter
 import java.lang.Math.abs
 
 
@@ -58,10 +59,11 @@ class MainActivity : AppCompatActivity() {
         CacheUtils.instance!!.apply {
             if (hasKey(COURSE_KEY, this@MainActivity) && hasKey(INSTITUTE_KEY, this@MainActivity) &&
                     hasKey(GROUP_KEY, this@MainActivity)) {
-                startActivity(ScheduleActivity.newIntent(this@MainActivity, getString(COURSE_KEY, this@MainActivity)!!,
-                    getString(INSTITUTE_KEY, this@MainActivity)!!, getString(GROUP_KEY, this@MainActivity)!!
-                    )
-                )
+                val intent = ScheduleActivity.newIntent(this@MainActivity, getString(COURSE_KEY, this@MainActivity)!!,
+                    getString(INSTITUTE_KEY, this@MainActivity)!!, getString(GROUP_KEY, this@MainActivity)!!)
+                startActivity(intent)
+                finish()
+
             }
         }
     }
@@ -129,9 +131,10 @@ class MainActivity : AppCompatActivity() {
                 setString(INSTITUTE_KEY, mainViewModel.instituteLD.value!!.getId().toString(), this@MainActivity)
                 setString(COURSE_KEY, (mainViewModel.courseLD.value!!.position + 1).toString(), this@MainActivity)
             }
-            startActivity(
-                ScheduleActivity.newIntent(this, (mainViewModel.courseLD.value!!.position + 1).toString(),
-                    mainViewModel.instituteLD.value!!.getId().toString(), mainViewModel.groupLD.value!!.id.toString()))
+            val intent = ScheduleActivity.newIntent(this, (mainViewModel.courseLD.value!!.position + 1).toString(),
+                mainViewModel.instituteLD.value!!.getId().toString(), mainViewModel.groupLD.value!!.id.toString())
+            startActivity(intent)
+            finish()
         }
         setupCourseAdapter()
         setupInstituteAdapter()

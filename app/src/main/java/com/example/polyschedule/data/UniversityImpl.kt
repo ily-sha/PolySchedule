@@ -77,18 +77,19 @@ object UniversityImpl: UniversityRepository {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun parsePage(result: String, groupId: Int): MutableList<Schedule>{
         val scheduleList = mutableListOf<Schedule>()
-
         val json = JSONObject(result.substring(result.indexOf("{")))
         val lessons = json.getJSONObject("lessons").getJSONObject("data").getJSONArray("$groupId")
         val startDayOfWeek = json.getJSONObject("lessons").getJSONObject("week").getString("date_start")
         val (year, month, day) = startDayOfWeek.split(".").map { it.toInt() }
         val mondayOfCurrentWeek = LocalDate.of(year, month, day)
         var iterationDay = mondayOfCurrentWeek
+        scheduleList.add(Schedule(JSONObject("{'date': ${iterationDay.minusDays(2)}, 'weekday': 0, 'lessons': []}"),
+            mondayOfCurrentWeek))
         val intermediateScheduleList = mutableListOf<Schedule>()
         for (i in 0 until lessons.length()) {
             intermediateScheduleList.add(Schedule(lessons[i] as JSONObject, mondayOfCurrentWeek))
         }
-        for (i in 1..6){
+        for (i in 1..7){
             val schedule = intermediateScheduleList.find { it.weekday == i }
             if (schedule == null) {
                 scheduleList.add(Schedule(JSONObject("{'date': $iterationDay, 'weekday': $i, 'lessons': []}"),

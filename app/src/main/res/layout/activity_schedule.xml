@@ -19,33 +19,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/day_and_month"
-                android:layout_marginTop="@dimen/vertical_margin"
-                android:text="Месяц"
-                android:textSize="24sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/inter_bold"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
-            <com.google.android.material.tabs.TabLayout
-                android:layout_marginTop="@dimen/vertical_margin"
-                android:layout_marginHorizontal="20dp"
-                android:background="@color/primary"
-                app:tabBackground="@drawable/tab_background"
-                app:tabTextColor="@color/white"
-                app:tabPaddingTop="-2dp"
-                android:id="@+id/tab_layout"
+            <Toolbar
                 android:layout_width="match_parent"
-                app:tabMode="fixed"
-                app:tabTextAppearance="@style/TabText"
-                app:tabRippleColor="@color/primary"
-                app:tabIndicatorHeight="0dp"
                 android:layout_height="wrap_content">
-            </com.google.android.material.tabs.TabLayout>
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/day_and_month"
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:text="Месяц"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/inter_bold"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </Toolbar>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:layout_marginHorizontal="20dp"
+                    android:background="@color/primary"
+                    app:tabBackground="@drawable/tab_background"
+                    app:tabTextColor="@color/white"
+                    app:tabPaddingTop="-2dp"
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    app:tabMode="fixed"
+                    app:tabTextAppearance="@style/TabText"
+                    app:tabRippleColor="@color/primary"
+                    app:tabIndicatorHeight="0dp"
+                    android:layout_height="wrap_content">
+                </com.google.android.material.tabs.TabLayout>
+            </LinearLayout>
+
 
 
     </com.google.android.material.appbar.AppBarLayout>
