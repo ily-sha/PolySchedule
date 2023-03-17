@@ -1,9 +1,8 @@
 package com.example.polyschedule.domain.entity
 
-import org.json.JSONArray
 import org.json.JSONObject
 
-open class Lesson(jsonObject: JSONObject) {
+open class Lesson(val id: Int, jsonObject: JSONObject) {
     val subject = jsonObject.getString("subject")
     val time_start = jsonObject.getString("time_start")
     val time_end = jsonObject.getString("time_end")
@@ -12,9 +11,10 @@ open class Lesson(jsonObject: JSONObject) {
     val auditoriesJSONObject = jsonObject.getJSONArray("auditories")[0] as JSONObject
     val auditories = auditoriesJSONObject.getString("name")
     val building = auditoriesJSONObject.getJSONObject("building").getString("name")
-    val teacherJSONObject = if (jsonObject.get("teachers").equals(null)) null else jsonObject.getJSONArray("teachers")[0] as JSONObject
+    val teacherJSONObject = if (jsonObject.get("teachers")
+            .equals(null)
+    ) null else jsonObject.getJSONArray("teachers")[0] as JSONObject
     val teacher = teacherJSONObject?.getString("full_name") ?: ""
-
 
 
     init {

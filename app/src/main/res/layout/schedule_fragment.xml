@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.ScheduleActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.google.android.material.appbar.AppBarLayout
@@ -35,22 +34,22 @@
                 </TextView>
             </Toolbar>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:layout_marginTop="@dimen/vertical_margin"
-                    android:layout_marginHorizontal="20dp"
-                    android:background="@color/primary"
-                    app:tabBackground="@drawable/tab_background"
-                    app:tabTextColor="@color/white"
-                    app:tabPaddingTop="-2dp"
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    app:tabMode="fixed"
-                    app:tabTextAppearance="@style/TabText"
-                    app:tabRippleColor="@color/primary"
-                    app:tabIndicatorHeight="0dp"
-                    android:layout_height="wrap_content">
-                </com.google.android.material.tabs.TabLayout>
-            </LinearLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:layout_marginTop="@dimen/vertical_margin"
+                android:layout_marginHorizontal="20dp"
+                android:background="@color/primary"
+                app:tabBackground="@drawable/tab_background"
+                app:tabTextColor="@color/white"
+                app:tabPaddingTop="-2dp"
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/TabText"
+                app:tabRippleColor="@color/primary"
+                app:tabIndicatorHeight="0dp"
+                android:layout_height="wrap_content">
+            </com.google.android.material.tabs.TabLayout>
+        </LinearLayout>
 
 
 

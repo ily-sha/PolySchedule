@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PolySchedule">
         <activity
-            android:name=".presentation.ScheduleActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>

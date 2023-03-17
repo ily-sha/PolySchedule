@@ -20,6 +20,7 @@ import com.example.polyschedule.domain.entity.Lesson
 
 
 class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val context: Context): RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
+
     private val radioButtonColor = ColorStateList(
         arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
@@ -45,7 +46,6 @@ class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val conte
         return if (lessonList.entries.toList()[position].value.size == 1) ORDINARY_LESSON  else MULTI_LESSON
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: LessonViewHolder, position: Int) {
         val item = lessonList.entries.toList()[position]
         if (item.value.size != 1) {
