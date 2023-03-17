@@ -1,11 +1,9 @@
 package com.example.polyschedule.presentation.adapter
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
 import com.example.polyschedule.domain.entity.Schedule
@@ -37,18 +35,19 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
         return if (scheduleList.isEmpty()) 0 else 8
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getItemViewType(position: Int): Int {
         return if (scheduleList[position + 1].lessons.isEmpty()) EMPTY_DAY
             else NO_EMPTY_DAY
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val currentSchedule = scheduleList[position + 1]
         if (currentSchedule.lessons.isNotEmpty()) {
-            holder.recyclerView.adapter = LessonAdapter(currentSchedule.lessons, context)
+            LessonAdapter(context).apply {
+                this.lessonList = currentSchedule.lessons.toMutableMap()
+                holder.recyclerView.adapter = this
+            }
         }
     }
 

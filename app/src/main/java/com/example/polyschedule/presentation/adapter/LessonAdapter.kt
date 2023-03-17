@@ -3,7 +3,6 @@ package com.example.polyschedule.presentation.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Build
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
@@ -13,14 +12,21 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
 import com.example.polyschedule.domain.entity.Lesson
+import com.example.polyschedule.presentation.LessonDiffCallback
 
 
-class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val context: Context): RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
-
+class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
+    var lessonList = mutableMapOf<String, List<Lesson>>()
+        set(value) {
+            val callBack = LessonDiffCallback(lessonList, value)
+            val diff = DiffUtil.calculateDiff(callBack)
+            diff.dispatchUpdatesTo(this)
+            field = value
+        }
     private val radioButtonColor = ColorStateList(
         arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
@@ -30,11 +36,11 @@ class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val conte
             Color.WHITE // enabled
         )
     )
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonViewHolder {
-        val layout = if (viewType == MULTI_LESSON){
+        val layout = if (viewType == MULTI_LESSON) {
             R.layout.multi_lesson
-        }
-        else R.layout.lesson_item
+        } else R.layout.lesson_item
         return LessonViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false))
     }
 
@@ -43,19 +49,20 @@ class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val conte
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (lessonList.entries.toList()[position].value.size == 1) ORDINARY_LESSON  else MULTI_LESSON
+        return if (lessonList.entries.toList()[position].value.size == 1) ORDINARY_LESSON else MULTI_LESSON
     }
 
     override fun onBindViewHolder(holder: LessonViewHolder, position: Int) {
         val item = lessonList.entries.toList()[position]
         if (item.value.size != 1) {
-            holder.radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener{
+            holder.radioGroup.setOnCheckedChangeListener(object :
+                RadioGroup.OnCheckedChangeListener {
                 override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
                     println("$p1, ${holder.radioGroup.id}")
                 }
 
             })
-            for (i in 0..4){
+            for (i in 0..4) {
                 val radioButton = RadioButton(context)
                 radioButton.setTextColor(context.resources.getColor(R.color.white))
                 radioButton.buttonTintList = radioButtonColor
@@ -76,7 +83,8 @@ class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val conte
         private const val ORDINARY_LESSON = 11
 
     }
-    fun fillValue(holder: LessonViewHolder, item: Lesson){
+
+    fun fillValue(holder: LessonViewHolder, item: Lesson) {
         holder.lesson.text = item.subject
         holder.lessonType.text = item.lesson_type
         holder.teacherLL.visibility = if (item.teacher.isEmpty()) View.GONE else View.VISIBLE
@@ -90,9 +98,7 @@ class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val conte
     }
 
 
-
-
-    class LessonViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+    class LessonViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val time = view.findViewById<TextView>(R.id.tv_time)
         val place = view.findViewById<TextView>(R.id.tv_place)
         val teacher = view.findViewById<TextView>(R.id.tv_teacher)
@@ -103,7 +109,6 @@ class LessonAdapter(private val lessonList: Map<String, List<Lesson>>, val conte
         val radioGroup = view.findViewById<RadioGroup>(R.id.radio_group)
 
     }
-
 
 
 }
