@@ -1,7 +1,5 @@
 package com.example.polyschedule.presentation
 
-import android.content.Context
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +10,7 @@ import com.example.polyschedule.domain.entity.Institute
 import com.example.polyschedule.domain.usecase.GetGroupsUseCase
 import com.example.polyschedule.domain.usecase.GetInstitutesUseCase
 
-class MainViewModel(val lifecycleEventOwner: LifecycleOwner): ViewModel() {
+class ChooseAttributeViewModel: ViewModel() {
 
     companion object {
         var coursesList = MutableList(5) { Course("Курс ${it + 1}", it, false) }

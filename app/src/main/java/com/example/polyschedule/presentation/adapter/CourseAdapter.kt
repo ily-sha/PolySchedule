@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.polyschedule.R
 import com.example.polyschedule.domain.entity.Course
-import com.example.polyschedule.presentation.MainViewModel.Companion.coursesList
+import com.example.polyschedule.presentation.ChooseAttributeViewModel.Companion.coursesList
 
 class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 

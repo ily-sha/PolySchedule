@@ -59,7 +59,6 @@ object UniversityImpl: UniversityRepository {
         return instituteLD
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>> {
         thread {
             try {
@@ -74,7 +73,6 @@ object UniversityImpl: UniversityRepository {
         return currentSchedule
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun parsePage(result: String, groupId: Int): MutableList<Schedule>{
         val scheduleList = mutableListOf<Schedule>()
         val json = JSONObject(result.substring(result.indexOf("{")))
@@ -102,7 +100,6 @@ object UniversityImpl: UniversityRepository {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getSchedule(
         groupId: Int,
         instituteId: Int,
