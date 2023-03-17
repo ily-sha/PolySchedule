@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20dp"
     android:layout_marginTop="12dp"
+    android:id="@+id/root_lesson_container"
+
     android:background="@drawable/border_for_item_green"
     android:paddingBottom="8dp">
 

@@ -10,20 +10,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        checkCache()
+        if (savedInstanceState == null) checkCache()
     }
 
     private fun checkCache() {
         CacheUtils.instance!!.apply {
             if ((hasKey(
-                    CacheUtils.COURSE_KEY,
-                    this@MainActivity
+                    CacheUtils.COURSE_KEY, this@MainActivity
                 )) && hasKey(
-                    CacheUtils.INSTITUTE_KEY,
-                    this@MainActivity
+                    CacheUtils.INSTITUTE_KEY, this@MainActivity
                 ) && hasKey(CacheUtils.GROUP_KEY, this@MainActivity)
             ) {
-                supportFragmentManager.beginTransaction().addToBackStack(null).add(
+                supportFragmentManager.beginTransaction().addToBackStack(null).replace(
                     R.id.main_fragment_container, ScheduleFragment.newIntent(
                         this.getString(CacheUtils.COURSE_KEY, this@MainActivity)!!,
                         this.getString(CacheUtils.INSTITUTE_KEY, this@MainActivity)!!,
@@ -31,8 +29,9 @@ class MainActivity : AppCompatActivity() {
                     )
                 ).commit()
             } else {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.main_fragment_container, ChooseAttributeFragment.newIntent()).commit()
+                supportFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.main_fragment_container, ChooseAttributeFragment.newIntent())
+                    .commit()
             }
         }
     }
