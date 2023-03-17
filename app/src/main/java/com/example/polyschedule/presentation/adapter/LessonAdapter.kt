@@ -8,10 +8,12 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
@@ -53,6 +55,7 @@ class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.L
     }
 
     override fun onBindViewHolder(holder: LessonViewHolder, position: Int) {
+        holder.root.animation = AnimationUtils.loadAnimation(holder.view.context, R.anim.alpha)
         val item = lessonList.entries.toList()[position]
         if (item.value.size != 1) {
             holder.radioGroup.setOnCheckedChangeListener(object :
@@ -107,6 +110,10 @@ class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.L
         val teacherLL = view.findViewById<LinearLayout>(R.id.ll_teacher)
         val placeLL = view.findViewById<LinearLayout>(R.id.ll_place)
         val radioGroup = view.findViewById<RadioGroup>(R.id.radio_group)
+        val root = view.findViewById<ConstraintLayout>(R.id.root_lesson_container)
+
+
+
 
     }
 

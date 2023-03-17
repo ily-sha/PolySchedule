@@ -10,6 +10,9 @@ data class Schedule(val jsonObject: JSONObject, val startWeek: LocalDate){
     val nextMonday = startWeek.plusDays(7)
     val weekday = jsonObject.getInt("weekday")
     val date = jsonObject.getString("date")
+    var year = ""
+    var month = ""
+    var day = ""
     val jsonArrayLesson = jsonObject.getJSONArray("lessons")
     private val _lessons = MutableList(jsonArrayLesson.length()) {
         Lesson(it, jsonArrayLesson.get(it) as JSONObject)
@@ -17,7 +20,12 @@ data class Schedule(val jsonObject: JSONObject, val startWeek: LocalDate){
     var lessons = mapOf<String, List<Lesson>>()
     init {
         lessons = _lessons.groupBy { it.time_start }
+        val (_year, _month, _day) = date.split("-")
+        year = _year
+        month = _month
+        day = _day
     }
+
 
 
 

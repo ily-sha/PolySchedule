@@ -18,7 +18,6 @@ import kotlin.concurrent.thread
 object UniversityImpl: UniversityRepository {
 
     private var currentSchedule = MutableLiveData<MutableList<Schedule>>()
-    private var scheduleOfParticularWeek = MutableLiveData<MutableList<Schedule>>()
     private val instituteLD = MutableLiveData<MutableList<Institute>>()
     private val groupLD = MutableLiveData<MutableList<Group>>()
 
@@ -113,13 +112,13 @@ object UniversityImpl: UniversityRepository {
 
                 val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL(
                     "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId?date=$startDate").readText()))!!.value
-                scheduleOfParticularWeek.postValue(parsePage(result, groupId))
+                currentSchedule.postValue(parsePage(result, groupId))
             } catch (e: java.lang.Exception){
                 throw Exception(e)
             }
         }
 
-        return scheduleOfParticularWeek
+        return currentSchedule
     }
 
 }
