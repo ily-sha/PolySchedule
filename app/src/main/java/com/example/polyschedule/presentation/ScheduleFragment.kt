@@ -1,6 +1,7 @@
 package com.example.polyschedule.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +19,10 @@ import java.util.*
 
 class ScheduleFragment : Fragment() {
 
-    val updateDateLD = MutableLiveData<Int>()
-    private val UPDATE_LAST_POSITION = 6
-    private val UPDATE_FIRST_POSITION = 1
+    private val LAST_POSITION = 6
+    private val FIRST_POSITION = 1
+    private val FALSE_FIRST_POSITION = 7
+    private val FALSE_LAST_POSITION = 0
 
     private var _binding: ScheduleFragmentBinding? = null
     private val binding: ScheduleFragmentBinding
@@ -55,20 +57,20 @@ class ScheduleFragment : Fragment() {
 
     private fun observeSchedule() {
         scheduleViewModel.currentScheduleLD?.observe(viewLifecycleOwner) {
-            scheduleViewPagerAdapter.scheduleList = listOf(it.last()) + it + listOf(it.first())
+            scheduleViewPagerAdapter.scheduleList = it
             setTabItemMargin()
             setCurrentTab()
         }
     }
 
     private fun observeParticularSchedule() {
-
         scheduleViewModel.scheduleOfParticularWeek?.observe(viewLifecycleOwner) { it ->
-            scheduleViewPagerAdapter.scheduleList = listOf(it.last()) + it + listOf(it.first())
-            setTabItemMargin()
-            updateDateLD.observe(viewLifecycleOwner) {
-                updateDayAndMonth(it)
+//TODO(wgatjkoenp)
+            binding.scheduleVp.post {
+                scheduleViewPagerAdapter.scheduleList = it
+                setTabItemMargin()
             }
+
         }
     }
 
@@ -82,7 +84,7 @@ class ScheduleFragment : Fragment() {
 
     private fun updateDayAndMonth(position: Int) {
         val dateParser = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
-        val date = dateParser.parse(scheduleViewPagerAdapter.scheduleList[position + 1].date)
+        val date = dateParser.parse(scheduleViewPagerAdapter.scheduleList[position].date)
         val dateFormatter = SimpleDateFormat("dd MMMM", Locale("ru"))
         var formattedDate = dateFormatter.format(date!!)
         if (formattedDate[0] == '0') formattedDate =
@@ -93,39 +95,48 @@ class ScheduleFragment : Fragment() {
 
     private fun setupRvAdapter() {
         binding.scheduleVp.adapter = scheduleViewPagerAdapter
+        bindTabLayoutWithViewPager()
         binding.scheduleVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            var isTruePosition = true
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                updateDayAndMonth(position)
+                if (isTruePosition) {
+                    updateDayAndMonth(position)
+                }
             }
 
             override fun onPageScrolled(
                 position: Int, positionOffset: Float, positionOffsetPixels: Int
             ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                Log.d("viewpager", "onPageScrolled $position")
+                println("$position, $positionOffset")
+                isTruePosition = true
                 if (position == 0 && positionOffset < 0.5) {
-                    binding.scheduleVp.setCurrentItem(7 - 1, false)
+                    binding.scheduleVp.setCurrentItem(LAST_POSITION, false)
+                    isTruePosition = false
+                    updateDayAndMonth(FALSE_LAST_POSITION)
                     val previousMonday =
                         scheduleViewPagerAdapter.scheduleList[position].previousMonday.toString()
                     scheduleViewModel.getScheduleOfParticularWeek(
                         groupId, instituteId, previousMonday
                     )
                     observeParticularSchedule()
-                    updateDateLD.value = UPDATE_LAST_POSITION
+
                 }
                 if (position == 6 && positionOffset > 0.5) {
-                    binding.scheduleVp.setCurrentItem(1, false)
+                    binding.scheduleVp.setCurrentItem(FIRST_POSITION, false)
+                    isTruePosition = false
+                    updateDayAndMonth(FALSE_FIRST_POSITION)
                     val nextMonday =
                         scheduleViewPagerAdapter.scheduleList[position].nextMonday.toString()
                     scheduleViewModel.getScheduleOfParticularWeek(
                         groupId, instituteId, nextMonday
                     )
                     observeParticularSchedule()
-                    updateDateLD.value = UPDATE_FIRST_POSITION
                 }
             }
         })
-        bindTabLayoutWithViewPager()
+
     }
 
 
@@ -153,10 +164,9 @@ class ScheduleFragment : Fragment() {
 
 
     private fun parseIntent() {
-        if (!(requireArguments().containsKey(INSTITUTE_KEY) &&
-                    requireArguments().containsKey(COURSE_KEY) &&
-                    requireArguments().containsKey(GROUP_KEY)
-                    )
+        if (!(requireArguments().containsKey(INSTITUTE_KEY) && requireArguments().containsKey(
+                COURSE_KEY
+            ) && requireArguments().containsKey(GROUP_KEY))
         ) {
             throw RuntimeException("Lack more extra params")
         }

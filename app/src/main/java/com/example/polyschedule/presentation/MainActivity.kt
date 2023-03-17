@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity() {
                 ) && hasKey(CacheUtils.GROUP_KEY, this@MainActivity)
             ) {
                 supportFragmentManager.beginTransaction().addToBackStack(null).add(
-                        R.id.main_fragment_container, ScheduleFragment.newIntent(
-                            this.getString(CacheUtils.COURSE_KEY, this@MainActivity)!!,
-                            this.getString(CacheUtils.INSTITUTE_KEY, this@MainActivity)!!,
-                            this.getString(CacheUtils.GROUP_KEY, this@MainActivity)!!
-                        )
-                    ).commit()
+                    R.id.main_fragment_container, ScheduleFragment.newIntent(
+                        this.getString(CacheUtils.COURSE_KEY, this@MainActivity)!!,
+                        this.getString(CacheUtils.INSTITUTE_KEY, this@MainActivity)!!,
+                        this.getString(CacheUtils.GROUP_KEY, this@MainActivity)!!
+                    )
+                ).commit()
             } else {
                 supportFragmentManager.beginTransaction()
                     .add(R.id.main_fragment_container, ChooseAttributeFragment.newIntent()).commit()

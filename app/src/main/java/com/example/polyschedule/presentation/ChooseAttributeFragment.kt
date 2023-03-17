@@ -119,8 +119,6 @@ class ChooseAttributeFragment : Fragment() {
         binding.chosenCourseContainer.alpha = verticalOffset / binding.appBarLayout.totalScrollRange
         binding.chosenInstituteContainer.alpha =
             verticalOffset / binding.appBarLayout.totalScrollRange
-
-
     }
 
     private fun setupRvAdapter() {
@@ -140,7 +138,7 @@ class ChooseAttributeFragment : Fragment() {
         }
     }
 
-    private fun continueButtonClicked(){
+    private fun continueButtonClicked() {
         val instituteId = chooseAttributeViewModel.instituteLD.value!!.getId().toString()
         val groupId = chooseAttributeViewModel.groupLD.value!!.id.toString()
         val course = (chooseAttributeViewModel.courseLD.value!!.position + 1).toString()
@@ -156,8 +154,7 @@ class ChooseAttributeFragment : Fragment() {
             )
         }
         requireActivity().supportFragmentManager.beginTransaction().replace(
-            R.id.main_fragment_container,
-            ScheduleFragment.newIntent(course, instituteId, groupId)
+            R.id.main_fragment_container, ScheduleFragment.newIntent(course, instituteId, groupId)
         ).commit()
     }
 

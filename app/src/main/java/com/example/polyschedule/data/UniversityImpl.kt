@@ -83,11 +83,13 @@ object UniversityImpl: UniversityRepository {
         var iterationDay = mondayOfCurrentWeek
         scheduleList.add(Schedule(JSONObject("{'date': ${iterationDay.minusDays(2)}, 'weekday': 0, 'lessons': []}"),
             mondayOfCurrentWeek))
+        scheduleList.add(Schedule(JSONObject("{'date': ${iterationDay.plusDays(7)}, 'weekday': 7, 'lessons': []}"),
+            mondayOfCurrentWeek))
         val intermediateScheduleList = mutableListOf<Schedule>()
         for (i in 0 until lessons.length()) {
             intermediateScheduleList.add(Schedule(lessons[i] as JSONObject, mondayOfCurrentWeek))
         }
-        for (i in 1..7){
+        for (i in 1..6){
             val schedule = intermediateScheduleList.find { it.weekday == i }
             if (schedule == null) {
                 scheduleList.add(Schedule(JSONObject("{'date': $iterationDay, 'weekday': $i, 'lessons': []}"),
@@ -96,6 +98,7 @@ object UniversityImpl: UniversityRepository {
             else scheduleList.add(schedule)
             iterationDay = iterationDay.plusDays(1)
         }
+
         return scheduleList.sortedBy { it.weekday }.toMutableList()
     }
 
