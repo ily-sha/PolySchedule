@@ -1,5 +1,6 @@
 package com.example.polyschedule.presentation.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,21 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.polyschedule.R
 import com.example.polyschedule.domain.entity.Course
-import com.example.polyschedule.presentation.ChooseAttributeViewModel.Companion.coursesList
 
-class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
+class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
-    class CourseViewHolder(val view: View): ViewHolder(view) {
+    class CourseViewHolder(val view: View) : ViewHolder(view) {
         val tv = view.findViewById<TextView>(R.id.tv)
-
     }
+
     var onCourseItemClicked: ((Course) -> Unit)? = null
 
     private var lastSelected = FIRST_CLICK
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
-        val layout = when(viewType){
+        val layout = when (viewType) {
             DISABLED_COURSE_ITEM -> R.layout.disabled_course_item
             DISABLED_COURSE_FIRST_ITEM -> R.layout.disabled_course_first_item
             ENABLED_COURSE_FIRST_ITEM -> R.layout.enabled_course_first_item
@@ -34,37 +34,37 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return coursesList.size
+        return Course.values().size
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-        holder.tv.text = coursesList[position].name
+        val course = getCourseByPosition(position + 1)
+        holder.tv.text = course.nameOfCourse
         holder.tv.setOnClickListener {
             if (lastSelected != FIRST_CLICK) {
-                changeSelectedItemParams(lastSelected)
+                changeSelectedItemColour(lastSelected)
                 notifyItemChanged(lastSelected)
             }
-            changeSelectedItemParams(position)
-            notifyItemChanged(position)
+            changeSelectedItemColour(position)
             lastSelected = position
-            onCourseItemClicked?.invoke(coursesList[position])
-
-
+            notifyItemChanged(position)
+            onCourseItemClicked?.invoke(course)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (!coursesList[position].selected){
-            if (position == 0) DISABLED_COURSE_FIRST_ITEM
-            else DISABLED_COURSE_ITEM
-        } else
+        val course = getCourseByPosition(position + 1)
+        return if (course.enable) {
             if (position == 0) ENABLED_COURSE_FIRST_ITEM
             else ENABLED_COURSE_ITEM
+        } else
+            if (position == 0) DISABLED_COURSE_FIRST_ITEM
+            else DISABLED_COURSE_ITEM
     }
 
-    private fun changeSelectedItemParams(position: Int){
-        coursesList.add(position, coursesList[position].copy(selected = !coursesList[position].selected))
-        coursesList.remove(coursesList[position + 1])
+    private fun changeSelectedItemColour(position: Int) {
+        val course = getCourseByPosition(position + 1)
+        course.enable = !course.enable
     }
 
     companion object {
@@ -74,6 +74,17 @@ class CourseAdapter: RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         const val DISABLED_COURSE_FIRST_ITEM = 1001
 
         const val FIRST_CLICK = -1
+    }
+    private fun getCourseByPosition(position: Int): Course{
+        return when (position) {
+            Course.FIRST.numberOfCourse -> Course.FIRST
+            Course.SECOND.numberOfCourse -> Course.SECOND
+            Course.THIRD.numberOfCourse -> Course.THIRD
+            Course.FOURTH.numberOfCourse -> Course.FOURTH
+            Course.FIFTH.numberOfCourse -> Course.FIFTH
+            else -> throw RuntimeException("Course with numberOfCourse $position is not exist")
+
+        }
     }
 
 }

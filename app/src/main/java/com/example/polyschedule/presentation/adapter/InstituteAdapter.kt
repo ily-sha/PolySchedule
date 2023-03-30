@@ -1,6 +1,7 @@
 package com.example.polyschedule.presentation.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,7 @@ class InstituteAdapter: RecyclerView.Adapter<InstituteAdapter.InstituteViewHolde
 
     override fun onBindViewHolder(holder: InstituteViewHolder, position: Int) {
 
-        holder.tv.text = instituteList[position].getAbbr()
+        holder.tv.text = instituteList[position].abbr
         holder.tv.setOnClickListener {
             if (lastSelected != CourseAdapter.FIRST_CLICK) {
                 changeSelectedItemParams(lastSelected)
@@ -76,7 +77,6 @@ class InstituteAdapter: RecyclerView.Adapter<InstituteAdapter.InstituteViewHolde
         const val DISABLED_INSTITUTE_ITEM = 101
         const val DISABLED_INSTITUTE_FIRST_ITEM = 1001
 
-        const val FIRST_CLICKED = -1
     }
 
 }

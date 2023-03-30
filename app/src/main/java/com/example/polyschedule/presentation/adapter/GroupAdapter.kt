@@ -37,7 +37,7 @@ class GroupAdapter(): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.tv.text = groupList[position].groupId
+        holder.tv.text = groupList[position].name
         holder.tv.setOnClickListener {
             if (lastSelected != FIRST_CLICKED) {
                 changeSelectedItemParams(lastSelected)

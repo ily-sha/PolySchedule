@@ -10,13 +10,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
-import com.example.polyschedule.data.CacheUtils
 import com.example.polyschedule.databinding.ChooseAttributeFragmentBinding
 import com.example.polyschedule.domain.entity.Course
+import com.example.polyschedule.domain.entity.Group
 import com.example.polyschedule.domain.entity.Institute
+import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.presentation.adapter.CourseAdapter
 import com.example.polyschedule.presentation.adapter.GroupAdapter
 import com.example.polyschedule.presentation.adapter.InstituteAdapter
+import kotlin.concurrent.thread
 import kotlin.math.abs
 
 class ChooseAttributeFragment : Fragment() {
@@ -48,7 +50,13 @@ class ChooseAttributeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = ChooseAttributeFragmentBinding.bind(view)
-
+//        thread {
+//            chooseAttributeViewModel.addUniversityBd(UniversityEntity(
+//                Group(1, "type", "name", 100, "spec"),
+//                Institute(1, "name", "abb")
+//            ))
+//            println(chooseAttributeViewModel.getUniversityBd)
+//        }
         setupRvAdapter()
 
         binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -71,12 +79,12 @@ class ChooseAttributeFragment : Fragment() {
     }
 
     private fun observeInstitute() {
-        chooseAttributeViewModel.instituteLDfromOut.observe(viewLifecycleOwner) {
-            instituteAdapter.instituteList = it
-        }
+//        chooseAttributeViewModel.instituteLDfromOut.observe(viewLifecycleOwner) {
+//            instituteAdapter.instituteList = it
+//        }
         chooseAttributeViewModel.instituteLD.observe(viewLifecycleOwner) {
             val course = chooseAttributeViewModel.courseLD.value
-            binding.chosenTvInsitute.text = it.getAbbr()
+            binding.chosenTvInsitute.text = it.abbr
             if (course != null) {
                 uploadGroups(course, it)
             }
@@ -139,23 +147,23 @@ class ChooseAttributeFragment : Fragment() {
     }
 
     private fun continueButtonClicked() {
-        val instituteId = chooseAttributeViewModel.instituteLD.value!!.getId().toString()
-        val groupId = chooseAttributeViewModel.groupLD.value!!.id.toString()
-        val course = (chooseAttributeViewModel.courseLD.value!!.position + 1).toString()
-        CacheUtils.instance!!.apply {
-            setString(
-                CacheUtils.GROUP_KEY, groupId, requireContext()
-            )
-            setString(
-                CacheUtils.INSTITUTE_KEY, instituteId, requireContext()
-            )
-            setString(
-                CacheUtils.COURSE_KEY, course, requireContext()
-            )
-        }
-        requireActivity().supportFragmentManager.beginTransaction().replace(
-            R.id.main_fragment_container, ScheduleFragment.newIntent(course, instituteId, groupId)
-        ).commit()
+//        val instituteId = chooseAttributeViewModel.instituteLD.value!!.id.toString()
+//        val groupId = chooseAttributeViewModel.groupLD.value!!.id.toString()
+//        val course = (chooseAttributeViewModel.courseLD.value!!.position + 1).toString()
+//        CacheUtils.instance!!.apply {
+//            setString(
+//                CacheUtils.GROUP_KEY, groupId, requireContext()
+//            )
+//            setString(
+//                CacheUtils.INSTITUTE_KEY, instituteId, requireContext()
+//            )
+//            setString(
+//                CacheUtils.COURSE_KEY, course, requireContext()
+//            )
+//        }
+//        requireActivity().supportFragmentManager.beginTransaction().replace(
+//            R.id.main_fragment_container, ScheduleFragment.newIntent(course, instituteId, groupId)
+//        ).commit()
     }
 
     private fun setupCourseAdapter() {
@@ -181,7 +189,7 @@ class ChooseAttributeFragment : Fragment() {
         if (binding.textViewGroup.visibility == View.GONE) {
             binding.textViewGroup.visibility = View.VISIBLE
         }
-        chooseAttributeViewModel.getGroups(course.position + 1, institute.getId())
+        chooseAttributeViewModel.getGroups(course.numberOfCourse, institute.id)
         chooseAttributeViewModel.groupLDfromOut.observe(viewLifecycleOwner) {
             groupAdapter.groupList = it
         }

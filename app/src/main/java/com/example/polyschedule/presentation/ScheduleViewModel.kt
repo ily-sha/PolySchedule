@@ -1,7 +1,8 @@
 package com.example.polyschedule.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.polyschedule.data.UniversityImpl
 import com.example.polyschedule.domain.usecase.GetScheduleUseCase
 import com.example.polyschedule.domain.entity.Schedule
@@ -10,9 +11,9 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ScheduleViewModel: ViewModel() {
-    private val SUNDAY = 7
-    private val repository = UniversityImpl
+class ScheduleViewModel(application: Application): AndroidViewModel(application) {
+    private val SUNDAY = 0
+    private val repository = UniversityImpl(application)
     private val getScheduleUseCase = GetScheduleUseCase(repository)
 
 
@@ -28,7 +29,7 @@ class ScheduleViewModel: ViewModel() {
         currentSchedule = getScheduleUseCase.getSchedule(groupId, instituteId, startDate)
     }
 
-    fun formateDate(schedule: Schedule): String{
+    fun formatDate(schedule: Schedule): String{
         val datePattern = SimpleDateFormat("d-MM", Locale("ru"))
         val dateFormat = SimpleDateFormat("d MMMM", Locale("ru"))
         val day = DecimalFormat("#").format(schedule.day.toInt())
@@ -38,7 +39,7 @@ class ScheduleViewModel: ViewModel() {
     fun getCurrentWeekDay(): Int {
         var currentWeekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
 //            TODO("after day finish next day")
-        if (currentWeekDay == SUNDAY) currentWeekDay = WeekDay.MONDAY.position
+        if (currentWeekDay == SUNDAY) currentWeekDay = 1
         return currentWeekDay
     }
 

@@ -1,26 +1,35 @@
 package com.example.polyschedule.presentation
 
-import androidx.lifecycle.LifecycleOwner
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.polyschedule.data.UniversityImpl
 import com.example.polyschedule.domain.entity.Course
 import com.example.polyschedule.domain.entity.Group
 import com.example.polyschedule.domain.entity.Institute
+import com.example.polyschedule.domain.entity.UniversityEntity
+import com.example.polyschedule.domain.usecase.AddUniversityUseCase
 import com.example.polyschedule.domain.usecase.GetGroupsUseCase
 import com.example.polyschedule.domain.usecase.GetInstitutesUseCase
+import com.example.polyschedule.domain.usecase.GetUniversityUseCase
 
-class ChooseAttributeViewModel: ViewModel() {
+class ChooseAttributeViewModel(application: Application): AndroidViewModel(application) {
 
-    companion object {
-        var coursesList = MutableList(5) { Course("Курс ${it + 1}", it, false) }
-    }
 
-    private val repository = UniversityImpl
+
+    private val repository = UniversityImpl(application)
     private val getGroupsUseCase = GetGroupsUseCase(repository)
     var groupLDfromOut = MutableLiveData<MutableList<Group>>()
 
     val instituteLDfromOut = GetInstitutesUseCase(repository).getInstitutes()
+    val getUniversityBd = GetUniversityUseCase(repository).getUniversity()
+
+
+
+    fun addUniversityBd(universityEntity: UniversityEntity){
+        AddUniversityUseCase(repository).invoke(universityEntity)
+    }
+
 
     val courseLD = MutableLiveData<Course>()
     val groupLD = MutableLiveData<Group>()
