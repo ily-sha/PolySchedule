@@ -6,33 +6,15 @@ import com.example.polyschedule.domain.entity.UniversityEntity
 
 class Mapper {
 
-
-    fun mapUniversityBdModelToEntity(universityDbModel: UniversityDbModel): UniversityEntity{
-        return UniversityEntity(
-            group = universityDbModel.groupDbModel,
-            institute = universityDbModel.instituteDbModel
-        )
-    }
-
-    fun mapUniversityBdModelListToEntity(list: List<UniversityDbModel>): List<UniversityEntity>{
-        return list.map {
-            UniversityEntity(
-                group = mapGroupBdModelToEntity(it.groupDbModel),
-                institute = mapInstituteBdModelToEntity(it.instituteDbModel)
-            )
-        }
-    }
-
     fun mapUniversityEntityToBdModel(entity: UniversityEntity): UniversityDbModel {
         return UniversityDbModel(
-            groupDbModelId = entity.group.id,
-            instituteDbModelId = entity.institute.id,
-            id = UniversityEntity.DEFAULT_ID,
-            isMainGroup = false
+            instituteId = entity.institute.id,
+            groupId = entity.group.id,
+            id = UniversityEntity.AUTOGENERATE_ID
         )
     }
 
-    fun mapEntityToGroupBdModel(group: Group): GroupDbModel{
+    fun mapGroupEntityToGroupBdModel(group: Group): GroupDbModel{
         return GroupDbModel(
             id = group.id,
             level = group.level,
@@ -51,6 +33,7 @@ class Mapper {
             spec = groupDbModel.spec
         )
     }
+
     fun mapInstituteBdModelToEntity(instituteDbModel: InstituteDbModel): Institute{
         return Institute(
             id = instituteDbModel.id,

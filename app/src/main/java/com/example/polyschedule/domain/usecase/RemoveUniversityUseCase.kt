@@ -5,7 +5,7 @@ import com.example.polyschedule.domain.entity.UniversityEntity
 
 class RemoveUniversityUseCase(private val repository: UniversityRepository) {
 
-    operator fun invoke(universityEntity: UniversityEntity) {
-        repository.removeUniversity(universityEntity)
+    operator fun invoke(id: Int) {
+        repository.removeUniversity(id)
     }
 }

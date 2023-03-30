@@ -22,7 +22,6 @@ class ChooseAttributeViewModel(application: Application): AndroidViewModel(appli
     var groupLDfromOut = MutableLiveData<MutableList<Group>>()
 
     val instituteLDfromOut = GetInstitutesUseCase(repository).getInstitutes()
-    val getUniversityBd = GetUniversityUseCase(repository).getUniversity()
 
 
 

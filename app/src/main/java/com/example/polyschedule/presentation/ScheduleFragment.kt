@@ -11,13 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.polyschedule.R
 import com.example.polyschedule.databinding.ScheduleFragmentBinding
+import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.domain.entity.WeekDay
 import com.example.polyschedule.presentation.adapter.ScheduleViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class ScheduleFragment : Fragment(){
+class ScheduleFragment : Fragment() {
 
     private var tabPosition = 0
     private var isFirstLoadSchedule = true
@@ -33,9 +34,8 @@ class ScheduleFragment : Fragment(){
         ScheduleViewPagerAdapter(requireContext())
     }
 
-    private var groupId = UNDEFINED_EXTRA
-    private var instituteId = UNDEFINED_EXTRA
-    private var course = UNDEFINED_EXTRA
+
+    private lateinit var universityEntity: UniversityEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,7 @@ class ScheduleFragment : Fragment(){
 
         if (savedInstanceState == null) {
             scheduleViewModel.getCurrentWeekSchedule(
-                groupId, instituteId
+                universityEntity.group.id, universityEntity.institute.id
             )
         }
         observeSchedule()
@@ -152,7 +152,7 @@ class ScheduleFragment : Fragment(){
 
     private fun loadParticularSchedule(startWeek: String) {
         scheduleViewModel.getScheduleOfParticularWeek(
-            groupId, instituteId, startWeek
+            universityEntity.group.id, universityEntity.institute.id, startWeek
         )
     }
 
@@ -162,7 +162,8 @@ class ScheduleFragment : Fragment(){
             binding.tabLayout, binding.scheduleVp
         ) { tab: TabLayout.Tab, position: Int ->
             if (position == WeekDay.FALSE_MONDAY.position || position == WeekDay.FALSE_SATURDAY.position) {
-                tab.view.visibility = View.GONE }
+                tab.view.visibility = View.GONE
+            }
             if (position != 1) {
                 tab.view.post {
                     val p = tab.view.layoutParams as ViewGroup.MarginLayoutParams
@@ -179,39 +180,31 @@ class ScheduleFragment : Fragment(){
                 WeekDay.FRIDAY.abbreviation,
                 WeekDay.SATURDAY.abbreviation,
                 WeekDay.FALSE_MONDAY.abbreviation
-                )[position]
+            )[position]
         }.attach()
     }
 
 
     private fun parseIntent() {
-        if (!(requireArguments().containsKey(INSTITUTE_KEY) && requireArguments().containsKey(
-                COURSE_KEY
-            ) && requireArguments().containsKey(GROUP_KEY))
-        ) {
+        if (!(requireArguments().containsKey(UNIVERSITY_KEY)))
             throw RuntimeException("Lack more extra params")
+
+        requireArguments().getSerializable(UNIVERSITY_KEY).let {
+            if (it == null) throw RuntimeException("UNIVERSITY_KEY params is null")
+            universityEntity = it as UniversityEntity
         }
-        groupId = requireArguments().getString(GROUP_KEY)?.toInt()
-            ?: throw RuntimeException("GROUP_KEY params is null")
-        course = requireArguments().getString(COURSE_KEY)?.toInt()
-            ?: throw RuntimeException("COURSE_KEY params is null")
-        instituteId = requireArguments().getString(INSTITUTE_KEY)?.toInt()
-            ?: throw RuntimeException("INSTITUTE_KEY params is null")
     }
 
 
     companion object {
 
         private const val UNDEFINED_EXTRA = -1
-        private const val INSTITUTE_KEY = "INSTITUTE"
-        private const val COURSE_KEY = "COURSE"
-        private const val GROUP_KEY = "GROUP"
-        fun newIntent(course: String, institute: String, group: String): ScheduleFragment {
+        const val UNIVERSITY_KEY = "UNIVERSITY"
+
+        fun newIntent(universityEntity: UniversityEntity): ScheduleFragment {
             return ScheduleFragment().apply {
                 arguments = Bundle().apply {
-                    putString(GROUP_KEY, group)
-                    putString(COURSE_KEY, course)
-                    putString(INSTITUTE_KEY, institute)
+                    putSerializable(UNIVERSITY_KEY, universityEntity)
                 }
             }
         }

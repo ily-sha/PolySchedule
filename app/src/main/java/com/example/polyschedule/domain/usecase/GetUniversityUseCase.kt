@@ -5,11 +5,11 @@ import com.example.polyschedule.domain.entity.UniversityEntity
 
 class GetUniversityUseCase(private val repository: UniversityRepository) {
 
-    fun getUniversity(): UniversityEntity{
-        return repository.getUniversity()
+    fun getUniversity(id: Int): UniversityEntity {
+        return repository.getUniversity(id)
     }
 
-    fun getAllUniversity(): List<UniversityEntity> {
+    fun getAllUniversities(): List<UniversityEntity> {
         return repository.getAllUniversity()
     }
 }

@@ -15,10 +15,10 @@ interface UniversityRepository {
 
     fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableLiveData<MutableList<Schedule>>
 
-    fun getUniversity(): UniversityEntity
+    fun getUniversity(id: Int): UniversityEntity
 
     fun getAllUniversity(): List<UniversityEntity>
     fun addUniversity(universityEntity: UniversityEntity)
 
-    fun removeUniversity(universityEntity: UniversityEntity)
+    fun removeUniversity(id: Int)
 }

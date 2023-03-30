@@ -1,38 +1,32 @@
 package com.example.polyschedule.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-
+import androidx.room.*
 
 @Dao
 interface UniversityDao {
-//WHERE isMainGroup = 1 LIMIT 1
-    @Query("SELECT * FROM universityDbModel")
-    fun getUniversity(): UniversityDbModel
 
-    @Insert
-    fun addUniversity(universityDbModel: UniversityDbModel)
+    @Query(value = "SELECT * FROM UniversityDbModel WHERE id=:id")
+    fun getUniversity(id: Int): UniversityDbModel
 
-
-    @Insert
-    fun addInstitute(instituteDbModel: InstituteDbModel)
-
-    @Insert
-    fun addGroup(groupDbModel: GroupDbModel)
-
-    @Query("SELECT * FROM universitydbmodel WHERE instituteDbModelId = :id")
-    fun getInstitute(id: Int): InstituteDbModel
-
-    @Query("SELECT * FROM groupDbModel WHERE id=: ")
+    @Query(value = "SELECT * FROM GroupDbModel WHERE id=:id")
     fun getGroup(id: Int): GroupDbModel
 
-    @Query("SELECT * FROM universitydbmodel")
-    fun getAllUniversity(): List<UniversityDbModel>
+    @Query(value = "SELECT * FROM InstituteDbModel WHERE id=:id")
+    fun getInstitute(id: Int): InstituteDbModel
 
-    @Delete
-    fun removeUniversity(universityDbModel: UniversityDbModel)
+    @Query(value = "SELECT * FROM UniversityDbModel")
+    fun getAllUniversities(): List<UniversityDbModel>
 
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addUniversity(universityDbModel: UniversityDbModel): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addInstitute(instituteDbModel: InstituteDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addGroup(groupDbModel: GroupDbModel)
+
+    @Query("DELETE FROM UniversityDbModel WHERE id=:id")
+    fun deleteUniversity(id: Int)
 }
-

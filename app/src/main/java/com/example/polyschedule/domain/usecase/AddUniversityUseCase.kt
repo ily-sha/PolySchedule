@@ -6,7 +6,7 @@ import com.example.polyschedule.domain.entity.UniversityEntity
 class AddUniversityUseCase(private val repository: UniversityRepository) {
 
 
-     operator fun invoke(universityEntity: UniversityEntity) {
+     operator fun invoke(universityEntity: UniversityEntity){
          repository.addUniversity(universityEntity)
      }
 }

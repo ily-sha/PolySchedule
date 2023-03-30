@@ -54,9 +54,7 @@ class CacheUtils {
         const val SESSION = "SESSION"
         private const val IDENTIFIER = "APP_SETTINGS"
 
-        const val GROUP_KEY = "group"
-        const val INSTITUTE_KEY = "institute"
-        const val COURSE_KEY = "course"
+        const val MAIN_GROUP = "main_group"
 
 
         // Инициализация контекста

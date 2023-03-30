@@ -15,7 +15,7 @@ import java.net.URL
 import java.time.LocalDate
 import kotlin.concurrent.thread
 
-class UniversityImpl(application: Application) : UniversityRepository {
+class UniversityImpl(private val application: Application) : UniversityRepository {
 
     private var currentSchedule = MutableLiveData<MutableList<Schedule>>()
     private val instituteLD = MutableLiveData<MutableList<Institute>>()
@@ -154,26 +154,33 @@ class UniversityImpl(application: Application) : UniversityRepository {
                 throw Exception(e)
             }
         }
-
         return currentSchedule
     }
 
-    override fun getUniversity():UniversityEntity {
-        return mapper.mapUniversityBdModelToEntity(universityDao.getUniversity())
+    override fun getUniversity(id: Int): UniversityEntity {
+        val universityDbModel = universityDao.getUniversity(id)
+        val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(universityDbModel.groupId))
+        val institute = mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(universityDbModel.instituteId))
+        return UniversityEntity(group, institute)
     }
 
     override fun getAllUniversity(): List<UniversityEntity> {
-        return mapper.mapUniversityBdModelListToEntity(universityDao.getAllUniversity())
+        return universityDao.getAllUniversities().map {
+            val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(it.groupId))
+            val institute = mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(it.instituteId))
+            UniversityEntity(group, institute)
+        }
     }
 
     override fun addUniversity(universityEntity: UniversityEntity) {
-        universityDao.addGroup(mapper.mapEntityToGroupBdModel(universityEntity.group))
+        universityDao.addGroup(mapper.mapGroupEntityToGroupBdModel(universityEntity.group))
         universityDao.addInstitute(mapper.mapInstituteEntityToDbModel(universityEntity.institute))
-        universityDao.addUniversity(mapper.mapUniversityEntityToBdModel(universityEntity))
+        val primaryKey = universityDao.addUniversity(mapper.mapUniversityEntityToBdModel(universityEntity))
+        CacheUtils.instance?.setString(CacheUtils.MAIN_GROUP, primaryKey.toString(), application)
     }
 
-    override fun removeUniversity(universityEntity: UniversityEntity) {
-        universityDao.removeUniversity(mapper.mapUniversityEntityToBdModel(universityEntity))
+    override fun removeUniversity(id: Int) {
+        universityDao.deleteUniversity(id)
     }
 
 
