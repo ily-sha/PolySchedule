@@ -56,9 +56,7 @@ class ScheduleFragment : Fragment() {
         })
         setCurrentTab(savedInstanceState)
         if (savedInstanceState == null) {
-            scheduleViewModel.getCurrentWeekSchedule(
-                universityEntity
-            )
+            scheduleViewModel.getCurrentWeekSchedule(universityEntity)
         }
         observeSchedule()
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -76,7 +74,7 @@ class ScheduleFragment : Fragment() {
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.main, popup.menu)
         popup.show()
-        popup.setOnMenuItemClickListener{ item ->
+        popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.change_group -> clickChangeGroup(item)
                 R.id.add_new_group -> addNewGroup()
@@ -146,20 +144,20 @@ class ScheduleFragment : Fragment() {
             override fun onPageScrolled(
                 position: Int, positionOffset: Float, positionOffsetPixels: Int
             ) {
-                if (scheduleViewModel.currentSchedule.value != null) {
+                if (scheduleViewModel.schedule.value != null) {
                     if (position == WeekDay.FALSE_SATURDAY.position && positionOffset < 0.5) {
                         binding.scheduleVp.setCurrentItem(WeekDay.SATURDAY.position, false)
                         updateDayAndMonth(WeekDay.FALSE_SATURDAY.position)
                         val previousMonday =
-                            scheduleViewPagerAdapter.scheduleList[position]?.previousMonday.toString()
-                        loadParticularSchedule(previousMonday)
+                            scheduleViewPagerAdapter.scheduleList[position]?.getPreviousMonday().toString()
+                        loadNextOfPreviousSchedule(previousMonday)
                     }
                     if (position == WeekDay.SATURDAY.position && positionOffset > 0.5) {
                         binding.scheduleVp.setCurrentItem(WeekDay.MONDAY.position, false)
                         updateDayAndMonth(WeekDay.FALSE_MONDAY.position)
                         val nextMonday =
-                            scheduleViewPagerAdapter.scheduleList[position]?.nextMonday.toString()
-                        loadParticularSchedule(nextMonday)
+                            scheduleViewPagerAdapter.scheduleList[position]?.getNextMonday().toString()
+                        loadNextOfPreviousSchedule(nextMonday)
                     }
                 }
             }
@@ -168,14 +166,12 @@ class ScheduleFragment : Fragment() {
 
 
     private fun observeSchedule() {
-        scheduleViewModel.currentSchedule.observe(viewLifecycleOwner) { it ->
+        scheduleViewModel.schedule.observe(viewLifecycleOwner) { it ->
             scheduleViewPagerAdapter.scheduleList = it
             val currentWeekDay = scheduleViewModel.currentWeekDay.value
             if (currentWeekDay != null) {
                 updateDayAndMonth(currentWeekDay.position)
-
             }
-            Log.d("MainTr", "get scheule")
         }
     }
 
@@ -189,7 +185,7 @@ class ScheduleFragment : Fragment() {
     }
 
 
-    private fun loadParticularSchedule(startWeek: String) {
+    private fun loadNextOfPreviousSchedule(startWeek: String) {
         scheduleViewModel.getScheduleOfParticularWeek(
             universityEntity.group.id, universityEntity.institute.id, startWeek
         )

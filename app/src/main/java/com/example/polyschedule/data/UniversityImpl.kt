@@ -15,6 +15,7 @@ import java.net.URL
 import java.time.LocalDate
 import kotlin.concurrent.thread
 
+
 class UniversityImpl(private val application: Application) : UniversityRepository {
 
     private var currentSchedule = MutableLiveData<MutableList<Schedule>>()
@@ -87,7 +88,7 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
                 ))!!.value
                 currentSchedule.postValue(parsePage(result, groupId))
             } catch (e: java.lang.Exception) {
-                throw Exception(e)
+                throw e
             }
         }
 
@@ -102,37 +103,53 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
             json.getJSONObject("lessons").getJSONObject("week").getString("date_start")
         val (year, month, day) = startDayOfWeek.split(".").map { it.toInt() }
         val mondayOfCurrentWeek = LocalDate.of(year, month, day)
-        var iterationDay = mondayOfCurrentWeek
-        scheduleList.add(
-            Schedule(
-                JSONObject("{'date': ${iterationDay.minusDays(2)}, 'weekday': 0, 'lessons': []}"),
-                mondayOfCurrentWeek
-            )
-        )
-        scheduleList.add(
-            Schedule(
-                JSONObject("{'date': ${iterationDay.plusDays(7)}, 'weekday': 7, 'lessons': []}"),
-                mondayOfCurrentWeek
-            )
-        )
-        val intermediateScheduleList = mutableListOf<Schedule>()
+        addFalseMondayAndSaturday(scheduleList, mondayOfCurrentWeek)
+        val loadedScheduleList = mutableListOf<Schedule>()
         for (i in 0 until lessons.length()) {
-            intermediateScheduleList.add(Schedule(lessons[i] as JSONObject, mondayOfCurrentWeek))
+            val schedule = Gson().fromJson(lessons[i].toString(), Schedule::class.java).apply {
+                init(mondayOfCurrentWeek)
+            }
+            loadedScheduleList.add(schedule)
         }
+        mergeBlankAndLoadedSchedule(scheduleList, loadedScheduleList, mondayOfCurrentWeek)
+        return scheduleList.sortedBy { it.weekday }.toMutableList()
+    }
+
+    private fun mergeBlankAndLoadedSchedule(
+        scheduleList: MutableList<Schedule>,
+        intermediateScheduleList: MutableList<Schedule>,
+        mondayOfCurrentWeek: LocalDate
+    ) {
+        var iterationDay = mondayOfCurrentWeek
         for (i in 1..6) {
-            val schedule = intermediateScheduleList.find { it.weekday == i }
-            if (schedule == null) {
-                scheduleList.add(
-                    Schedule(
-                        JSONObject("{'date': $iterationDay, 'weekday': $i, 'lessons': []}"),
-                        mondayOfCurrentWeek
-                    )
-                )
-            } else scheduleList.add(schedule)
+            val loadedSchedule = intermediateScheduleList.find { it.weekday == i }
+            if (loadedSchedule == null) {
+                val blank = "{'date': $iterationDay, 'weekday': $i, 'lessons': []}"
+
+                val blankSchedule = Gson().fromJson(blank, Schedule::class.java)
+                blankSchedule.init(mondayOfCurrentWeek)
+                scheduleList.add(blankSchedule)
+            } else scheduleList.add(loadedSchedule)
             iterationDay = iterationDay.plusDays(1)
         }
 
-        return scheduleList.sortedBy { it.weekday }.toMutableList()
+    }
+
+    private fun addFalseMondayAndSaturday(
+        scheduleList: MutableList<Schedule>,
+        mondayOfCurrentWeek: LocalDate
+    ) {
+        for (i in 0..1) {
+            val blank =
+                if (i == 0) "{'date': ${mondayOfCurrentWeek.minusDays(2)}, " +
+                        "'weekday': 0, 'lessons': []}" else
+                    "{'date': ${
+                        mondayOfCurrentWeek.plusDays(7)
+                    }, 'weekday': 7, 'lessons': []}"
+            val blankSchedule = Gson().fromJson(blank, Schedule::class.java)
+            blankSchedule.init(mondayOfCurrentWeek)
+            scheduleList.add(blankSchedule)
+        }
     }
 
 
@@ -141,6 +158,7 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
         instituteId: Int,
         startDate: String
     ): MutableLiveData<MutableList<Schedule>> {
+
         thread {
             try {
 
@@ -151,23 +169,27 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
                 ))!!.value
                 currentSchedule.postValue(parsePage(result, groupId))
             } catch (e: java.lang.Exception) {
-                throw Exception(e)
+                throw e
             }
         }
         return currentSchedule
     }
 
+
     override fun getUniversity(id: Int): UniversityEntity {
         val universityDbModel = universityDao.getUniversity(id)
-        val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(universityDbModel.groupId))
-        val institute = mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(universityDbModel.instituteId))
+        val group =
+            mapper.mapGroupBdModelToEntity(universityDao.getGroup(universityDbModel.groupId))
+        val institute =
+            mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(universityDbModel.instituteId))
         return UniversityEntity(group, institute, id)
     }
 
     override fun getAllUniversity(): List<UniversityEntity> {
         return universityDao.getAllUniversities().map {
             val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(it.groupId))
-            val institute = mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(it.instituteId))
+            val institute =
+                mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(it.instituteId))
             UniversityEntity(group, institute, it.id)
         }
     }
@@ -175,7 +197,8 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
     override fun addUniversity(universityEntity: UniversityEntity) {
         universityDao.addGroup(mapper.mapGroupEntityToGroupBdModel(universityEntity.group))
         universityDao.addInstitute(mapper.mapInstituteEntityToDbModel(universityEntity.institute))
-        val primaryKey = universityDao.addUniversity(mapper.mapUniversityEntityToBdModel(universityEntity))
+        val primaryKey =
+            universityDao.addUniversity(mapper.mapUniversityEntityToBdModel(universityEntity))
         CacheUtils.instance?.setString(CacheUtils.MAIN_GROUP, primaryKey.toString(), application)
     }
 

@@ -24,7 +24,7 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
 
 
 
-    var currentSchedule = MutableLiveData<MutableList<Schedule>>()
+    var schedule = MutableLiveData<MutableList<Schedule>>()
     var currentWeekDay = MutableLiveData<WeekDay>()
     private val removeUniversityUseCase = RemoveUniversityUseCase(repository)
     private val addUniversityUseCase = AddUniversityUseCase(repository)
@@ -50,17 +50,17 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun getCurrentWeekSchedule(universityEntity: UniversityEntity) {
-        currentSchedule = getScheduleUseCase.getCurrentWeekSchedule(universityEntity.group.id, universityEntity.institute.id)
+        schedule = getScheduleUseCase.getCurrentWeekSchedule(universityEntity.group.id, universityEntity.institute.id)
     }
     fun getScheduleOfParticularWeek(groupId: Int, instituteId: Int, startDate: String){
-        currentSchedule = getScheduleUseCase.getSchedule(groupId, instituteId, startDate)
+        schedule = getScheduleUseCase.getSchedule(groupId, instituteId, startDate)
     }
 
     fun formatDate(schedule: Schedule): String{
         val datePattern = SimpleDateFormat("d-MM", Locale("ru"))
         val dateFormat = SimpleDateFormat("d MMMM", Locale("ru"))
-        val day = DecimalFormat("#").format(schedule.day.toInt())
-        return dateFormat.format(datePattern.parse("$day-${schedule.month}")!!)
+        val day = DecimalFormat("#").format(schedule.getDay().toInt())
+        return dateFormat.format(datePattern.parse("$day-${schedule.getMonth()}")!!)
     }
 
     fun getCurrentWeekDay(): Int {

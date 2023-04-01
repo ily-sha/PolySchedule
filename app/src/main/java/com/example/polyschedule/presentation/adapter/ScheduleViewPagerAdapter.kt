@@ -35,7 +35,7 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (scheduleList[position]?.lessons?.isEmpty() ?: true) EMPTY_DAY
+        return if (scheduleList[position]?.lessonsMap?.isEmpty() != false) EMPTY_DAY
             else NO_EMPTY_DAY
     }
 
@@ -44,9 +44,9 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
 //        Log.d("MainTr", "onBindViewHolder $position")
         val currentSchedule = scheduleList[position]
         if (currentSchedule != null){
-            if (currentSchedule.lessons.isNotEmpty()) {
+            if (currentSchedule.lessonsMap.isNotEmpty()) {
                 LessonAdapter(context).apply {
-                    this.lessonList = currentSchedule.lessons.toMutableMap()
+                    this.lessonList = currentSchedule.lessonsMap.toMutableMap()
                     holder.recyclerView.adapter = this
                 }
             }

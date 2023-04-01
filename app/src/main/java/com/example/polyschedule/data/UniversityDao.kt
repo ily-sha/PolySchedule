@@ -29,4 +29,7 @@ interface UniversityDao {
 
     @Query("DELETE FROM UniversityDbModel WHERE id=:id")
     fun deleteUniversity(id: Int)
+
+//    @Query("DELETE FROM UniversityDbModel WHERE id=:id")
+//    fun addCurrentSchedule()
 }

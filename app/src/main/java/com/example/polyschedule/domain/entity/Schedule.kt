@@ -1,36 +1,34 @@
 package com.example.polyschedule.domain.entity
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalDate
 
-data class Schedule(val jsonObject: JSONObject, val startWeek: LocalDate){
-    val previousMonday = startWeek.minusDays(7)
-    val nextMonday = startWeek.plusDays(7)
-    val weekday = jsonObject.getInt("weekday")
-    val date = jsonObject.getString("date")
-    var year = ""
-    var month = ""
-    var day = ""
-    val jsonArrayLesson = jsonObject.getJSONArray("lessons")
-    private val _lessons = MutableList(jsonArrayLesson.length()) {
-        Lesson(it, jsonArrayLesson.get(it) as JSONObject)
-    }
-    var lessons = mapOf<String, List<Lesson>>()
-    init {
-        lessons = _lessons.groupBy { it.time_start }
-        val (_year, _month, _day) = date.split("-")
-        year = _year
-        month = _month
-        day = _day
+data class Schedule(
+    val weekday: Int,
+    val date: String,
+    val lessons: JsonArray
+) {
+    lateinit var startWeek: LocalDate
+    lateinit var lessonsMap: Map<String, List<Lesson>>
+    fun init(startWeek: LocalDate) {
+        this.startWeek = startWeek
+        val _lessons = MutableList(lessons.size()) {
+            Gson().fromJson(lessons[it].toString(), Lesson::class.java).apply {
+                init()
+            }
+        }
+        lessonsMap = _lessons.groupBy { it.time_start }
     }
 
 
 
+    fun getPreviousMonday(): LocalDate = startWeek.minusDays(7)
+    fun getNextMonday(): LocalDate = startWeek.plusDays(7)
 
-
-
-
-
+    fun getDay() = date.split("-")[2]
+    fun getMonth() = date.split("-")[1]
 }

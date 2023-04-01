@@ -96,8 +96,8 @@ class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.L
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         holder.time.text = content
         val auditorium =
-            if (item.auditories.contains(Regex("""\d+"""))) ", ${item.auditories}" else ""
-        holder.place.text = "${item.building}$auditorium"
+            if (item.auditories[0].name.contains(Regex("""\d+"""))) ", ${item.auditories[0].name}" else ""
+        holder.place.text = "${item.auditories[0].building.name}$auditorium"
     }
 
 

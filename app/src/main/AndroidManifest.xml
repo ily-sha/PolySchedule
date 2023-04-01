@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".presentation.MyWidget"
+            android:name=".presentation.ScheduleWidget"
             android:icon="@android:drawable/star_big_on"
             android:label="efrfre"
             android:exported="true">
@@ -32,7 +32,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_metadata">
+                android:resource="@xml/schedule_widget_metadata">
             </meta-data>
         </receiver>
     </application>
