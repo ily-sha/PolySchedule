@@ -41,7 +41,7 @@ class ScheduleViewPagerAdapter(private val context: Context): RecyclerView.Adapt
 
 
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
-        Log.d("MainTr", "onBindViewHolder $position")
+//        Log.d("MainTr", "onBindViewHolder $position")
         val currentSchedule = scheduleList[position]
         if (currentSchedule != null){
             if (currentSchedule.lessons.isNotEmpty()) {

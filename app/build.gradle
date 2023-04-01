@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.sumin.shoppinglist"
+        applicationId "com.example.polyschedule"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 1

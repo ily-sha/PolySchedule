@@ -3,11 +3,13 @@ package com.example.polyschedule.presentation
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.polyschedule.data.CacheUtils
 import com.example.polyschedule.data.UniversityImpl
 import com.example.polyschedule.domain.usecase.GetScheduleUseCase
 import com.example.polyschedule.domain.entity.Schedule
 import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.domain.entity.WeekDay
+import com.example.polyschedule.domain.usecase.AddUniversityUseCase
 import com.example.polyschedule.domain.usecase.GetUniversityUseCase
 import com.example.polyschedule.domain.usecase.RemoveUniversityUseCase
 import java.text.DecimalFormat
@@ -24,24 +26,31 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
 
     var currentSchedule = MutableLiveData<MutableList<Schedule>>()
     var currentWeekDay = MutableLiveData<WeekDay>()
-    var getAllUniversitiesLD = MutableLiveData<List<UniversityEntity>>()
     private val removeUniversityUseCase = RemoveUniversityUseCase(repository)
+    private val addUniversityUseCase = AddUniversityUseCase(repository)
+
     fun removeUniversity(id: Int) = removeUniversityUseCase(id)
 
 
-
-
-
-
-    fun getAllUniversities(){
-        getAllUniversitiesLD.value = getUniversityUseCase.getAllUniversities()
+    fun changeMainGroup(universityEntity: UniversityEntity) {
+        CacheUtils.instance?.setString(CacheUtils.MAIN_GROUP, universityEntity.id.toString(), getApplication())
     }
 
+    fun addUniversity(universityEntity: UniversityEntity){
+        addUniversityUseCase(universityEntity)
+    }
 
+    fun getCurrentUniversity(id: Int): UniversityEntity {
+        return getUniversityUseCase.getUniversity(id)
 
+    }
 
-    fun getCurrentWeekSchedule(groupId: Int, instituteId: Int) {
-        currentSchedule = getScheduleUseCase.getCurrentWeekSchedule(groupId, instituteId)
+    fun getAllUniversities(): List<UniversityEntity>{
+        return getUniversityUseCase.getAllUniversities()
+    }
+
+    fun getCurrentWeekSchedule(universityEntity: UniversityEntity) {
+        currentSchedule = getScheduleUseCase.getCurrentWeekSchedule(universityEntity.group.id, universityEntity.institute.id)
     }
     fun getScheduleOfParticularWeek(groupId: Int, instituteId: Int, startDate: String){
         currentSchedule = getScheduleUseCase.getSchedule(groupId, instituteId, startDate)

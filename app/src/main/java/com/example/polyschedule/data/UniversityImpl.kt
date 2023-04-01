@@ -161,14 +161,14 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
         val universityDbModel = universityDao.getUniversity(id)
         val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(universityDbModel.groupId))
         val institute = mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(universityDbModel.instituteId))
-        return UniversityEntity(group, institute)
+        return UniversityEntity(group, institute, id)
     }
 
     override fun getAllUniversity(): List<UniversityEntity> {
         return universityDao.getAllUniversities().map {
             val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(it.groupId))
             val institute = mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(it.instituteId))
-            UniversityEntity(group, institute)
+            UniversityEntity(group, institute, it.id)
         }
     }
 

@@ -4,4 +4,6 @@
     <string name="institute">Институт</string>
     <string name="group">Группа</string>
     <string name="continue_str">Продолжить</string>
+    <string name="change_group">Изменить группу</string>
+    <string name="add_new_group">Добавить новую группу</string>
 </resources>

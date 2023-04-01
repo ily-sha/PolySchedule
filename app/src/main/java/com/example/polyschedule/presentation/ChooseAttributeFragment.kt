@@ -147,12 +147,6 @@ class ChooseAttributeFragment : Fragment() {
         chooseAttributeViewModel.addUniversityBd(
             universityEntity
         )
-        println(
-            CacheUtils.instance?.getString(
-                CacheUtils.MAIN_GROUP,
-                requireContext().applicationContext
-            )
-        )
         requireActivity().supportFragmentManager.beginTransaction().replace(
             R.id.main_fragment_container, ScheduleFragment.newIntent(universityEntity)
         ).commit()

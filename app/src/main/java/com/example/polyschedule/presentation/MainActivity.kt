@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.polyschedule.R
 import com.example.polyschedule.data.CacheUtils
-import com.example.polyschedule.data.UniversityImpl
-import com.example.polyschedule.domain.usecase.GetUniversityUseCase
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,14 +13,13 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) checkCache()
     }
 
+
     private fun checkCache() {
         if (CacheUtils.instance?.hasKey(CacheUtils.MAIN_GROUP, applicationContext) == true) {
             CacheUtils.instance?.getString(CacheUtils.MAIN_GROUP, applicationContext)?.let {
-                val university =
-                    GetUniversityUseCase(UniversityImpl(application)).getUniversity(it.toInt())
                 supportFragmentManager.beginTransaction().addToBackStack(null).replace(
                     R.id.main_fragment_container, ScheduleFragment.newIntent(
-                        university
+                        it.toInt()
                     )
                 ).commit()
             }
