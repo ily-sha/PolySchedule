@@ -2,6 +2,7 @@ package com.example.polyschedule.domain
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.polyschedule.data.ScheduleDbModel
 import com.example.polyschedule.domain.entity.Group
 import com.example.polyschedule.domain.entity.Institute
 import com.example.polyschedule.domain.entity.Schedule
@@ -21,4 +22,8 @@ interface UniversityRepository {
     fun addUniversity(universityEntity: UniversityEntity)
 
     fun removeUniversity(id: Int)
+
+    fun getSchedule(date: String): Schedule
+
+    fun addSchedule(schedule: Schedule)
 }

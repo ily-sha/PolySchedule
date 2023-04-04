@@ -10,18 +10,13 @@ import java.time.LocalDate
 data class Schedule(
     val weekday: Int,
     val date: String,
-    val lessons: JsonArray
+    val lessons: List<Lesson>
 ) {
     lateinit var startWeek: LocalDate
     lateinit var lessonsMap: Map<String, List<Lesson>>
     fun init(startWeek: LocalDate) {
         this.startWeek = startWeek
-        val _lessons = MutableList(lessons.size()) {
-            Gson().fromJson(lessons[it].toString(), Lesson::class.java).apply {
-                init()
-            }
-        }
-        lessonsMap = _lessons.groupBy { it.time_start }
+        lessonsMap = lessons.groupBy { it.time_start }
     }
 
 

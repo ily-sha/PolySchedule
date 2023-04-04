@@ -1,7 +1,5 @@
 package com.example.polyschedule.domain.entity
 
-import com.google.gson.JsonObject
-
 class Lesson(
     val subject: String,
     val time_start: String,
@@ -11,18 +9,20 @@ class Lesson(
     val teachers: List<Teacher>?
 ) {
 
-    lateinit var lesson_type: String
-    lateinit var teacher: String
-    fun init(){
-        teachers.let {
-            teacher = teachers?.get(0)?.full_name ?: ""
-        }
-        lesson_type = when (typeObj.name) {
+    fun getLessonType() =
+        when (typeObj.name) {
             "Лек" -> "Лекция"
             "Лаб" -> "Лаба"
-            else -> {typeObj.name}
+            else -> {
+                typeObj.name
+            }
         }
+
+
+    fun getTeacher() = teachers.let {
+        teachers?.get(0)?.full_name ?: ""
     }
+
 }
 
 class Teacher(
@@ -36,10 +36,8 @@ class Auditorium(
 
 class Building(
     val name: String,
-    val abbr: String
 )
 
 class LessonType(
     val name: String,
-    val abbr: String
 )

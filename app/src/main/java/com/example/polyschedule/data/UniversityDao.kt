@@ -30,6 +30,9 @@ interface UniversityDao {
     @Query("DELETE FROM UniversityDbModel WHERE id=:id")
     fun deleteUniversity(id: Int)
 
-//    @Query("DELETE FROM UniversityDbModel WHERE id=:id")
-//    fun addCurrentSchedule()
+    @Insert
+    fun addSchedule(scheduleDbModel: ScheduleDbModel)
+
+    @Query(value = "SELECT * FROM ScheduleDbModel WHERE date=:date")
+    fun getSchedule(date: String): ScheduleDbModel
 }

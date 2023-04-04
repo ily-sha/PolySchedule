@@ -10,9 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import androidx.viewpager2.widget.ViewPager2
 import com.example.polyschedule.R
 import com.example.polyschedule.databinding.ScheduleFragmentBinding
+import com.example.polyschedule.domain.entity.Schedule
 import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.domain.entity.WeekDay
 import com.example.polyschedule.presentation.adapter.ScheduleViewPagerAdapter
@@ -21,7 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 
 class ScheduleFragment : Fragment() {
-
+    private val TAG = "MainTr"
     private var _binding: ScheduleFragmentBinding? = null
     private val binding: ScheduleFragmentBinding
         get() = _binding ?: throw RuntimeException("ScheduleFragment binding is null")
@@ -125,63 +127,93 @@ class ScheduleFragment : Fragment() {
             scheduleViewModel.currentWeekDay.value?.position ?: WeekDay.MONDAY.position
         }
         binding.scheduleVp.currentItem = tabPosition
+        Log.d(TAG, "currentItem ${binding.scheduleVp.currentItem}")
+        binding.tabLayout.selectTab(binding.tabLayout.getTabAt(tabPosition))
     }
 
     private fun setupRvAdapter() {
-        binding.scheduleVp.adapter = scheduleViewPagerAdapter
+        binding.scheduleVp.apply {
+            adapter = scheduleViewPagerAdapter
+            scheduleViewPagerAdapter.submitList(MutableList(8) { Schedule(it, "", listOf()) })
+        }
         bindTabLayoutWithViewPager()
         setViewPagerCallback()
+        binding.scheduleVp.offscreenPageLimit = 7
+
+        val onTabSelectedListener = object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                Log.d(TAG, "onTabSelected ${tab.position}")
+                binding.tabLayout.selectTab(tab)
+                binding.scheduleVp.currentItem = tab.position
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                Log.d(TAG, "onTabUnselected ${tab?.position}")
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.d(TAG, "onTabReselected ${tab?.position}")
+            }
+        }
+//            TabLayoutMediator.ViewPagerOnTabSelectedListener(viewPager, smoothScroll)
+
+        binding.tabLayout.addOnTabSelectedListener(onTabSelectedListener)
     }
 
     private fun setViewPagerCallback() {
         binding.scheduleVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                Log.d("MainTr", "onPageScrollStateChanged $state")
+                if (binding.scheduleVp.currentItem == WeekDay.FALSE_SATURDAY.position && state == SCROLL_STATE_IDLE) {
+                    binding.scheduleVp.setCurrentItem(WeekDay.SATURDAY.position, false)
+                    updateDayAndMonth(WeekDay.FALSE_SATURDAY.position)
+                    val previousMonday =
+                        scheduleViewPagerAdapter.currentList[WeekDay.FALSE_SATURDAY.position]?.getPreviousMonday()
+                            .toString()
+                    loadNextOfPreviousSchedule(previousMonday)
+                }
+                if (binding.scheduleVp.currentItem == WeekDay.FALSE_MONDAY.position && state == SCROLL_STATE_IDLE) {
+                    binding.scheduleVp.setCurrentItem(WeekDay.MONDAY.position, false)
+                    updateDayAndMonth(WeekDay.FALSE_MONDAY.position)
+                    val nextMonday =
+                        scheduleViewPagerAdapter.currentList[WeekDay.FALSE_MONDAY.position].getNextMonday()
+                            .toString()
+                    loadNextOfPreviousSchedule(nextMonday)
+                }
+            }
+
             override fun onPageSelected(position: Int) {
+                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
                 updateDayAndMonth(position)
                 scheduleViewModel.currentWeekDay.value =
                     WeekDay.values().find { it.position == position }
-            }
-
-            override fun onPageScrolled(
-                position: Int, positionOffset: Float, positionOffsetPixels: Int
-            ) {
-                if (scheduleViewModel.schedule.value != null) {
-                    if (position == WeekDay.FALSE_SATURDAY.position && positionOffset < 0.5) {
-                        binding.scheduleVp.setCurrentItem(WeekDay.SATURDAY.position, false)
-                        updateDayAndMonth(WeekDay.FALSE_SATURDAY.position)
-                        val previousMonday =
-                            scheduleViewPagerAdapter.scheduleList[position]?.getPreviousMonday().toString()
-                        loadNextOfPreviousSchedule(previousMonday)
-                    }
-                    if (position == WeekDay.SATURDAY.position && positionOffset > 0.5) {
-                        binding.scheduleVp.setCurrentItem(WeekDay.MONDAY.position, false)
-                        updateDayAndMonth(WeekDay.FALSE_MONDAY.position)
-                        val nextMonday =
-                            scheduleViewPagerAdapter.scheduleList[position]?.getNextMonday().toString()
-                        loadNextOfPreviousSchedule(nextMonday)
-                    }
-                }
+                Log.d("MainTr", position.toString())
             }
         })
+
     }
 
 
     private fun observeSchedule() {
         scheduleViewModel.schedule.observe(viewLifecycleOwner) { it ->
-            scheduleViewPagerAdapter.scheduleList = it
-            val currentWeekDay = scheduleViewModel.currentWeekDay.value
-            if (currentWeekDay != null) {
-                updateDayAndMonth(currentWeekDay.position)
+            scheduleViewPagerAdapter.submitList(it) {
+                updateDayAndMonth(scheduleViewModel.currentWeekDay.value?.position ?: 0)
             }
+            Log.d(TAG, "currentItem ${binding.scheduleVp.currentItem}")
+            Log.d(TAG, "submitList")
+
         }
     }
 
 
     private fun updateDayAndMonth(position: Int) {
-        val schedule = scheduleViewPagerAdapter.scheduleList[position]
-        if (schedule != null) {
+        val schedule = scheduleViewPagerAdapter.currentList[position]
+        Log.d(TAG, "updateDayAndMonth ${schedule.lessons.size}")
+        if (schedule.lessons.isNotEmpty()) {
             binding.dayAndMonth.text = scheduleViewModel.formatDate(schedule)
         }
-//        Log.d("MainTr", "binding.dayAndMonth.text")
     }
 
 
@@ -193,30 +225,32 @@ class ScheduleFragment : Fragment() {
 
 
     private fun bindTabLayoutWithViewPager() {
-        TabLayoutMediator(
-            binding.tabLayout, binding.scheduleVp
-        ) { tab: TabLayout.Tab, position: Int ->
-            if (position == WeekDay.FALSE_MONDAY.position || position == WeekDay.FALSE_SATURDAY.position) {
+        val list = listOf(
+            WeekDay.FALSE_SATURDAY,
+            WeekDay.MONDAY,
+            WeekDay.TUESDAY,
+            WeekDay.WEDNESDAY,
+            WeekDay.THURSDAY,
+            WeekDay.FRIDAY,
+            WeekDay.SATURDAY,
+            WeekDay.FALSE_MONDAY
+        )
+        for (item in list) {
+            val tab: TabLayout.Tab = binding.tabLayout.newTab()
+            tab.text = item.abbreviation
+            binding.tabLayout.addTab(tab, item.position)
+
+            if (item == WeekDay.FALSE_MONDAY || item == WeekDay.FALSE_SATURDAY) {
                 tab.view.visibility = View.GONE
             }
-            if (position != 1) {
+            if (item.position != 1) {
                 tab.view.post {
                     val p = tab.view.layoutParams as ViewGroup.MarginLayoutParams
                     p.setMargins(20, 0, 0, 0)
                     tab.view.requestLayout()
                 }
             }
-            tab.text = listOf(
-                WeekDay.FALSE_SATURDAY.abbreviation,
-                WeekDay.MONDAY.abbreviation,
-                WeekDay.TUESDAY.abbreviation,
-                WeekDay.WEDNESDAY.abbreviation,
-                WeekDay.THURSDAY.abbreviation,
-                WeekDay.FRIDAY.abbreviation,
-                WeekDay.SATURDAY.abbreviation,
-                WeekDay.FALSE_MONDAY.abbreviation
-            )[position]
-        }.attach()
+        }
     }
 
 

@@ -60,7 +60,13 @@
 
 
             </Toolbar>
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/tab_ll"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
 
+<!--                </LinearLayout>-->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"

@@ -29,6 +29,7 @@ class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.L
             diff.dispatchUpdatesTo(this)
             field = value
         }
+
     private val radioButtonColor = ColorStateList(
         arrayOf(
             intArrayOf(-android.R.attr.state_enabled),
@@ -89,9 +90,9 @@ class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.L
 
     fun fillValue(holder: LessonViewHolder, item: Lesson) {
         holder.lesson.text = item.subject
-        holder.lessonType.text = item.lesson_type
-        holder.teacherLL.visibility = if (item.teacher.isEmpty()) View.GONE else View.VISIBLE
-        holder.teacher.text = item.teacher
+        holder.lessonType.text = item.getLessonType()
+        holder.teacherLL.visibility = if (item.getTeacher().isEmpty()) View.GONE else View.VISIBLE
+        holder.teacher.text = item.getTeacher()
         val content = SpannableString("${item.time_start} - ${item.time_end}")
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         holder.time.text = content

@@ -125,7 +125,6 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
             val loadedSchedule = intermediateScheduleList.find { it.weekday == i }
             if (loadedSchedule == null) {
                 val blank = "{'date': $iterationDay, 'weekday': $i, 'lessons': []}"
-
                 val blankSchedule = Gson().fromJson(blank, Schedule::class.java)
                 blankSchedule.init(mondayOfCurrentWeek)
                 scheduleList.add(blankSchedule)
@@ -204,6 +203,17 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
 
     override fun removeUniversity(id: Int) {
         universityDao.deleteUniversity(id)
+    }
+
+    override fun addSchedule(schedule: Schedule) {
+        schedule.lessons
+        universityDao.addSchedule(
+            mapper.mapScheduleEntityToDbModel(schedule)
+        )
+    }
+
+    override fun getSchedule(date: String): Schedule {
+        TODO("Not yet implemented")
     }
 
 
