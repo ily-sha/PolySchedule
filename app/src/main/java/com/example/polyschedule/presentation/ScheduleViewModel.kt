@@ -5,13 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.polyschedule.data.CacheUtils
 import com.example.polyschedule.data.UniversityImpl
-import com.example.polyschedule.domain.usecase.GetScheduleUseCase
 import com.example.polyschedule.domain.entity.Schedule
 import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.domain.entity.WeekDay
-import com.example.polyschedule.domain.usecase.AddUniversityUseCase
-import com.example.polyschedule.domain.usecase.GetUniversityUseCase
-import com.example.polyschedule.domain.usecase.RemoveUniversityUseCase
+import com.example.polyschedule.domain.usecase.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,22 +24,30 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
     var schedule = MutableLiveData<MutableList<Schedule>>()
     var currentWeekDay = MutableLiveData<WeekDay>()
     private val removeUniversityUseCase = RemoveUniversityUseCase(repository)
-    private val addUniversityUseCase = AddUniversityUseCase(repository)
 
-    fun removeUniversity(id: Int) = removeUniversityUseCase(id)
+    private val getScheduleFromDbUseCase = GetScheduleFromDb(repository)
 
+
+
+
+
+    fun getScheduleFromDb() {
+        var date = Calendar.getInstance().get(Calendar.DATE).toString()
+        if (date.length == 1) date = "0$date"
+        var month = (Calendar.getInstance().get(Calendar.MONTH) + 1).toString()
+        if (month.length == 1) month = "0$month"
+        val year = Calendar.getInstance().get(Calendar.YEAR).toString()
+        getScheduleFromDbUseCase("$year-$month-$date")
+    }
 
     fun changeMainGroup(universityEntity: UniversityEntity) {
         CacheUtils.instance?.setString(CacheUtils.MAIN_GROUP, universityEntity.id.toString(), getApplication())
     }
 
-    fun addUniversity(universityEntity: UniversityEntity){
-        addUniversityUseCase(universityEntity)
-    }
+
 
     fun getCurrentUniversity(id: Int): UniversityEntity {
         return getUniversityUseCase.getUniversity(id)
-
     }
 
     fun getAllUniversities(): List<UniversityEntity>{
@@ -69,5 +74,7 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
         if (currentWeekDay == SUNDAY) currentWeekDay = 1
         return currentWeekDay
     }
+
+
 
 }

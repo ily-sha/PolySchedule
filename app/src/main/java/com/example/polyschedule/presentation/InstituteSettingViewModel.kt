@@ -11,30 +11,23 @@ import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.domain.usecase.AddUniversityUseCase
 import com.example.polyschedule.domain.usecase.GetGroupsUseCase
 import com.example.polyschedule.domain.usecase.GetInstitutesUseCase
-import com.example.polyschedule.domain.usecase.GetUniversityUseCase
 
-class ChooseAttributeViewModel(application: Application): AndroidViewModel(application) {
+class InstituteSettingViewModel(application: Application): AndroidViewModel(application) {
 
 
 
     private val repository = UniversityImpl(application)
-    private val getGroupsUseCase = GetGroupsUseCase(repository)
-    var groupLDfromOut = MutableLiveData<MutableList<Group>>()
+
 
     val instituteLDfromOut = GetInstitutesUseCase(repository).getInstitutes()
 
 
 
-    fun addUniversityBd(universityEntity: UniversityEntity){
-        AddUniversityUseCase(repository).invoke(universityEntity)
-    }
 
 
-    val courseLD = MutableLiveData<Course>()
-    val groupLD = MutableLiveData<Group>()
-    val instituteLD = MutableLiveData<Institute>()
 
-    fun getGroups(numberOfCourse: Int, instituteId: Int){
-        groupLDfromOut = getGroupsUseCase.getGroups(numberOfCourse, instituteId)
-    }
+    val selectedCourse = MutableLiveData<Course>()
+    val selectedInstitute = MutableLiveData<Institute>()
+
+
 }

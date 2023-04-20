@@ -1,7 +1,11 @@
 package com.example.polyschedule
 
+import android.app.Application
+import androidx.lifecycle.Observer
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.polyschedule.data.UniversityImpl
+import com.example.polyschedule.domain.usecase.GetGroupsUseCase
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,8 +21,9 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.polyschedule", appContext.packageName)
+        val application = androidx.test.core.app.ApplicationProvider.getApplicationContext<Application>()
+
+        val liveData = GetGroupsUseCase(UniversityImpl(application)).getGroups(1, 95)
+//        liveData.observe(Observer { println(it) })
     }
 }

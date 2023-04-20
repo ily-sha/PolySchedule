@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.PolySchedule" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="android:windowBackground">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
 <!--        <item name="android:popupMenuStyle">@color/black</item>-->
         <!-- Secondary brand color. -->
@@ -19,6 +19,6 @@
     </style>
     <style name="MyButton" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/primary</item>
-        <item name="background">@drawable/border_for_item_green</item>
+        <item name="background">@drawable/border_for_unselected_setting_item</item>
     </style>
 </resources>

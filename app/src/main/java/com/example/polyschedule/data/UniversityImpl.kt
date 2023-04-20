@@ -1,6 +1,7 @@
 package com.example.polyschedule.data
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.polyschedule.domain.UniversityRepository
@@ -20,7 +21,7 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
 
     private var currentSchedule = MutableLiveData<MutableList<Schedule>>()
     private val instituteLD = MutableLiveData<MutableList<Institute>>()
-    private val groupLD = MutableLiveData<MutableList<Group>>()
+    private val groupLD = MutableLiveData<MutableMap<String, MutableList<Group>>>()
 
     private val universityDao = UniversityDatabase.getInstance(application).universityDao()
 
@@ -30,7 +31,7 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
     override fun getGroups(
         numberOfCourse: Int,
         instituteId: Int
-    ): MutableLiveData<MutableList<Group>> {
+    ): MutableLiveData<MutableMap<String, MutableList<Group>>> {
         thread {
             val groupsList = mutableListOf<Group>()
             try {
@@ -45,7 +46,18 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
                         group
                     )
                 }
-                groupLD.postValue(groupsList.sortedBy { it.id }.toMutableList())
+                val mutableMap = groupsList.sortedBy { it.id }.groupBy { it.spec } as MutableMap<String, MutableList<Group>>
+                groupLD.postValue(mutableMap.apply {
+                    if (keys.contains("")) {
+                        remove("")?.let {
+                            if (this.isEmpty()) {
+                                put("Все группы", it)
+                            } else {
+                                put("Остальные группы", it)
+                            }
+                        }
+                    }
+                })
             } catch (e: Exception) {
                 println(e)
             }

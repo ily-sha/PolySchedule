@@ -1,160 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="6dp"
     android:layout_width="match_parent"
+    app:cardElevation="0dp"
+    android:layout_marginVertical="12dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:layout_marginHorizontal="20dp"
-    android:paddingBottom="@dimen/vertical_margin"
-    android:id="@+id/root_lesson_container"
-    android:background="@drawable/border_for_item_green">
-
+    app:strokeWidth="2dp"
+    app:cardCornerRadius="18dp"
+    app:strokeColor="@color/light_gray"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/vertical_margin"
-        android:layout_marginEnd="4dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-
-            android:layout_width="0dp"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/time_container"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:backgroundTint="@color/primary"
-            android:id="@+id/cardview_lesson_type"
-            app:cardElevation="0dp"
-
-            app:layout_constraintBottom_toTopOf="@+id/tv_lesson_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_time"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_gravity="end"
-                android:gravity="center"
-                android:id="@+id/lesson_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_for_item_purple"
-                android:fontFamily="@font/inter_semibold"
-                android:layout_marginEnd="10dp"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="4dp"
-                android:text="rfcdnndfdwdwff"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintEnd_toStartOf="@+id/cardview_lesson_type"
-            android:id="@+id/tv_time"
-
-            android:layout_marginEnd="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
-            android:text="10:00 - 11:00"
-            android:textColor="@color/white"
-            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/lesson_type_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </TextView>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/time_icon" />
 
-        <TextView
-            android:id="@+id/tv_lesson_name"
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="52454" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="12dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="12dp"
+            android:id="@+id/lesson_type_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/inter_bold"
-            android:text="9582085u490[[[999qwee99999999999["
-            android:textColor="@color/white"
-            android:textSize="20sp"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            android:backgroundTint="@color/lesson_type_container"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardview_lesson_type">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/ll_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_lesson_name">
-
-            <ImageView
-
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/baseline_place_24">
-
-            </ImageView>
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv_place"
+                android:textSize="16sp"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="18dp"
+                android:textColor="@color/lesson_type_text"
+                android:id="@+id/lesson_type"
+                android:fontFamily="@font/inter_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:fontFamily="@font/inter_regular"
-                android:text="11-й учебный корпус, 107 каб."
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_time">
-
-            </TextView>
-
-        </LinearLayout>
-
+                android:text="Пустота" />
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:id="@+id/ll_teacher"
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_place">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/baseline_person_24">
-
-            </ImageView>
+            app:layout_constraintTop_toBottomOf="lesson_type_container">
 
             <TextView
-                android:id="@+id/tv_teacher"
-
+                android:id="@+id/tv_lesson_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:fontFamily="@font/inter_regular"
-                android:text="Кондратьева Наталья Васильевна"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_time">
+                android:fontFamily="@font/inter_bold"
+                android:text="Обасратус полный"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
-            </TextView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/teacher_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:backgroundTint="@color/light_gray"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal"
+                    android:paddingVertical="5dp"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/teacher_icon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/teacher_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_teacher"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/tv_teacher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter_semibold"
+
+                        android:paddingBottom="1dp"
+                        android:text="Жопкин"
+                        android:textColor="@color/dark_green"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/teacher_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/location_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/light_green"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal"
+                    android:paddingVertical="5dp"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:id="@+id/location_icon"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/lesson_location"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/tv_place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:paddingBottom="1dp"
+                        android:text="ПоджопинскПоджопинскПоджопинск"
+                        android:textColor="@color/dark_green"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/location_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

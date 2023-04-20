@@ -11,5 +11,5 @@ enum class WeekDay(val abbreviation: String, val position: Int) {
     THURSDAY("чт", 4),
     FRIDAY("пт", 5),
     SATURDAY("сб", 6),
-    FALSE_MONDAY("", 7),
+    FALSE_MONDAY("", 7)
 }

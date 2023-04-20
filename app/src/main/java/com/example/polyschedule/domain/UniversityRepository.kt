@@ -9,7 +9,7 @@ import com.example.polyschedule.domain.entity.Schedule
 import com.example.polyschedule.domain.entity.UniversityEntity
 
 interface UniversityRepository {
-    fun getGroups(numberOfCourse: Int, instituteId: Int): MutableLiveData<MutableList<Group>>
+    fun getGroups(numberOfCourse: Int, instituteId: Int): MutableLiveData<MutableMap<String, MutableList<Group>>>
     fun getInstitute(): LiveData<MutableList<Institute>>
 
     fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>>

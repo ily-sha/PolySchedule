@@ -7,7 +7,7 @@
     android:layout_marginTop="12dp"
     android:id="@+id/root_lesson_container"
 
-    android:background="@drawable/border_for_item_green"
+    android:background="@drawable/border_for_unselected_setting_item"
     android:paddingBottom="8dp">
 
 
@@ -92,7 +92,7 @@
         </TextView>
 
         <LinearLayout
-            android:id="@+id/ll_place"
+            android:id="@+id/location_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_place">
+            app:layout_constraintTop_toBottomOf="@id/location_container">
 
             <ImageView
                 android:layout_width="wrap_content"

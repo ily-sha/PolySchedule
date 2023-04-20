@@ -1,6 +1,8 @@
 package com.example.polyschedule
 
+import android.app.Application
 import com.example.polyschedule.data.UniversityImpl
+import com.example.polyschedule.domain.usecase.GetGroupsUseCase
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,7 +15,7 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        println(GetGroupsUseCase(UniversityImpl(Application())))
     }
 
 

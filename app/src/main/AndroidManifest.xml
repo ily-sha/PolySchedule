@@ -16,26 +16,23 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".presentation.ScheduleWidget"
+            android:exported="true"
             android:icon="@android:drawable/star_big_on"
-            android:label="efrfre"
-            android:exported="true">
+            android:label="efrfre">
             <intent-filter>
-                <action
-                    android:name="android.appwidget.action.APPWIDGET_UPDATE">
-                </action>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/schedule_widget_metadata">
-            </meta-data>
+                android:resource="@xml/schedule_widget_metadata"></meta-data>
         </receiver>
     </application>
-
 
 </manifest>

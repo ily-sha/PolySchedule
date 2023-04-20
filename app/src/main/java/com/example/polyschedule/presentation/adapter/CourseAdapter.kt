@@ -12,13 +12,18 @@ import com.example.polyschedule.domain.entity.Course
 
 class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
-    class CourseViewHolder(val view: View) : ViewHolder(view) {
-        val tv = view.findViewById<TextView>(R.id.tv)
+    class CourseViewHolder(val view: View) : ViewHolder(view){
+        val tv = view.findViewById<TextView>(R.id.schedule_setting_tv)
     }
 
     var onCourseItemClicked: ((Course) -> Unit)? = null
 
     private var lastSelected = FIRST_CLICK
+
+    fun clear() {
+        extrudeLastView(lastSelected)
+        lastSelected = FIRST_CLICK
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
@@ -38,18 +43,19 @@ class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-        val course = getCourseByPosition(position + 1)
-        holder.tv.text = course.nameOfCourse
-        holder.tv.setOnClickListener {
-            if (lastSelected != FIRST_CLICK) {
-                changeSelectedItemColour(lastSelected)
-                notifyItemChanged(lastSelected)
+        if (position >= 0){
+            val course = getCourseByPosition(position + 1)
+            holder.tv.text = course.nameOfCourse
+            holder.tv.setOnClickListener {
+                if (lastSelected != FIRST_CLICK) {
+                    extrudeLastView(lastSelected)
+                }
+                extrudeLastView(position)
+                lastSelected = position
+                onCourseItemClicked?.invoke(course)
             }
-            changeSelectedItemColour(position)
-            lastSelected = position
-            notifyItemChanged(position)
-            onCourseItemClicked?.invoke(course)
         }
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -62,10 +68,16 @@ class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
             else DISABLED_COURSE_ITEM
     }
 
-    private fun changeSelectedItemColour(position: Int) {
-        val course = getCourseByPosition(position + 1)
-        course.enable = !course.enable
+
+    private fun extrudeLastView(position: Int) {
+        if (position >=0){
+            val course = getCourseByPosition(position + 1)
+            course.enable = !course.enable
+            notifyItemChanged(position)
+        }
+
     }
+
 
     companion object {
         const val ENABLED_COURSE_ITEM = 100

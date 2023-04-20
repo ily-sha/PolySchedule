@@ -8,19 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.polyschedule.R
 import com.example.polyschedule.domain.entity.Group
 
-class GroupAdapter(): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
+class GroupAdapter(val groupList: MutableList<Group>): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
     class GroupViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val tv = itemView.findViewById<TextView>(R.id.tv)
+        val tv = itemView.findViewById<TextView>(R.id.schedule_setting_tv)
     }
 
-    var groupList = mutableListOf<Group>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-    var lastSelected = FIRST_CLICKED
-    var onGroupItemClicked: ((Group) -> Unit)? = null
+
+   var onGroupItemClicked: ((Int, GroupAdapter) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
@@ -39,22 +34,16 @@ class GroupAdapter(): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
         holder.tv.text = groupList[position].name
         holder.tv.setOnClickListener {
-            if (lastSelected != FIRST_CLICKED) {
-                changeSelectedItemParams(lastSelected)
-                notifyItemChanged(lastSelected)
-            }
-            changeSelectedItemParams(position)
-            notifyItemChanged(position)
-            lastSelected = position
-            onGroupItemClicked?.invoke(groupList[position])
+            extrudeLastView(position)
+            onGroupItemClicked?.invoke(position, this)
         }
-
 
     }
 
-    private fun changeSelectedItemParams(position: Int){
+    fun extrudeLastView(position: Int) {
         groupList.add(position, groupList[position].copy(selected = !groupList[position].selected))
         groupList.remove(groupList[position + 1])
+        notifyItemChanged(position)
     }
 
 
@@ -73,8 +62,8 @@ class GroupAdapter(): RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
         const val ENABLED_GROUP_FIRST_ITEM = 1000
         const val DISABLED_GROUP_ITEM = 101
         const val DISABLED_GROUP_FIRST_ITEM = 1001
-
         const val FIRST_CLICKED = -1
+
     }
 
 

@@ -5,6 +5,10 @@
     <dimen name="institute_item_width">100dp</dimen>
     <dimen name="weekday_margin">10dp</dimen>
 
+    <dimen name="horizontal_margin_schedule_setting">24dp</dimen>
+    <dimen name="top_margin_schedule_setting">24dp</dimen>
+
+
 
 
 

@@ -22,7 +22,7 @@ import com.example.polyschedule.presentation.LessonDiffCallback
 
 
 class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
-    var lessonList = mutableMapOf<String, List<Lesson>>()
+    var lessonList = mapOf<String, List<Lesson>>()
         set(value) {
             val callBack = LessonDiffCallback(lessonList, value)
             val diff = DiffUtil.calculateDiff(callBack)
@@ -109,7 +109,7 @@ class LessonAdapter(val context: Context) : RecyclerView.Adapter<LessonAdapter.L
         val lesson = view.findViewById<TextView>(R.id.tv_lesson_name)
         val lessonType = view.findViewById<TextView>(R.id.lesson_type)
         val teacherLL = view.findViewById<LinearLayout>(R.id.ll_teacher)
-        val placeLL = view.findViewById<LinearLayout>(R.id.ll_place)
+        val placeLL = view.findViewById<LinearLayout>(R.id.location_container)
         val radioGroup = view.findViewById<RadioGroup>(R.id.radio_group)
         val root = view.findViewById<ConstraintLayout>(R.id.root_lesson_container)
 
