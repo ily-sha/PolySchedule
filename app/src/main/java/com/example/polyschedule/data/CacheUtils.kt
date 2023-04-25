@@ -55,6 +55,7 @@ class CacheUtils {
         private const val IDENTIFIER = "APP_SETTINGS"
 
         const val MAIN_GROUP = "main_group"
+        const val HAS_ACCOUNT = "has_account"
 
 
         // Инициализация контекста

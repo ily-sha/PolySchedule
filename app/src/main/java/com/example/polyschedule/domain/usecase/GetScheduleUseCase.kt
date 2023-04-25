@@ -6,11 +6,11 @@ import com.example.polyschedule.domain.entity.Schedule
 
 class GetScheduleUseCase(private val universityRepository: UniversityRepository){
 
-    fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableLiveData<MutableList<Schedule>> {
+    suspend fun getCurrentWeekSchedule(groupId: Int, instituteId: Int): MutableList<Schedule>{
         return universityRepository.getCurrentWeekSchedule(groupId, instituteId)
     }
 
-    fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableLiveData<MutableList<Schedule>> {
+    suspend fun getSchedule(groupId: Int, instituteId: Int, startDate: String): MutableList<Schedule>{
         return universityRepository.getSchedule(groupId, instituteId, startDate)
     }
 

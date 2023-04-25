@@ -9,9 +9,15 @@ import com.example.polyschedule.domain.entity.Schedule
 import com.example.polyschedule.domain.entity.UniversityEntity
 import com.example.polyschedule.domain.entity.WeekDay
 import com.example.polyschedule.domain.usecase.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Locale
+
 
 class ScheduleViewModel(application: Application): AndroidViewModel(application) {
     private val SUNDAY = 0
@@ -21,16 +27,15 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
 
 
 
-    var schedule = MutableLiveData<MutableList<Schedule>>()
+    var scheduleLD = MutableLiveData<MutableList<Schedule>>()
+
+    var universityEntityLD = MutableLiveData<UniversityEntity>()
     var currentWeekDay = MutableLiveData<WeekDay>()
     private val removeUniversityUseCase = RemoveUniversityUseCase(repository)
 
     private val getScheduleFromDbUseCase = GetScheduleFromDb(repository)
 
-
-
-
-
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
     fun getScheduleFromDb() {
         var date = Calendar.getInstance().get(Calendar.DATE).toString()
         if (date.length == 1) date = "0$date"
@@ -55,10 +60,22 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun getCurrentWeekSchedule(universityEntity: UniversityEntity) {
-        schedule = getScheduleUseCase.getCurrentWeekSchedule(universityEntity.group.id, universityEntity.institute.id)
+        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1 == SUNDAY){
+            getScheduleOfParticularWeek(universityEntity.group.id, universityEntity.institute.id, LocalDate.now().plusDays(1).toString())
+        }
+        coroutineScope.launch {
+            scheduleLD.postValue(getScheduleUseCase.getCurrentWeekSchedule(universityEntity.group.id, universityEntity.institute.id))
+        }
+
     }
+
+
     fun getScheduleOfParticularWeek(groupId: Int, instituteId: Int, startDate: String){
-        schedule = getScheduleUseCase.getSchedule(groupId, instituteId, startDate)
+        //date format 2022-04-22
+        coroutineScope.launch {
+            scheduleLD.postValue(getScheduleUseCase.getSchedule(groupId, instituteId, startDate))
+        }
+
     }
 
     fun formatDate(schedule: Schedule): String{
@@ -69,10 +86,11 @@ class ScheduleViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun getCurrentWeekDay(): Int {
-        var currentWeekDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
-//            TODO("after day finished next day")
-        if (currentWeekDay == SUNDAY) currentWeekDay = 1
-        return currentWeekDay
+        //            TODO("after day finished next day")
+        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1 == SUNDAY){
+            return 1
+        }
+        return Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
     }
 
 

@@ -1,14 +1,10 @@
 package com.example.polyschedule.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
@@ -30,17 +26,16 @@ class ScheduleFragment : Fragment() {
         ViewModelProvider(this)[ScheduleViewModel::class.java]
     }
 
-
     private val scheduleViewPagerAdapter by lazy {
         ScheduleViewPagerAdapter(requireContext())
     }
 
     private val universityEntity: UniversityEntity by lazy {
-        arg.value.universityEntity
+        arg.universityEntity
     }
 
     private val arg by lazy {
-        navArgs<ScheduleFragmentArgs>()
+        navArgs<ScheduleFragmentArgs>().value
     }
 
     override fun onCreateView(
@@ -51,8 +46,6 @@ class ScheduleFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        parseIntent()
-
         _binding = ScheduleFragmentBinding.bind(view)
         setupRVandTabLayout()
 
@@ -67,6 +60,9 @@ class ScheduleFragment : Fragment() {
                 }
             })
         binding.menu.setOnClickListener { menuClicked(it) }
+
+
+
     }
 
     private fun menuClicked(view: View) {
@@ -171,15 +167,15 @@ class ScheduleFragment : Fragment() {
                     loadNextOfPreviousSchedule(previousMonday)
                     updateDayAndMonth(WeekDay.FALSE_SATURDAY.position)
                     binding.scheduleVp.currentItem = WeekDay.SATURDAY.position
-                } else if (unselectedTab?.position == 0 && tab.position == 6) {
-                    return
-                } else if (unselectedTab?.position == 7 && tab.position == 1) {
-                    return
                 } else if (tab.position == binding.scheduleVp.currentItem) {
                     updateDayAndMonth(tab.position)
                 } else if (tab.position != binding.scheduleVp.currentItem) {
                     updateDayAndMonth(tab.position)
                     binding.scheduleVp.currentItem = tab.position
+                } else if (unselectedTab?.position == 0 && tab.position == 6) {
+                    return
+                } else if (unselectedTab?.position == 7 && tab.position == 1) {
+                    return
                 }
             }
 
@@ -203,7 +199,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun observeSchedule() {
-        scheduleViewModel.schedule.observe(viewLifecycleOwner) { it ->
+        scheduleViewModel.scheduleLD.observe(viewLifecycleOwner) { it ->
             scheduleViewPagerAdapter.scheduleList = it
             setPage()
             binding.progressBar.visibility = View.INVISIBLE
@@ -256,24 +252,6 @@ class ScheduleFragment : Fragment() {
     }
 
 
-    private fun parseIntent() {
-//        if (!(requireArguments().containsKey(UNIVERSITY_KEY) || requireArguments().containsKey(
-//                UNIVERSITY_ID_KEY
-//            ))
-//        ) throw RuntimeException("Lack more extra params")
-//        if (requireArguments().containsKey(UNIVERSITY_KEY)) {
-//            requireArguments().getSerializable(UNIVERSITY_KEY).let {
-//                if (it == null) throw RuntimeException("UNIVERSITY_KEY params is null")
-//                universityEntity = it as UniversityEntity
-//            }
-//        }
-//        if (requireArguments().containsKey(UNIVERSITY_ID_KEY)) {
-//            requireArguments().getInt(UNIVERSITY_ID_KEY).let {
-//                universityEntity = scheduleViewModel.getCurrentUniversity(it)
-//            }
-//        }
-
-    }
 
 
     companion object {

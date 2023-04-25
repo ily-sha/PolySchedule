@@ -43,18 +43,18 @@ class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-        if (position >= 0){
-            val course = getCourseByPosition(position + 1)
-            holder.tv.text = course.nameOfCourse
-            holder.tv.setOnClickListener {
-                if (lastSelected != FIRST_CLICK) {
-                    extrudeLastView(lastSelected)
-                }
-                extrudeLastView(position)
-                lastSelected = position
-                onCourseItemClicked?.invoke(course)
+
+        val course = getCourseByPosition(position + 1)
+        holder.tv.text = course.nameOfCourse
+        holder.tv.setOnClickListener {
+            if (lastSelected != FIRST_CLICK) {
+                extrudeLastView(lastSelected)
             }
+            extrudeLastView(position)
+            lastSelected = position
+            onCourseItemClicked?.invoke(course)
         }
+
 
     }
 

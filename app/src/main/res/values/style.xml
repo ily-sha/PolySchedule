@@ -7,6 +7,62 @@
         <item name="font">@font/inter_bold</item>
     </style>
 
+    <style name="ButtonCardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardElevation">0dp</item>
+
+    </style>
+
+    <style name="EditTextCardView" parent="ButtonCardView">
+        <item name="strokeColor">@color/hint_light_gray</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <style name="GreenButtonCardView" parent="ButtonCardView">
+        <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="LightGreenButtonCardView" parent="ButtonCardView">
+        <item name="android:backgroundTint">@color/light_green</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textColorHint">@color/hint_light_gray</item>
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="android:paddingVertical">10dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+<!--        <item name="background">null</item>-->
+    </style>
+
+
+    <style name="TextCardView">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="GreenTextCardView" parent="TextCardView">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="LightGreenTextCardView" parent="TextCardView">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+
+
     <style name="SelectedTab" parent="TabStyle">
         <item name="android:color">@color/dark_gray</item>
     </style>

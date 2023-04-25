@@ -1,9 +1,6 @@
 package com.example.polyschedule.data
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.polyschedule.domain.UniversityRepository
 import com.example.polyschedule.domain.entity.Group
 import com.example.polyschedule.domain.entity.Group.Companion.COMMON_TYPE
@@ -14,97 +11,89 @@ import com.google.gson.Gson
 import org.json.JSONObject
 import java.net.URL
 import java.time.LocalDate
-import kotlin.concurrent.thread
 
 
 class UniversityImpl(private val application: Application) : UniversityRepository {
 
-    private var currentSchedule = MutableLiveData<MutableList<Schedule>>()
-    private val instituteLD = MutableLiveData<MutableList<Institute>>()
-    private val groupLD = MutableLiveData<MutableMap<String, MutableList<Group>>>()
 
     private val universityDao = UniversityDatabase.getInstance(application).universityDao()
 
     private val mapper = Mapper()
 
 
-    override fun getGroups(
+    override suspend fun getGroups(
         numberOfCourse: Int,
         instituteId: Int
-    ): MutableLiveData<MutableMap<String, MutableList<Group>>> {
-        thread {
-            val groupsList = mutableListOf<Group>()
-            try {
-                val result =
-                    (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/${instituteId}/groups").readText()))!!.value
-                val json = JSONObject(result.substring(result.indexOf("{")))
-                val groups = json.getJSONObject("groups").getJSONObject("data")
-                    .getJSONArray("${instituteId}")
-                for (i in 0 until groups.length()) {
-                    val group = Gson().fromJson(groups[i].toString(), Group::class.java)
-                    if (group.level == numberOfCourse && group.type == COMMON_TYPE) groupsList.add(
-                        group
-                    )
-                }
-                val mutableMap = groupsList.sortedBy { it.id }.groupBy { it.spec } as MutableMap<String, MutableList<Group>>
-                groupLD.postValue(mutableMap.apply {
-                    if (keys.contains("")) {
-                        remove("")?.let {
-                            if (this.isEmpty()) {
-                                put("Все группы", it)
-                            } else {
-                                put("Остальные группы", it)
-                            }
+    ): MutableMap<String, MutableList<Group>> {
+        val groupsList = mutableListOf<Group>()
+        try {
+            val result =
+                (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/${instituteId}/groups").readText()))!!.value
+            val json = JSONObject(result.substring(result.indexOf("{")))
+            val groups = json.getJSONObject("groups").getJSONObject("data")
+                .getJSONArray("$instituteId")
+            for (i in 0 until groups.length()) {
+                val group = Gson().fromJson(groups[i].toString(), Group::class.java)
+                if (group.level == numberOfCourse && group.type == COMMON_TYPE) groupsList.add(
+                    group
+                )
+            }
+            val mutableMap = groupsList.sortedBy { it.id }
+                .groupBy { it.spec } as MutableMap<String, MutableList<Group>>
+            return mutableMap.apply {
+                if (keys.contains("")) {
+                    remove("")?.let {
+                        if (this.isEmpty()) {
+                            put("Все группы", it)
+                        } else {
+                            put("Остальные группы", it)
                         }
                     }
-                })
-            } catch (e: Exception) {
-                println(e)
-            }
-        }
-        return groupLD
-    }
-
-    override fun getInstitute(): LiveData<MutableList<Institute>> {
-        thread {
-            val instituteList = mutableListOf<Institute>()
-            try {
-                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
-                    URL("https://ruz.spbstu.ru/")
-                        .readText()
-                ))!!.value
-                val json = JSONObject(result.substring(result.indexOf("{")))
-                val institutes = json.getJSONObject("faculties").getJSONArray("data")
-                for (i in 0 until institutes.length()) {
-                    val institute = Gson().fromJson(institutes[i].toString(), Institute::class.java)
-                    instituteList.add(institute)
                 }
-            } catch (e: Exception) {
-                println(e)
             }
-            instituteLD.postValue(instituteList)
+        } catch (e: Exception) {
+            throw e
         }
-        return instituteLD
     }
 
-    override fun getCurrentWeekSchedule(
+    override suspend fun getInstitute(): MutableList<Institute> {
+        val instituteList = mutableListOf<Institute>()
+        try {
+            val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
+                URL("https://ruz.spbstu.ru/")
+                    .readText()
+            ))!!.value
+            val json = JSONObject(result.substring(result.indexOf("{")))
+            val institutes = json.getJSONObject("faculties").getJSONArray("data")
+            for (i in 0 until institutes.length()) {
+                val institute = Gson().fromJson(institutes[i].toString(), Institute::class.java)
+                instituteList.add(institute)
+            }
+            return instituteList
+        } catch (e: Exception) {
+            throw e
+        }
+
+
+    }
+
+    override suspend fun getCurrentWeekSchedule(
         groupId: Int,
         instituteId: Int
-    ): MutableLiveData<MutableList<Schedule>> {
-        thread {
-            try {
-                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
-                    URL(
-                        "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId"
-                    ).readText()
-                ))!!.value
-                currentSchedule.postValue(parsePage(result, groupId))
-            } catch (e: java.lang.Exception) {
-                throw e
-            }
+    ): MutableList<Schedule> {
+
+        try {
+            val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
+                URL(
+                    "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId"
+                ).readText()
+            ))!!.value
+            return parsePage(result, groupId)
+        } catch (e: java.lang.Exception) {
+            throw e
         }
 
-        return currentSchedule
+
     }
 
     private fun parsePage(result: String, groupId: Int): MutableList<Schedule> {
@@ -164,26 +153,21 @@ class UniversityImpl(private val application: Application) : UniversityRepositor
     }
 
 
-    override fun getSchedule(
+    override suspend fun getSchedule(
         groupId: Int,
         instituteId: Int,
         startDate: String
-    ): MutableLiveData<MutableList<Schedule>> {
-
-        thread {
-            try {
-
-                val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
-                    URL(
-                        "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId?date=$startDate"
-                    ).readText()
-                ))!!.value
-                currentSchedule.postValue(parsePage(result, groupId))
-            } catch (e: java.lang.Exception) {
-                throw e
-            }
+    ): MutableList<Schedule> {
+        try {
+            val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
+                URL(
+                    "https://ruz.spbstu.ru/faculty/$instituteId/groups/$groupId?date=$startDate"
+                ).readText()
+            ))!!.value
+            return parsePage(result, groupId)
+        } catch (e: java.lang.Exception) {
+            throw e
         }
-        return currentSchedule
     }
 
 

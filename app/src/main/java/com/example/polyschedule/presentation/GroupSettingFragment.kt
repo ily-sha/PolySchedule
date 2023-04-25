@@ -21,7 +21,18 @@ class GroupSettingFragment : Fragment() {
     private val binding: FragmentGroupSettingBinding
     get() = _binding ?: throw IllegalStateException("FragmentGroupSettingBinding is null")
 
+    interface ShowBottomNav {
+        fun showBottomNavigationView()
+    }
 
+    private lateinit var showBottomNav: GroupSettingFragment.ShowBottomNav
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ShowBottomNav) {
+            showBottomNav = context
+        } else throw RuntimeException("Activity which use MainBlankFragment must implements GroupSettingFragment.ShowBottomNav")
+        groupSettingViewModel.getGroups(args.course, args.institute)
+    }
 
 
     private val groupSettingViewModel by lazy {
@@ -32,10 +43,7 @@ class GroupSettingFragment : Fragment() {
         GroupSectionAdapter()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        groupSettingViewModel.getGroups(args.course, args.institute)
-    }
+
 
     private val args by lazy {
         navArgs<GroupSettingFragmentArgs>().value
@@ -51,13 +59,6 @@ class GroupSettingFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        lifecycle.addObserver(object : LifecycleEventObserver {
-//            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-//                Log.d("MainTr", "Group ${event.name}")
-//            }
-//
-//        })
-
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -65,7 +66,11 @@ class GroupSettingFragment : Fragment() {
         binding.continueButton.setOnClickListener {
             groupSettingViewModel.selectedGroup.value?.let {
                 val universityEntity = UniversityEntity(it, args.institute)
-                findNavController().navigate(GroupSettingFragmentDirections.actionGroupSettingToScheduleFragment(universityEntity))
+                groupSettingViewModel.setMainSchedule(universityEntity)
+                findNavController().navigate(GroupSettingFragmentDirections.actionGroupSettingFragmentToScheduleFragment(universityEntity))
+                showBottomNav.showBottomNavigationView()
+
+
             }
         }
 

@@ -6,9 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,26 +46,26 @@ class InstituteSettingFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         Log.d(lifec, "onViewCreated")
-        Course.values().iterator().forEachRemaining( Consumer {
-            Log.d("LIFECU", "${it.name} - ${it.enable}")
-        })
+
         _binding = InstituteSettingFragmentBinding.bind(view)
         setupRvAdapter()
         observeInstitute()
-        lifecycle.addObserver(object : LifecycleEventObserver {
-            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-                Course.values().iterator().forEachRemaining( Consumer {
-                    Log.d("MainTr", "${it.name} - ${it.enable}")
-                })
-                Log.d("MainTr", "Insitute ${event.name}")
-            }
-        })
+        instituteSettingViewModel.loadInstitute()
+//        lifecycle.addObserver(object : LifecycleEventObserver {
+//            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+//                Course.values().iterator().forEachRemaining( Consumer {
+//                    Log.d("MainTr", "${it.name} - ${it.enable}")
+//                })
+//                Log.d("MainTr", "Insitute ${event.name}")
+//            }
+//        })
     }
 
 
 
     private fun observeInstitute() {
-        instituteSettingViewModel.instituteLDfromOut.observe(viewLifecycleOwner) {
+        instituteSettingViewModel.instituteLD.observe(viewLifecycleOwner) {
+            binding.progressBar.visibility = View.GONE
             instituteAdapter.instituteList = it
         }
     }
@@ -84,7 +81,7 @@ class InstituteSettingFragment : Fragment() {
     private fun continueButtonClicked() {
         val institute = instituteSettingViewModel.selectedInstitute.value!!
         val course = instituteSettingViewModel.selectedCourse.value!!
-        findNavController().navigate(InstituteSettingFragmentDirections.actionInstituteSettingFragmentToGroupSetting(course, institute))
+        findNavController().navigate(InstituteSettingFragmentDirections.actionInstituteSettingFragmentToGroupSettingFragment(institute, course))
     }
 
     private fun setupCourseAdapter() {
@@ -92,9 +89,6 @@ class InstituteSettingFragment : Fragment() {
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.rvCourse.adapter = courseAdapter
         courseAdapter.onCourseItemClicked = {
-            Course.values().iterator().forEachRemaining( Consumer {
-                Log.d("LIFECU", "onCourseItemClicked ${it.name} - ${it.enable}")
-            })
             instituteSettingViewModel.selectedCourse.value = it
 
             val institute = instituteSettingViewModel.selectedInstitute.value

@@ -5,7 +5,6 @@ import com.example.polyschedule.domain.UniversityRepository
 import com.example.polyschedule.domain.entity.Institute
 
 data class GetInstitutesUseCase(private val universityRepository: UniversityRepository){
-    fun getInstitutes(): LiveData<MutableList<Institute>> {
-        return universityRepository.getInstitute()
+    suspend fun getInstitutes(): MutableList<Institute> { return universityRepository.getInstitute()
     }
 }
