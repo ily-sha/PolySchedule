@@ -47,10 +47,10 @@ class ScheduleViewPagerAdapter(private val context: Context) : PagerAdapter() {
 
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-
+        val layout = R.layout.schedule_item
         val item = ScheduleViewHolder(
             LayoutInflater.from(container.context)
-                .inflate(R.layout.schedule_item, container, false)
+                .inflate(layout, container, false)
         )
         scheduleViewList[position] = item
         container.addView(item.view)

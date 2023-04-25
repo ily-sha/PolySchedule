@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:enabled="true"
+        android:id="@+id/scheduleFragment"
+        android:icon="@drawable/bottom_navigation_schedule_selector"/>
+    <item
+        android:enabled="true"
+        android:id="@+id/deadlineFragment"
+        android:icon="@drawable/bottom_navigation_deadline_selector"/>
+    <item
+        android:enabled="true"
+        android:id="@+id/routeFragment"
+        android:icon="@drawable/bottom_navigation_route_selector"/>
+    <item
+        android:enabled="true"
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/bottom_navigation_account_selector"/>
+</menu>

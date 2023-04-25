@@ -9,4 +9,32 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="schedule_setting">Настройка расписания</string>
+    <string name="personal_account">Личный кабинет</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="schedule">Расписание</string>
+    <string name="route_map">Карта</string>
+    <string name="account">Профиль</string>
+    <string name="deadline">Дедлайны</string>
+    <string name="sing_in_by_poly_chess">Войти через PolyChess</string>
+    <string name="for_chess_player">Для шахматистов</string>
+    <string name="sleep_calm">Спите спокойно!</string>
+    <string name="sleep_calm_description">Заведите будильник, который будет подстраиваться под первую пару.\nИзменения в расписание - изменение в будильнике</string>
+    <string name="alarm_clock">Будильник</string>
+    <string name="chess_player_mode">Режим шахматиста</string>
+    <string name="chess_player_mode_description">Настройте автопосещение для занятий по шахматам. Для тех, кто на шахматах</string>
+    <string name="auto_attending">Автопосещение</string>
+    <string name="email">Почта</string>
+    <string name="email_example">email@example.com</string>
+    <string name="send_code">Отправить код</string>
+    <string name="text_request_after_some_second">До следующего запроса %s секунд</string>
+    <string name="confirmation_code_from_email">Код подтверждения с почты</string>
+    <string name="confirmation_code_from_poly_chess">Код подтверждения с PolyChess</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="sign_in_description">Введите фамилию, под которой вы зарегистрированы в PolyChess Это можно узнать, написав боту любое сообщение</string>
+    <string name="chess_player_surname">Алехин</string>
+    <string name="code_confirmation_from_poly_chess">Введите код, который пришлет PolyChess</string>
+    <string name="i_am_going_to">Я хожу к</string>
+    <string name="loading">Загрузка...</string>
 </resources>

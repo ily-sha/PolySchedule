@@ -7,7 +7,7 @@ import com.example.polyschedule.domain.entity.Group
 
 data class GetGroupsUseCase(private val universityRepository: UniversityRepository) {
 
-    fun getGroups(numberOfCourse: Int, instituteId: Int): MutableLiveData<MutableMap<String, MutableList<Group>>> {
+    suspend fun getGroups(numberOfCourse: Int, instituteId: Int): MutableMap<String, MutableList<Group>> {
         return universityRepository.getGroups(numberOfCourse, instituteId)
     }
 }
