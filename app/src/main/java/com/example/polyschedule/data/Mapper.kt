@@ -1,6 +1,9 @@
 package com.example.polyschedule.data
 
-import androidx.room.Database
+import com.example.polyschedule.data.database.UniversityDatabase
+import com.example.polyschedule.data.database.dbmodels.GroupDbModel
+import com.example.polyschedule.data.database.dbmodels.InstituteDbModel
+import com.example.polyschedule.data.database.dbmodels.UniversityDbModel
 import com.example.polyschedule.domain.entity.*
 
 class Mapper {
@@ -45,15 +48,15 @@ class Mapper {
         )
     }
 
-    fun mapUniversityEntityToBdModel(entity: UniversityEntity): UniversityDbModel {
+    fun mapUniversityEntityToBdModel(entity: Direction): UniversityDbModel {
         return UniversityDbModel(
             instituteId = entity.institute.id,
             groupId = entity.group.id,
-            id = UniversityEntity.AUTOGENERATE_ID
+            id = Direction.AUTOGENERATE_ID
         )
     }
 
-    fun mapGroupEntityToGroupBdModel(group: Group): GroupDbModel{
+    fun mapGroupEntityToGroupBdModel(group: Group): GroupDbModel {
         return GroupDbModel(
             id = group.id,
             level = group.level,
@@ -81,7 +84,7 @@ class Mapper {
         )
     }
 
-    fun mapInstituteEntityToDbModel(institute: Institute): InstituteDbModel{
+    fun mapInstituteEntityToDbModel(institute: Institute): InstituteDbModel {
         return InstituteDbModel(
             id = institute.id,
             abbr = institute.abbr,

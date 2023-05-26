@@ -3,6 +3,9 @@
     package="com.example.polyschedule">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.Account.AlarmClock.AlarmClockLockScreenActivity"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"/>
+        <receiver android:name=".presentation.Account.AlarmClock.AlarmClockReceiver">
+        </receiver>
 
         <receiver
             android:name=".presentation.ScheduleWidget"

@@ -6,11 +6,11 @@
     app:startDestination="@id/mainBlankFragment">
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.example.polyschedule.presentation.ScheduleFragment"
+        android:name="com.example.polyschedule.presentation.Schedule.ScheduleFragment"
         android:label="ScheduleFragment" >
         <argument
-            android:name="universityEntity"
-            app:argType="com.example.polyschedule.domain.entity.UniversityEntity" />
+            android:name="direction"
+            app:argType="com.example.polyschedule.domain.entity.Direction" />
     </fragment>
     <fragment
         android:id="@+id/mainBlankFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.example.polyschedule.presentation.AccountFragment"
+        android:name="com.example.polyschedule.presentation.Account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" >
         <action
@@ -42,10 +42,13 @@
         <action
             android:id="@+id/action_accountFragment_to_autoAttendingFragment"
             app:destination="@id/autoAttendingFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_alarmClockFragment"
+            app:destination="@id/alarmClockFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupSettingFragment"
-        android:name="com.example.polyschedule.presentation.GroupSettingFragment"
+        android:name="com.example.polyschedule.presentation.SettingSchedule.GroupSettingFragment"
         android:label="GroupSettingFragment" >
         <action
             android:id="@+id/action_groupSettingFragment_to_scheduleFragment"
@@ -59,7 +62,7 @@
     </fragment>
     <fragment
         android:id="@+id/instituteSettingFragment"
-        android:name="com.example.polyschedule.presentation.InstituteSettingFragment"
+        android:name="com.example.polyschedule.presentation.SettingSchedule.InstituteSettingFragment"
         android:label="InstituteSettingFragment" >
         <action
             android:id="@+id/action_instituteSettingFragment_to_groupSettingFragment"
@@ -67,48 +70,37 @@
     </fragment>
     <fragment
         android:id="@+id/routeFragment"
-        android:name="com.example.polyschedule.presentation.RouteFragment"
+        android:name="com.example.polyschedule.presentation.Route.RouteFragment"
         android:label="fragment_route"
         tools:layout="@layout/fragment_route" />
     <fragment
         android:id="@+id/deadlineFragment"
-        android:name="com.example.polyschedule.presentation.DeadlineFragment"
+        android:name="com.example.polyschedule.presentation.Deadline.DeadlineFragment"
         android:label="fragment_deadline"
         tools:layout="@layout/fragment_deadline" />
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.polyschedule.SignInFragment"
+        android:name="com.example.polyschedule.presentation.Auth.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
-        <action
-            android:id="@+id/action_signInFragment_to_accountFragment"
-            app:destination="@id/accountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_in" />
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.polyschedule.SignUpFragment"
+        android:name="com.example.polyschedule.presentation.Auth.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_signUpFragment_to_accountFragment"
-            app:destination="@id/accountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_up" />
     <fragment
         android:id="@+id/signInByPolyChessFragment"
-        android:name="com.example.polyschedule.SignInByPolyChessFragment"
+        android:name="com.example.polyschedule.presentation.Auth.SignInByPolyChessFragment"
         android:label="fragment_sign_in_by_poly_chess"
-        tools:layout="@layout/fragment_sign_in_by_poly_chess" >
-        <action
-            android:id="@+id/action_signInByPolyChessFragment_to_accountFragment"
-            app:destination="@id/accountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_in_by_poly_chess" />
     <fragment
         android:id="@+id/autoAttendingFragment"
-        android:name="com.example.polyschedule.AutoAttendingFragment"
+        android:name="com.example.polyschedule.presentation.Account.AutoAttendingFragment"
         android:label="fragment_auto_attending"
-        tools:layout="@layout/fragment_auto_attending" >
-        <action
-            android:id="@+id/action_autoAttendingFragment_to_accountFragment"
-            app:destination="@id/accountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_auto_attending" />
+    <fragment
+        android:id="@+id/alarmClockFragment"
+        android:name="com.example.polyschedule.presentation.Account.AlarmClock.AlarmClockFragment"
+        android:label="fragment_alarm_clock"
+        tools:layout="@layout/fragment_alarm_clock" />
 </navigation>

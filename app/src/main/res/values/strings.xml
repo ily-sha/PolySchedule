@@ -37,4 +37,9 @@
     <string name="code_confirmation_from_poly_chess">Введите код, который пришлет PolyChess</string>
     <string name="i_am_going_to">Я хожу к</string>
     <string name="loading">Загрузка...</string>
+    <string name="wake_up_time">За сколько до первой пары будить?</string>
+    <string name="save">Сохранить</string>
+    <string name="reject_alarm_clock">Отключить будильник</string>
+    <string name="time_to_next_alarm_clock">Следующий будильник через %s</string>
+    <string name="alarm_clock_schedule">Расписание будильник</string>
 </resources>

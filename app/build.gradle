@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id 'org.jetbrains.kotlin.android'
 }
 
 
@@ -32,11 +33,31 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res',
+                        'src\\main\\res\\layouts\\auth',
+                        'src\\main\\res\\layouts\\account',
+                        'src\\main\\res\\layouts\\rv_course_items',
+                        'src\\main\\res\\layouts\\rv_institute_items',
+                        'src\\main\\res\\layouts\\route',
+                        'src\\main\\res\\layouts\\schedule',
+                        'src\\main\\res\\layouts\\deadline',
+                        'src\\main\\res\\layouts\\schedule_setting',
+                        'src\\main\\res\\layouts\\main',
+                        'src\\main\\res\\layouts\\widget',
+                        'src\\main\\res\\layouts\\rv_items',
+                        'src\\main\\res\\layouts\\rv_group_items'
+            }
+        }
+    }
 }
 
 
 
 dependencies {
+
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
@@ -51,9 +72,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     implementation "androidx.room:room-runtime:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
+    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
     kapt "androidx.room:room-compiler:2.5.1"
     testImplementation 'junit:junit:4.13.2'
-
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.github.addisonelliott:SegmentedButton:3.1.9'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

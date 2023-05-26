@@ -1,6 +1,5 @@
 package com.example.polyschedule.presentation
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,20 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.example.polyschedule.R
 import com.example.polyschedule.data.CacheUtils
-import com.example.polyschedule.data.UniversityImpl
-import com.example.polyschedule.domain.usecase.GetUniversityUseCase
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.polyschedule.data.repoimpl.DirectionRepositoryImpl
+import com.example.polyschedule.domain.usecase.direction.GetDirectionUseCase
+import com.example.polyschedule.presentation.SettingSchedule.GroupSettingFragment
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MainBlankFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MainBlankFragment : Fragment() {
 
     private lateinit var showBottomNav: GroupSettingFragment.ShowBottomNav
@@ -38,14 +29,11 @@ class MainBlankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_blank, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         if (savedInstanceState == null) {
             checkCache()
         }
@@ -54,7 +42,7 @@ class MainBlankFragment : Fragment() {
     private fun checkCache() {
         if (CacheUtils.instance?.hasKey(CacheUtils.MAIN_GROUP, requireContext().applicationContext) == true) {
             CacheUtils.instance?.getString(CacheUtils.MAIN_GROUP, requireContext().applicationContext)?.let {
-                val universityEntity = GetUniversityUseCase(UniversityImpl(requireActivity().application)).getUniversity(it.toInt())
+                val universityEntity = GetDirectionUseCase(DirectionRepositoryImpl(requireActivity().application)).getDirection(it.toInt())
                 findNavController().navigate(
                     MainBlankFragmentDirections.actionMainBlankFragmentToScheduleFragment(
                         universityEntity
@@ -64,7 +52,6 @@ class MainBlankFragment : Fragment() {
 
             }
         } else {
-
             findNavController().navigate(MainBlankFragmentDirections.actionMainBlankFragmentToInstituteSettingFragment())
         }
     }

@@ -1,8 +1,5 @@
 package com.example.polyschedule.domain.entity
 
-import com.example.polyschedule.presentation.ScheduleFragment
-import java.text.FieldPosition
-
 enum class WeekDay(val abbreviation: String, val position: Int) {
     FALSE_SATURDAY("", 0),
     MONDAY("пн", 1),

@@ -11,11 +11,10 @@ class Lesson(
 
     fun getLessonType() =
         when (typeObj.name) {
-            "Лек" -> "Лекция"
-            "Лаб" -> "Лаба"
-            else -> {
-                typeObj.name
-            }
+            "Лекции" -> "Лекция"
+            "Лабораторные" -> "Лаба"
+            else -> typeObj.name
+
         }
 
 

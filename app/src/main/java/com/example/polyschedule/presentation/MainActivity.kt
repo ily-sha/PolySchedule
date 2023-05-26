@@ -4,17 +4,16 @@ package com.example.polyschedule.presentation
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.polyschedule.R
+import com.example.polyschedule.presentation.SettingSchedule.GroupSettingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity(), GroupSettingFragment.ShowBottomNav {
 
     private lateinit var bottomNavigationView: BottomNavigationView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
