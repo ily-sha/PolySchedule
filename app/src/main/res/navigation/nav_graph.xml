@@ -3,39 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainBlankFragment">
-    <fragment
-        android:id="@+id/scheduleFragment"
-        android:name="com.example.polyschedule.presentation.Schedule.ScheduleFragment"
-        android:label="ScheduleFragment" >
-        <argument
-            android:name="direction"
-            app:argType="com.example.polyschedule.domain.entity.Direction" />
-    </fragment>
-    <fragment
-        android:id="@+id/mainBlankFragment"
-        android:name="com.example.polyschedule.presentation.MainBlankFragment"
-        android:label="fragment_main_blank"
-        tools:layout="@layout/fragment_main_blank" >
-        <action
-            android:id="@+id/action_mainBlankFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" >
-        </action>
-        <action
-            android:id="@+id/action_mainBlankFragment_to_instituteSettingFragment"
-            app:destination="@id/instituteSettingFragment" />
-    </fragment>
+    app:startDestination="@id/scheduleFragment">
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.example.polyschedule.presentation.Account.AccountFragment"
+        android:name="com.example.polyschedule.presentation.account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" >
-        <action
-            android:id="@+id/action_accountFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-        <action
-            android:id="@+id/action_accountFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+
         <action
             android:id="@+id/action_accountFragment_to_signInByPolyChessFragment"
             app:destination="@id/signInByPolyChessFragment" />
@@ -45,62 +19,95 @@
         <action
             android:id="@+id/action_accountFragment_to_alarmClockFragment"
             app:destination="@id/alarmClockFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/groupSettingFragment"
-        android:name="com.example.polyschedule.presentation.SettingSchedule.GroupSettingFragment"
-        android:label="GroupSettingFragment" >
         <action
-            android:id="@+id/action_groupSettingFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" />
-        <argument
-            android:name="Institute"
-            app:argType="com.example.polyschedule.domain.entity.Institute" />
-        <argument
-            android:name="Course"
-            app:argType="com.example.polyschedule.domain.entity.Course" />
-    </fragment>
-    <fragment
-        android:id="@+id/instituteSettingFragment"
-        android:name="com.example.polyschedule.presentation.SettingSchedule.InstituteSettingFragment"
-        android:label="InstituteSettingFragment" >
+            android:id="@+id/action_accountFragment_to_createGroupActivity"
+            app:destination="@id/createGroupActivity" />
         <action
-            android:id="@+id/action_instituteSettingFragment_to_groupSettingFragment"
-            app:destination="@id/groupSettingFragment" />
+            android:id="@+id/action_accountFragment_to_signInActivity"
+            app:destination="@id/signInActivity" />
+        <action
+            android:id="@+id/action_accountFragment_to_signUpActivity"
+            app:destination="@id/signUpActivity" />
+        <action
+            android:id="@+id/action_accountFragment_to_groupActivity"
+            app:destination="@id/groupActivity" />
+        <action
+            android:id="@+id/action_accountFragment_to_editProfileActivity"
+            app:destination="@id/editProfileActivity" />
+        <action
+            android:id="@+id/action_accountFragment_to_joinToGroupActivity"
+            app:destination="@id/joinToGroupActivity" />
     </fragment>
     <fragment
         android:id="@+id/routeFragment"
-        android:name="com.example.polyschedule.presentation.Route.RouteFragment"
+        android:name="com.example.polyschedule.presentation.route.RouteFragment"
         android:label="fragment_route"
         tools:layout="@layout/fragment_route" />
     <fragment
         android:id="@+id/deadlineFragment"
-        android:name="com.example.polyschedule.presentation.Deadline.DeadlineFragment"
+        android:name="com.example.polyschedule.presentation.deadline.DeadlineFragment"
         android:label="fragment_deadline"
         tools:layout="@layout/fragment_deadline" />
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.example.polyschedule.presentation.Auth.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.example.polyschedule.presentation.Auth.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+
     <fragment
         android:id="@+id/signInByPolyChessFragment"
-        android:name="com.example.polyschedule.presentation.Auth.SignInByPolyChessFragment"
+        android:name="com.example.polyschedule.presentation.auth.SignInByPolyChessFragment"
         android:label="fragment_sign_in_by_poly_chess"
         tools:layout="@layout/fragment_sign_in_by_poly_chess" />
     <fragment
         android:id="@+id/autoAttendingFragment"
-        android:name="com.example.polyschedule.presentation.Account.AutoAttendingFragment"
+        android:name="com.example.polyschedule.presentation.account.autoattending.AutoAttendingFragment"
         android:label="fragment_auto_attending"
         tools:layout="@layout/fragment_auto_attending" />
     <fragment
         android:id="@+id/alarmClockFragment"
-        android:name="com.example.polyschedule.presentation.Account.AlarmClock.AlarmClockFragment"
+        android:name="com.example.polyschedule.presentation.account.alarmclock.AlarmClockFragment"
         android:label="fragment_alarm_clock"
         tools:layout="@layout/fragment_alarm_clock" />
+    <activity
+        android:id="@+id/createGroupActivity"
+        android:name="com.example.polyschedule.presentation.account.creategroup.CreateGroupActivity"
+        android:label="activity_create_group"
+        tools:layout="@layout/activity_create_group"/>
+    <activity
+        android:id="@+id/signInActivity"
+        android:name="com.example.polyschedule.presentation.auth.SignInActivity"
+        android:label="activity_sign_in"
+        tools:layout="@layout/activity_sign_in" />
+    <activity
+        android:id="@+id/signUpActivity"
+        android:name="com.example.polyschedule.presentation.auth.SignUpActivity"
+        android:label="activity_sign_up"
+        tools:layout="@layout/activity_sign_up" />
+    <activity
+        android:id="@+id/groupActivity"
+        android:name="com.example.polyschedule.presentation.account.group.GroupActivity"
+        android:label="activity_group"
+        tools:layout="@layout/activity_group" />
+    <activity
+        android:id="@+id/editProfileActivity"
+        android:name="com.example.polyschedule.presentation.account.editprofile.EditProfileActivity"
+        android:label="activity_edit_profile"
+        tools:layout="@layout/activity_edit_profile" />
+    <activity
+        android:id="@+id/joinToGroupActivity"
+        android:name="com.example.polyschedule.presentation.account.jointogroup.JoinToGroupActivity"
+        android:label="activity_join_to_group"
+        tools:layout="@layout/activity_join_to_group" />
+    <activity
+        android:id="@+id/lessonCardActivity"
+        android:name="com.example.polyschedule.presentation.schedule.lessoncard.LessonCardActivity"
+        android:label="activity_lesson_card"
+        tools:layout="@layout/activity_lesson_card" />
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.example.polyschedule.presentation.schedule.ScheduleFragment"
+        android:label="ScheduleFragment" >
+        <action
+            android:id="@+id/action_scheduleFragment_to_lessonCardActivity"
+            app:destination="@id/lessonCardActivity" />
+        <argument
+            android:name="direction"
+            app:argType="com.example.polyschedule.domain.entity.Direction" />
+    </fragment>
 </navigation>

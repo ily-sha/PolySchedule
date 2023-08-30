@@ -7,9 +7,7 @@
 
     <dimen name="default_horizontal_margin">24dp</dimen>
     <dimen name="top_margin_schedule_setting">24dp</dimen>
-
-
-
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>

@@ -4,7 +4,7 @@
     <string name="institute">Институт</string>
     <string name="group">Группа</string>
     <string name="continue_str">Продолжить</string>
-    <string name="change_group">Изменить группу</string>
+    <string name="different_schedule">Расписание другой группы</string>
     <string name="add_new_group">Добавить новую группу</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -15,7 +15,7 @@
     <string name="schedule">Расписание</string>
     <string name="route_map">Карта</string>
     <string name="account">Профиль</string>
-    <string name="deadline">Дедлайны</string>
+    <string name="deadlines">Дедлайны</string>
     <string name="sing_in_by_poly_chess">Войти через PolyChess</string>
     <string name="for_chess_player">Для шахматистов</string>
     <string name="sleep_calm">Спите спокойно!</string>
@@ -24,11 +24,11 @@
     <string name="chess_player_mode">Режим шахматиста</string>
     <string name="chess_player_mode_description">Настройте автопосещение для занятий по шахматам. Для тех, кто на шахматах</string>
     <string name="auto_attending">Автопосещение</string>
-    <string name="email">Почта</string>
+    <string name="email">Электронная почта</string>
     <string name="email_example">email@example.com</string>
     <string name="send_code">Отправить код</string>
-    <string name="text_request_after_some_second">До следующего запроса %s секунд</string>
-    <string name="confirmation_code_from_email">Код подтверждения с почты</string>
+    <string name="next_email_code_after">До следующего запроса %s</string>
+    <string name="confirmation_code">Код подтверждения</string>
     <string name="confirmation_code_from_poly_chess">Код подтверждения с PolyChess</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
@@ -42,4 +42,82 @@
     <string name="reject_alarm_clock">Отключить будильник</string>
     <string name="time_to_next_alarm_clock">Следующий будильник через %s</string>
     <string name="alarm_clock_schedule">Расписание будильник</string>
+    <string name="gathering">Объединяйтесь</string>
+    <string name="gathering_description">Создавайте группы, как в жизни. Делитесь домашним заданием и важными событиями.\nДля того, чтобы войти в группу, перейдите по invite-ссылке.</string>
+    <string name="join_to_group">Присоединиться</string>
+    <string name="create_group">Создать группу</string>
+    <string name="groups_name">Название группы</string>
+    <string name="create">Создать</string>
+    <string name="create_group_description">Только вы сможете менять основные параметры группы.</string>
+    <string name="invite">Invite</string>
+
+    <string name="homework">Домашка</string>
+    <string name="announcements">Объявления</string>
+    <string name="change_schedule">Изменить расписание</string>
+    <string name="info">Информация</string>
+    <string name="student">Студент</string>
+    <string name="my_group">Мои группы</string>
+    <string name="title_activity_email_confirmation">EmailConfirmationActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
+        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
+        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
+        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
+        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
+        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
+        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
+        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
+        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
+        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
+        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
+        bibendum, vel congue leo egestas.\n\n
+        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
+        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
+        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
+        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
+        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
+        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
+        est.\n\n
+        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
+        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
+        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
+        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
+        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
+        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
+        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
+        convallis.\n\n
+        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
+        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
+        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
+        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
+        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
+        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+    </string>
+    <string name="registration">Регистрация</string>
+    <string name="email_confirmation">Подтверждение почты</string>
+    <string name="repeat_code">Повторить код</string>
+    <string name="entry">Вход</string>
+    <string name="my_profile">Мои профиль</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="exit">Выйти</string>
+    <string name="remove">Удалить аккаунт</string>
+    <string name="create_announcement">Добавить объявление</string>
+    <string name="description">Описание</string>
+    <string name="files">Файлы</string>
+    <string name="add_files">Добавить файл</string>
+    <string name="announcement">Объявление</string>
+    <string name="publish">Опубликовать</string>
+    <string name="open_task">Посмотреть задание</string>
+    <string name="group_task">Групповое задание</string>
+    <string name="add_description">Добавьте описание</string>
+    <string name="deadline">Крайний срок</string>
+    <string name="create_task">Добавить задание</string>
+    <string name="save_changes">Сохранить изменения</string>
 </resources>

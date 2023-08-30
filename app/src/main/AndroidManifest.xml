@@ -3,43 +3,126 @@
     package="com.example.polyschedule">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PolySchedule">
+        android:theme="@style/Theme.PolySchedule"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".presentation.settingschedule.InstituteSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.settingschedule.GroupSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.schedule.lessoncard.grouptask.GroupTaskActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--
+                     The OPENABLE category declares that the returned file is accessible
+                     from a content provider that supports OpenableColumns
+                     and ContentResolver.openFileDescriptor().
+                -->
+                <category android:name="android.intent.category.OPENABLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.schedule.lessoncard.LessonCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.account.group.createannouncement.CreateAnnouncementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.account.jointogroup.JoinToGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.account.editprofile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.auth.EmailConfirmationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.account.group.GroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.auth.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.auth.SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.account.creategroup.CreateGroupActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".presentation.FirebaseService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".presentation.Account.AlarmClock.AlarmClockLockScreenActivity"
-            android:launchMode="singleTop"
-            android:showOnLockScreen="true"/>
-        <receiver android:name=".presentation.Account.AlarmClock.AlarmClockReceiver">
-        </receiver>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.exampldcdce.com/gizmos” -->
+                <data
+                    android:host="www.exampldcdce.com"
+                    android:pathPrefix="/gizmos"
+                    android:scheme="http" />
+                <!-- note that the leading "/" is required for pathPrefix -->
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <data
+                    android:host="gizmos"
+                    android:scheme="example" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.account.alarmclock.AlarmClockLockScreenActivity"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true" />
+
+        <receiver android:name=".presentation.account.alarmclock.AlarmClockReceiver" />
         <receiver
             android:name=".presentation.ScheduleWidget"
             android:exported="true"
             android:icon="@android:drawable/star_big_on"
             android:label="efrfre">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/schedule_widget_metadata"></meta-data>
+                android:resource="@xml/schedule_widget_metadata" />
         </receiver>
     </application>
 

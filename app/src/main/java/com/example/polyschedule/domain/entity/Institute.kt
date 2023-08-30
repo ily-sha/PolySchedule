@@ -8,4 +8,18 @@ data class Institute(
     val name: String,
     val abbr: String,
     var selected: Boolean = false
-) : Serializable
+) : Serializable {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Institute
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (abbr != other.abbr) return false
+
+        return true
+    }
+
+}

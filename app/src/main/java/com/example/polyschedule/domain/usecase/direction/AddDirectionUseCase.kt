@@ -6,6 +6,6 @@ import com.example.polyschedule.domain.repository.DirectionRepository
 class AddDirectionUseCase(private val repository: DirectionRepository) {
 
 
-    operator fun invoke(direction: Direction) = repository.addGroup(direction)
+    operator fun invoke(direction: Direction) = repository.addDirection(direction)
 
 }

@@ -4,11 +4,10 @@ import com.example.polyschedule.domain.entity.Direction
 
 interface DirectionRepository {
 
-    fun getGroup(id: Int): Direction
+    fun getDirection(id: Int): Direction
 
-    fun getGroups(): List<Direction>
+    fun getDirections(): List<Direction>
 
-    fun addGroup(direction: Direction)
+    fun addDirection(direction: Direction)
 
-    fun removeGroup(id: Int)
 }

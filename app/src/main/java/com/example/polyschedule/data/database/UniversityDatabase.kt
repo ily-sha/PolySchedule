@@ -8,15 +8,17 @@ import com.example.polyschedule.data.database.dbmodels.GroupDbModel
 import com.example.polyschedule.data.database.dbmodels.InstituteDbModel
 import com.example.polyschedule.data.LessonDbModel
 import com.example.polyschedule.data.ScheduleDbModel
-import com.example.polyschedule.data.database.dbmodels.UniversityDbModel
+import com.example.polyschedule.data.database.dbmodels.DirectionDbModel
 
 @Database(
-    entities = [UniversityDbModel::class, InstituteDbModel::class, GroupDbModel::class, ScheduleDbModel::class, LessonDbModel::class],
+    entities = [DirectionDbModel::class, InstituteDbModel::class, GroupDbModel::class, ScheduleDbModel::class, LessonDbModel::class],
     version = 2
 )
 abstract class UniversityDatabase : RoomDatabase() {
 
-    abstract fun universityDao(): UniversityDao
+    abstract fun directionDao(): DirectionDao
+
+    abstract fun scheduleDao(): ScheduleDao
 
 
     companion object {

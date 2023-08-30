@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/default_horizontal_margin"
+    tools:context=".presentation.schedule.lessoncard.grouptask.GroupTaskActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+
+                android:id="@+id/arrow_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/arrow_back_black" />
+
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/inter_bold"
+                android:maxLines="4"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/description_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+            <TextView
+                android:layout_marginStart="12dp"
+                android:text="@string/description"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/stroke"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="10dp"
+            android:layout_height="150dp">
+            <EditText
+                android:gravity="top"
+                android:textColorHint="@color/description"
+                android:id="@+id/description"
+                android:hint="@string/add_description"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/inter_medium"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <RelativeLayout
+
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/deadline_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@id/deadline_label"
+                android:src="@drawable/calendar_icon" />
+
+            <TextView
+                android:id="@+id/deadline_label"
+                android:layout_toEndOf="@id/deadline_icon"
+                android:layout_marginStart="12dp"
+                android:text="@string/deadline"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.google.android.material.card.MaterialCardView
+
+                android:layout_width="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@color/primary"
+                app:cardCornerRadius="20dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/deadline"
+                    android:textSize="16sp"
+                    android:paddingVertical="6dp"
+                    android:paddingHorizontal="22dp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/inter_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/paperclip_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+            <TextView
+                android:layout_marginStart="12dp"
+                android:text="@string/files"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/files_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_marginTop="8dp"
+            android:id="@+id/add_file"
+            style="@style/LightGreenButtonCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/add_files"
+                style="@style/LightGreenTextInCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_marginBottom="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        style="@style/GreenButtonCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/save_changes"
+            android:text="@string/save_changes"
+            style="@style/GreenTextInCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_marginBottom="32dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        style="@style/GreenButtonCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/save"
+            android:text="@string/save"
+            style="@style/GreenTextInCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.card.MaterialCardView>
+
+
+</RelativeLayout>

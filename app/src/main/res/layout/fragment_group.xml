@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.account.group.GroupContentFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/enabled_homework"
+            android:layout_width="wrap_content"
+            android:backgroundTint="@color/primary"
+            app:cardCornerRadius="20dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="17sp"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="28dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/homework"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
+            android:id="@+id/disabled_homework"
+            app:cardElevation="0dp"
+            android:layout_width="wrap_content"
+            app:strokeWidth="0.8dp"
+            app:cardCornerRadius="20dp"
+            app:strokeColor="@color/light_gray"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="28dp"
+                android:text="@string/homework"
+                android:textColor="@color/light_gray" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_marginStart="8dp"
+            android:id="@+id/enabled_announcement"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@id/disabled_homework"
+            android:backgroundTint="@color/primary"
+            app:cardCornerRadius="20dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="17sp"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="28dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/announcements"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_marginStart="8dp"
+            android:id="@+id/disabled_announcement"
+            android:layout_alignParentTop="true"
+            app:cardElevation="0dp"
+            android:layout_toEndOf="@id/enabled_homework"
+            android:layout_width="wrap_content"
+            app:strokeWidth="0.8dp"
+            app:cardCornerRadius="20dp"
+            app:strokeColor="@color/light_gray"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_bold"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="28dp"
+                android:text="@string/announcements"
+                android:textColor="@color/light_gray" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:id="@+id/add_announcement"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:elevation="0dp"
+        android:src="@drawable/baseline_add_24_white"
+        android:backgroundTint="@color/primary"
+        android:layout_height="wrap_content"
+        android:contentDescription="add_announcement" />
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/tabs"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

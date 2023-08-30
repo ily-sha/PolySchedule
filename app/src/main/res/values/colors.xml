@@ -5,18 +5,36 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#1B1B1B</color>
-    <color name="for_description">#636363</color>
+    <color name="stroke">#F0F0F0</color>
+    <color name="dark_stroke">#D9D9D9</color>
+
+    <color name="description">#747474</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#03AB28</color>
-    <color name="dark_green">#127423</color>
-    <color name="dark_gray">#757575</color>
-    <color name="gray">#CBCBCB</color>
-    <color name="light_green">#EFF5F4</color>
-    <color name="light_gray">#F0F0F0</color>
-    <color name="hint_light_gray">#DFDFDF</color>
-    <color name="blue">#4278AC</color>
+    <color name="additional">#127423</color>
+    <color name="dark_gray">#535353</color>
+    <color name="hint">#C4C4C4</color>
+    <color name="light_gray">#CBCBCB</color>
+    <color name="on_primary">#EFF5F4</color>
+<!--    <color name="light_gray">#F0F0F0</color>-->
+<!--    <color name="hint_light_gray">#DFDFDF</color>-->
+    <color name="purple">#4278AC</color>
+
+    <color name="error">#E40505</color>
     <color name="light_blue">#80AFD9FF</color>
+
+    <color name="sleep_calm_on_primary">#F3F0FF</color>
+    <color name="sleep_calm_primary">#DED7FF</color>
+    <color name="sleep_calm_text">#735CDD</color>
+
+
+    <color name="gathering_on_primary">#E2FFFD</color>
+    <color name="gathering_primary">#50FFE0</color>
+    <color name="gathering_primary2">#CC429687</color>
+    <color name="gathering_text">#145854</color>
+
 
 
 

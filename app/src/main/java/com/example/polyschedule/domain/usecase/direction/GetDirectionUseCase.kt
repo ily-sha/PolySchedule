@@ -4,8 +4,8 @@ import com.example.polyschedule.domain.repository.DirectionRepository
 
 class GetDirectionUseCase(private val repository: DirectionRepository) {
 
-    fun getDirection(id: Int) = repository.getGroup(id)
+    fun getDirection(id: Int) = repository.getDirection(id)
 
-    fun getDirections() = repository.getGroups()
+    fun getDirections() = repository.getDirections()
 
 }

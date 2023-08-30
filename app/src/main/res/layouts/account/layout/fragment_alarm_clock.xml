@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/default_horizontal_margin"
-    tools:context=".presentation.Account.AlarmClock.AlarmClockFragment">
+    tools:context=".presentation.account.alarmclock.AlarmClockFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/classic_arrow_back" />
+                    android:src="@drawable/arrow_back_black" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                 app:strokeWidth="1dp"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="20dp"
-                app:strokeColor="@color/gray"
+                app:strokeColor="@color/stroke"
                 android:layout_height="wrap_content">
                 <TimePicker
                     android:id="@+id/time_picker"
@@ -64,9 +64,9 @@
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:textColor="@color/dark_gray"
+                android:textColor="@color/description"
                 android:layout_marginTop="12dp"
-                android:fontFamily="@font/inter_semibold"
+                android:fontFamily="@font/inter_medium"
                 android:textSize="16sp"
                 android:id="@+id/time_to_next_alarm_clock"
                 android:text="@string/time_to_next_alarm_clock"
@@ -74,26 +74,22 @@
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.card.MaterialCardView
-                style="@style/ButtonCardView"
+                style="@style/GreenButtonCardView"
                 android:id="@+id/save_alarm_clock"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/primary"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="20dp">
                 <TextView
-                    style="@style/TextCardView"
-                    android:text="@string/save"
-                    android:textColor="@color/white" />
+                    style="@style/GreenTextInCardView"
+                    android:text="@string/save" />
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                style="@style/ButtonCardView"
+                style="@style/LightGreenButtonCardView"
                 android:id="@+id/reject_alarm_clock"
-                android:backgroundTint="@color/light_green"
                 android:layout_marginBottom="12dp">
                 <TextView
-                    style="@style/TextCardView"
-                    android:text="@string/reject_alarm_clock"
-                    android:textColor="@color/primary" />
+                    style="@style/LightGreenTextInCardView"
+                    android:text="@string/reject_alarm_clock"/>
             </com.google.android.material.card.MaterialCardView>
             <TextView
                 android:layout_marginTop="20dp"

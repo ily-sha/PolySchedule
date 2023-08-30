@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/default_horizontal_margin"
+    tools:context=".presentation.auth.EmailConfirmationActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/inter_bold"
+        android:text="@string/email_confirmation"
+        android:textColor="@color/black"
+        android:textSize="28sp"/>
+
+
+    <TextView
+        android:fontFamily="@font/inter_semibold"
+        android:textColor="@color/description"
+        android:textSize="16sp"
+        android:id="@+id/email_address"
+        android:layout_marginTop="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayout"
+        android:hint="@string/confirmation_code"
+        android:id="@+id/email_code_layout"
+        app:counterEnabled="false"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_code"
+            style="@style/EditText"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:textSize="14sp"
+        android:text="@string/next_email_code_after"
+        android:textColor="@color/description"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:visibility="gone"
+        android:id="@+id/repeat_code"
+        android:layout_marginTop="16dp"
+        style="@style/LightGreenButtonCardView">
+        <TextView
+            style="@style/LightGreenTextInCardView"
+            android:text="@string/repeat_code"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_marginTop="12dp"
+        android:id="@+id/register"
+        style="@style/GreenButtonCardView">
+        <TextView
+
+            style="@style/GreenTextInCardView"
+            android:text="@string/sign_up"/>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

@@ -9,36 +9,32 @@ import com.example.polyschedule.domain.repository.DirectionRepository
 
 class DirectionRepositoryImpl(private val application: Application): DirectionRepository {
 
-    private val universityDao = UniversityDatabase.getInstance(application).universityDao()
+    private val directionDao = UniversityDatabase.getInstance(application).directionDao()
     private val mapper = Mapper()
 
-    override fun getGroup(id: Int): Direction {
-        val universityDbModel = universityDao.getUniversity(id)
-        val group =
-            mapper.mapGroupBdModelToEntity(universityDao.getGroup(universityDbModel.groupId))
-        val institute =
-            mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(universityDbModel.instituteId))
+    override fun getDirection(id: Int): Direction {
+        val directionDbModel = directionDao.getDirection(id)
+        val group = mapper.mapGroupBdModelToEntity(directionDao.getGroup(directionDbModel.groupId))
+        val institute = mapper.mapInstituteBdModelToEntity(directionDao.getInstitute(directionDbModel.instituteId))
         return Direction(group, institute, id)
     }
 
-    override fun getGroups(): List<Direction> {
-        return universityDao.getAllUniversities().map {
-            val group = mapper.mapGroupBdModelToEntity(universityDao.getGroup(it.groupId))
+    override fun getDirections(): List<Direction> {
+        return directionDao.getDirections().map {
+            val group = mapper.mapGroupBdModelToEntity(directionDao.getGroup(it.groupId))
             val institute =
-                mapper.mapInstituteBdModelToEntity(universityDao.getInstitute(it.instituteId))
+                mapper.mapInstituteBdModelToEntity(directionDao.getInstitute(it.instituteId))
             Direction(group, institute, it.id)
         }
     }
 
-    override fun addGroup(direction: Direction) {
-        universityDao.addGroup(mapper.mapGroupEntityToGroupBdModel(direction.group))
-        universityDao.addInstitute(mapper.mapInstituteEntityToDbModel(direction.institute))
+    override fun addDirection(direction: Direction) {
+        directionDao.addGroup(mapper.mapGroupEntityToGroupBdModel(direction.group))
+        directionDao.addInstitute(mapper.mapInstituteEntityToDbModel(direction.institute))
         val primaryKey =
-            universityDao.addUniversity(mapper.mapUniversityEntityToBdModel(direction))
-        CacheUtils.instance?.setString(CacheUtils.MAIN_GROUP, primaryKey.toString(), application)
+            directionDao.addDirection(mapper.mapDirectionEntityToBdModel(direction))
+        CacheUtils.setString(CacheUtils.DIRECTION, primaryKey.toString(), application)
     }
 
-    override fun removeGroup(id: Int) {
-        universityDao.deleteUniversity(id)
-    }
+
 }

@@ -3,7 +3,7 @@ package com.example.polyschedule.data
 import com.example.polyschedule.data.database.UniversityDatabase
 import com.example.polyschedule.data.database.dbmodels.GroupDbModel
 import com.example.polyschedule.data.database.dbmodels.InstituteDbModel
-import com.example.polyschedule.data.database.dbmodels.UniversityDbModel
+import com.example.polyschedule.data.database.dbmodels.DirectionDbModel
 import com.example.polyschedule.domain.entity.*
 
 class Mapper {
@@ -48,8 +48,8 @@ class Mapper {
         )
     }
 
-    fun mapUniversityEntityToBdModel(entity: Direction): UniversityDbModel {
-        return UniversityDbModel(
+    fun mapDirectionEntityToBdModel(entity: Direction): DirectionDbModel {
+        return DirectionDbModel(
             instituteId = entity.institute.id,
             groupId = entity.group.id,
             id = Direction.AUTOGENERATE_ID

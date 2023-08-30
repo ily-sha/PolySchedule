@@ -14,7 +14,7 @@ import java.time.LocalDate
 class ScheduleRepositoryImpl(private val application: Application) : ScheduleRepository {
 
 
-    private val universityDao = UniversityDatabase.getInstance(application).universityDao()
+    private val scheduleDao = UniversityDatabase.getInstance(application).scheduleDao()
 
     private val mapper = Mapper()
 
@@ -101,7 +101,8 @@ class ScheduleRepositoryImpl(private val application: Application) : ScheduleRep
         for (i in 0..1) {
             val blank =
                 if (i == 0) "{'date': ${mondayOfCurrentWeek.minusDays(2)}, " +
-                        "'weekday': 0, 'lessons': []}" else
+                        "'weekday': 0, 'lessons': []}"
+                else
                     "{'date': ${
                         mondayOfCurrentWeek.plusDays(7)
                     }, 'weekday': 7, 'lessons': []}"
@@ -114,7 +115,7 @@ class ScheduleRepositoryImpl(private val application: Application) : ScheduleRep
 
     override suspend fun addScheduleToBd(schedule: Schedule) {
         schedule.lessons
-        universityDao.addSchedule(
+        scheduleDao.addSchedule(
             mapper.mapScheduleEntityToDbModel(schedule)
         )
     }

@@ -6,6 +6,7 @@ import com.example.polyschedule.domain.repository.ScheduleSettingRepository
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.net.URL
+import java.util.LinkedList
 
 class ScheduleSettingRepositoryImpl: ScheduleSettingRepository {
 
@@ -14,7 +15,7 @@ class ScheduleSettingRepositoryImpl: ScheduleSettingRepository {
         numberOfCourse: Int,
         instituteId: Int
     ): MutableMap<String, MutableList<Group>> {
-        val groupsList = mutableListOf<Group>()
+        val groupsList = LinkedList<Group>()
         try {
             val result =
                 (Regex("""window\.__INITIAL_STATE__ = .*""").find(URL("https://ruz.spbstu.ru/faculty/${instituteId}/groups").readText()))!!.value
@@ -47,7 +48,7 @@ class ScheduleSettingRepositoryImpl: ScheduleSettingRepository {
 
 
     override suspend fun getInstitute(): MutableList<Institute> {
-        val instituteList = mutableListOf<Institute>()
+        val instituteList = LinkedList<Institute>()
         try {
             val result = (Regex("""window\.__INITIAL_STATE__ = .*""").find(
                 URL("https://ruz.spbstu.ru/")
